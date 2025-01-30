@@ -42,8 +42,7 @@ local_ext_version_check = "pkgver = packageVersion('%(ext_name)s'); if (pkgver !
 local_stop_msg = "stop('%(ext_name)s %(ext_version)s not installed, found ', pkgver, ' instead')"
 exts_filter = ("R -q --no-save", "%s { %s }" % (local_ext_version_check, local_stop_msg))
 
-# CRAN packages on which these Bioconductor packages depend are available in R module on which this depends
-# !! order of packages is important !!
+# BioC/CRAN packages, order of packages is important !!
 exts_list = [
     ('BiocGenerics', '0.48.0', {
         'checksums': ['f413b2a812c5cbb219fc799d04fe36e4c88faa7ff946f643afcf5fdba312e44f'],
@@ -54,12 +53,99 @@ exts_list = [
     ('S4Vectors', '0.40.2', {
         'checksums': ['4cd9a63b3b41b08fca8121dc5b8f43d6f7d580842b1b000055dee90b68f49982'],
     }),
+    ('gsl', '2.1-8', {
+      'installopts': "--configure-args='--with-gsl=${EBROOTGSL} --enable-bundled-gsl=false'",
+    }),
+    ('boot', '1.3-31'),
     ('matrixStats', '1.4.1'),
     ('MatrixGenerics', '1.14.0', {
         'checksums': ['8da491661e8581adf1f2f8c5d2f46272d92b6c5a639bf4a80140c05e5694a593'],
     }),
     ('lattice', '0.22-6'),
     ('Matrix', '1.6-5'),
+    ('generics', '0.1.3'),
+    ('findpython', '1.0.9'),
+    ('R6', '2.5.1'),
+    ('jsonlite', '1.8.9'),
+    ('argparse', '2.2.5'),
+    ('gtable', '0.3.6'),
+    ## ('isoband', '0.2.7'),
+    ('MASS', '7.3-59'),
+    ('nlme', '3.1-167'),
+    ## ('mgcv', '1.9-1'),
+    ## ('scales', '1.3.0'),
+    ('tibble', '3.2.1'),
+    ('vctrs', '0.6.5'),
+    ('withr', '3.0.2'),
+        ('RColorBrewer', '1.1-3', {
+        'checksums': ['4f42f5423c45688b39f492c7892d93f37b4541831c8ffb140364d2bd89031ac0'],
+    }),
+    ('png', '0.1-8', {
+        'checksums': ['5a36fabb6d62ba2533d3fc4cececd07891942cfb76fe689ec0d550d08762f61c'],
+    }),
+    ('jpeg', '0.1-10', {
+        'checksums': ['c8d9f609c3088f91ec4853d6cc0e66511038a465811dea79ca6a0c09519178ca'],
+    }),
+    ('deldir', '2.0-4', {
+        'checksums': ['d418acb28ec3707b6d64c7466d0cefbb49b098537f37558d8f7a5befd34a4653'],
+    }),
+    ('RcppEigen', '0.3.4.0.2', {
+        'checksums': ['ecad7ba2129fd48b7ebb825558d38492ed1f3a8934959e27fcd6688175e542bb'],
+    }),
+    ('interp', '1.1-6', {
+        'checksums': ['3674044e5334ecdf124054303929c084fc0797d3123e28576a230492ea6ecd34'],
+    }),
+    ('latticeExtra', '0.6-30', {
+        'checksums': ['c550a76913624818482bf237d48883c58e368ba356ced8ed5e76146672279eed'],
+    }),
+    ('plyr', '1.8.9', {
+        'checksums': ['15b5e7f711d53bf41b8687923983b8ef424563aa2f74c5195feb5b1df1aee103'],
+    }),
+    ('gtable', '0.3.6', {
+        'checksums': ['d305a5fa11278b649d2d8edc5288bf28009be888a42be58ff8714018e49de0ef'],
+    }),
+    ('reshape2', '1.4.4', {
+        'checksums': ['d88dcf9e2530fa9695fc57d0c78adfc5e361305fe8919fe09410b17da5ca12d8'],
+    }),
+    ('dichromat', '2.0-0.1', {
+        'checksums': ['a10578e9ad8a581bd8fe0d8a8370051f3cdcf12c7d282f3af2a18dacda566081'],
+    }),
+    ('colorspace', '2.1-1', {
+        'checksums': ['e721cee5f4d6e4b0fc8eb18265e316b4f856fd3be02f0775a26032663758cd0b'],
+    }),
+    ('munsell', '0.5.1', {
+        'checksums': ['03a2fd9ac40766cded96dfe33b143d872d0aaa262a25482ce19161ca959429a6'],
+    }),
+    ('labeling', '0.4.3', {
+        'checksums': ['c62f4fc2cc74377d7055903c5f1913b7295f7587456fe468592738a483e264f2'],
+    }),
+    ('viridisLite', '0.4.2', {
+        'checksums': ['893f111d31deccd2cc959bc9db7ba2ce9020a2dd1b9c1c009587e449c4cce1a1'],
+    }),
+    ('farver', '2.1.2', {
+        'checksums': ['528823b95daab4566137711f1c842027a952bea1b2ae6ff098e2ca512b17fe25'],
+    }),
+    ('scales', '1.3.0', {
+        'checksums': ['b33e0f6b44259551ce02befd52eac53602509fbfdd903920620c658c50f35888'],
+    }),
+    ('zeallot', '0.1.0', {
+        'checksums': ['439f1213c97c8ddef9a1e1499bdf81c2940859f78b76bc86ba476cebd88ba1e9'],
+    }),
+    ('assertthat', '0.2.1', {
+        'checksums': ['85cf7fcc4753a8c86da9a6f454e46c2a58ffc70c4f47cac4d3e3bcefda2a9e9f'],
+    }),
+    ('lazyeval', '0.2.2', {
+        'checksums': ['d6904112a21056222cfcd5eb8175a78aa063afe648a562d9c42c6b960a8820d4'],
+    }),
+    ('mgcv', '1.9-1', {
+        'checksums': ['700fbc37bedd3a49505b9bc4949faee156d9cfb4f669d797d06a10a15a5bdb32'],
+    }),
+    ('isoband', '0.2.7', {
+        'checksums': ['7693223343b45b86de2b5b638ff148f0dafa6d7b1237e822c5272902f79cdf61'],
+    }),
+    ('ggplot2', '3.5.1', {
+        'checksums': ['7c58b424f99b3634038e6f6d1fe4b0241b8aecb50e9c50466d5590f7e3144721'],
+    }),
     ('Rhdf5lib', '1.24.1', {
         ## 'patches': ['Rhdf5lib-1.20.0_fix_hardcoded_path_to_mv.patch'],
         ## 'checksums': [
@@ -96,8 +182,17 @@ exts_list = [
        'installopts': "--configure-args='--with-gsl=${EBROOTGSL} --enable-bundled-gsl=false'",
     }),
     ('dbscan', '1.2.2'),
-    ('argparse', '2.2.5'),
-    ('ggplot2', '3.5.1'),
+    ('pixmap', '0.4-13', {
+        'checksums': ['e3dbc641a0497575b45a4140dadc6bf43cdf39b02393f93f1b0ee4f4d026e711'],
+    }),
+    ('sp', '2.1-4', {
+        'checksums': ['e185e7fb61d2d7dbc50fd765a93e170fa778083a653588db1f5e99d019479f0a'],
+    }),
+    ('pracma', '2.4.4'),
+    ('RcppArmadillo', '14.2.0-1', {
+        'checksums': ['e0755c37f1a70c4509df2a8f773db11418d9758ff81993f096f913d2116e04f5'],
+    }),
+    ('DataVisualizations', '1.3.3'),
     ('FCPS', '1.3.4'),
 
 ]

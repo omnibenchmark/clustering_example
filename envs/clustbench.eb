@@ -14,6 +14,7 @@ toolchain = {'name': 'foss', 'version': '2023b'}
 ##     ('hatchling', '1.18.0'),
 ## ]
 
+
 dependencies = [
     ('Python', '3.11.5'),
     ('Python-bundle-PyPI', '2023.10'),
@@ -21,6 +22,21 @@ dependencies = [
 ]
 
 use_pip = True
+
+source_urls = [PYPI_LOWER_SOURCE]
+  
+## exts_default_options = {
+##    'use_pip': True,
+## }
+
+## not really managing to automate downloads from pypi, downloading the source and placing them in 'extensions'
+
+## https://files.pythonhosted.org/packages/27/fe/e78538f4cd7b1b28e9c625eabd21f314004d00644a8347d0b01473e72ffa/clustering_benchmarks-1.1.5.tar.gz
+## https://files.pythonhosted.org/packages/47/6a/62e288da7bcda82b935ff0c6cfe542970f04e29c756b0e147251b2fb251f/wget-3.2.zip
+## https://files.pythonhosted.org/packages/5d/b8/f143d907d93bd4a3dd51d07c4e79b37bedbfc2177f4949bfa0d6ba0af647/fastcluster-1.2.6.tar.gz
+## https://files.pythonhosted.org/packages/68/7c/d465bab9f98b75c5c1f5e80165dd82847a504ced655d162b585df08a717b/genieclust-1.1.6.tar.gz
+## https://files.pythonhosted.org/packages/a2/45/eaaacaa4f4f2931a80d40e453df275d9af7c07616c5d753272d3055fb79e/genieclust-1.1.6-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+##   and named the latter as genieclust-1.1.6.whl
 
 exts_list = [
     ## ('asciitree', '0.3.3', {
@@ -35,7 +51,7 @@ exts_list = [
     ## (name, version, {
     ##     'checksums': ['3780a2e69b2ec89882dfc2775de5d9b54ccb79569dc5f042b4851599388112dc'],
     ## }),
-    ('clustering-benchmarks', '1.1.5'),
+    ('clustering_benchmarks', '1.1.5'),
     ('wget', '3.2'),
     ('fastcluster', '1.2.6'),
     ('genieclust', '1.1.6'),
@@ -44,3 +60,4 @@ exts_list = [
 sanity_pip_check = True
 
 moduleclass = 'bio'
+
