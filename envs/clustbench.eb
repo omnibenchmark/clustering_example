@@ -1,3 +1,5 @@
+## largely as https://github.com/easybuilders/easybuild-easyconfigs/blob/949c266db9e17440ec2829eb8ffdbdb87ceaf543/easybuild/easyconfigs/c/cooler/cooler-0.10.2-foss-2023b.eb#L4
+
 easyblock = 'PythonBundle'
 
 name = 'clustbench'
@@ -6,66 +8,39 @@ version = '1'
 homepage = 'https://python.org/'
 description = "Bundle of Python packages for ob clustering_example"
 
-toolchain = {'name': 'gfbf', 'version': '2024a'}
-toolchainopts = {'pic': True, 'lowopt': False}
+toolchain = {'name': 'foss', 'version': '2023b'}
 
-builddependencies = [
-    ('hypothesis', '6.103.1'),
-    ('UnZip', '6.0'),
-    # scipy >= 1.9.0 uses Meson/Ninja
-    ('Meson', '1.4.0'),
-    ('meson-python', '0.16.0'),
-    ('Ninja', '1.12.1'),
-    ('pkgconf', '2.2.0'),  # required by scipy
-    ('Cython', '3.0.10'),  # required by numpy and scipy
-]
+## builddependencies = [
+##     ('hatchling', '1.18.0'),
+## ]
 
 dependencies = [
-    ('Python', '3.12.3'),
-    ('Python-bundle-PyPI', '2024.06'),
-    ('pybind11', '2.12.0'),  # required by scipy
+    ('Python', '3.11.5'),
+    ('Python-bundle-PyPI', '2023.10'),
+    ('SciPy-bundle', '2023.11'),
 ]
 
 use_pip = True
 
-# order is important!
 exts_list = [
-    ('numpy', '1.26.4', {
-        'patches': [
-            'numpy-1.22.3_disable-broken-override-test.patch',
-            'numpy-1.26.4_fix-riscv64-test-failures.patch',
-        ],
-        'checksums': [
-            {'numpy-1.26.4.tar.gz': '2a02aba9ed12e4ac4eb3ea9421c420301a0c6460d9830d74a9df87efa4912010'},
-            {'numpy-1.22.3_disable-broken-override-test.patch':
-             '9c589bb073b28b25ff45eb3c63c57966aa508dd8b318d0b885b6295271e4983c'},
-            {'numpy-1.26.4_fix-riscv64-test-failures.patch':
-             '81bd487dbca6da8285971a16a2c7b488718a051d3cd66450277bed6ff21741de'},
-        ],
-    }),
-    ('ply', '3.11', {
-        'checksums': ['00c7c1aaa88358b9c765b6d3000c6eec0ba42abca5351b095321aef446081da3'],
-    }),
-    ('gast', '0.5.4', {
-        'checksums': ['9c270fe5f4b130969b54174de7db4e764b09b4f7f67ccfc32480e29f78348d97'],
-    }),
-    ('beniget', '0.4.1', {
-        'checksums': ['75554b3b8ad0553ce2f607627dad3d95c60c441189875b98e097528f8e23ac0c'],
-    }),
-    ('pythran', '0.16.1', {
-        'checksums': ['861748c0f9c7d422b32724b114b3817d818ed4eab86c09781aa0a3f7ceabb7f9'],
-    }),
-    ('versioneer', '0.29', {
-        'checksums': ['5ab283b9857211d61b53318b7c792cf68e798e765ee17c27ade9f6c924235731'],
-    }),
-    ('scipy', '1.14.1'),
-    ('numpy', '1.26.4'),
+    ## ('asciitree', '0.3.3', {
+    ##     'checksums': ['4aa4b9b649f85e3fcb343363d97564aa1fb62e249677f2e18a96765145cc0f6e'],
+    ## }),
+    ## ('toolz', '1.0.0', {
+    ##     'checksums': ['2c86e3d9a04798ac556793bced838816296a2f085017664e4995cb40a1047a02'],
+    ## }),
+    ## ('cytoolz', '1.0.0', {
+    ##     'checksums': ['eb453b30182152f9917a5189b7d99046b6ce90cdf8aeb0feff4b2683e600defd'],
+    ## }),
+    ## (name, version, {
+    ##     'checksums': ['3780a2e69b2ec89882dfc2775de5d9b54ccb79569dc5f042b4851599388112dc'],
+    ## }),
     ('clustering-benchmarks', '1.1.5'),
     ('wget', '3.2'),
     ('fastcluster', '1.2.6'),
-    ('genieclust', '1.1.6')
+    ('genieclust', '1.1.6'),
 ]
 
 sanity_pip_check = True
 
-moduleclass = 'lang'
+moduleclass = 'bio'
