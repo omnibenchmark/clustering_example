@@ -7,7 +7,6 @@ A clustering example for omnibenchmark
 3. Move to the cloned repository `cd clustering_example`
 4. Run locally, somewhat in parallel `ob run benchmark -b Clustering.yaml  --local --threads 6` (do not use lots of threads, this version uses conda and filesystem latency can be a problem)
 
-
 # Clustbench attribution
 
 by Marek Gagolewski, modified by Izaskun Mallona
@@ -75,7 +74,7 @@ by Marek Gagolewski, modified by Izaskun Mallona
     - args: ["--method", "FCPS_Clara"]
     - args: ["--method", "FCPS_PAM"]
 - Metric providers (several metrics)
- - https://github.com/imallona/clustbench_metrics
+  - https://github.com/imallona/clustbench_metrics
     - args: ["--metric", "normalized_clustering_accuracy"]
     - args: ["--metric", "adjusted_fm_score"]
     - args: ["--metric", "adjusted_mi_score"]
@@ -89,7 +88,7 @@ by Marek Gagolewski, modified by Izaskun Mallona
     - args: ["--metric", "rand_score"]
 - Metric collector
   - https://github.com/imallona/clustering_report
-- Daniel
+- Daniel modules (independent from clustbench)
   - https://github.com/omnibenchmark-example/iris.git
   - https://github.com/omnibenchmark-example/penguins.git
   - https://github.com/omnibenchmark-example/kmeans.git
@@ -97,6 +96,11 @@ by Marek Gagolewski, modified by Izaskun Mallona
   - https://github.com/omnibenchmark-example/ari.git
   - https://github.com/omnibenchmark-example/accuracy.git
   
+  
+# Software backends
+
+In `envs`: conda, apptainer, easybuild (lmod modules)
+
 # Warnings
 
 Mind we try to run clusterings specifying the true number of clusters +- 2. But sometimes the true number is k=3. Then we do `k=2, k=2, k=3, k=5, k=6` filling with k=2s as needed, and recomputing the same values multiple times (so runtimes are comparable across datasets, regardless of their true number of clusters).

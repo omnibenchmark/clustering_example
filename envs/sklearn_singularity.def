@@ -1,0 +1,33 @@
+Bootstrap: docker 
+From: ubuntu:jammy-20240911.1
+
+%labels
+
+    AUTHOR izaskun.mallona@gmail.com
+
+%post
+    
+    # Install python3.12
+    apt-get update
+    apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev \
+        libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev python-is-python3 git
+
+    wget https://www.python.org/ftp/python/3.12.6/Python-3.12.6.tgz
+    tar -xf Python-3.12.6.tgz
+    cd Python-3.12.*/
+    ./configure --enable-optimizations
+    make -j 4
+    make altinstall
+
+    # virtualenv
+    cd /opt
+    python3.12 -m venv "default"
+    . default/bin/activate
+
+    pip3 install -U scikit-learn pandas argparse numpy scipy "isodate" "pydantic-core" "gitpython==3.1.43"
+
+    echo '. /opt/default/bin/activate' >> $SINGULARITY_ENVIRONMENT
+
+%environment
+
+    . /opt/default/bin/activate

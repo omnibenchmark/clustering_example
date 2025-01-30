@@ -1,26 +1,30 @@
 id: clustering_example
-description: Clustering benchmark on Gagolewski's, true number of clusters plus minus 2.
-version: 1.1
+description: Clustering benchmark on Gagolewski's, true number of clusters plus minus 2. Caution dirty apptainer sifs.
+version: 1.1_root_apptainer
 benchmarker: "Izaskun Mallona, Daniel Incicau"
 storage: https://play.min.io
 benchmark_yaml_spec: 0.01
 storage_api: S3
 storage_bucket_name: clustering_example
-software_backend: conda
+software_backend: apptainer
 software_environments:
   clustbench:
     description: "clustbench on py3.12.6"
     conda: envs/clustbench.yml
     easyconfig: zlib-1.2.8.eb # clustbench.eb
+    apptainer: envs/clustbench.sif
   sklearn:
     description: "Daniel's on py3.12.6"
     conda: envs/sklearn.yml
+    apptainer: envs/sklearn.sif
   R:
     description: "Daniel's R with readr, dplyr, mclust, caret"
     conda: envs/r.yml
+    apptainer: envs/r.sif
   fcps:
     description: "CRAN's FCPS"
     conda: envs/fcps.yml
+    apptainer: envs/fcps.sif
 stages:
 
   ## clustbench data ##########################################################
@@ -47,16 +51,16 @@ stages:
           # - values: ["--dataset_generator", "wut", "--dataset_name", "mk3"]
           # - values: ["--dataset_generator", "wut", "--dataset_name", "mk4"]
           # - values: ["--dataset_generator", "wut", "--dataset_name", "olympic"]
-          - values: ["--dataset_generator", "wut", "--dataset_name", "smile"]
+          # - values: ["--dataset_generator", "wut", "--dataset_name", "smile"]
           # - values: ["--dataset_generator", "wut", "--dataset_name", "stripes"]
           # - values: ["--dataset_generator", "wut", "--dataset_name", "trajectories"]
           # - values: ["--dataset_generator", "wut", "--dataset_name", "trapped_lovers"]
-          - values: ["--dataset_generator", "wut", "--dataset_name", "twosplashes"]
+          # - values: ["--dataset_generator", "wut", "--dataset_name", "twosplashes"]
           # - values: ["--dataset_generator", "wut", "--dataset_name", "windows"]
-          - values: ["--dataset_generator", "wut", "--dataset_name", "x1"]
+          # - values: ["--dataset_generator", "wut", "--dataset_name", "x1"]
           # - values: ["--dataset_generator", "wut", "--dataset_name", "x2"]
           # - values: ["--dataset_generator", "wut", "--dataset_name", "x3"]
-          - values: ["--dataset_generator", "wut", "--dataset_name", "z1"]
+          # - values: ["--dataset_generator", "wut", "--dataset_name", "z1"]
           # - values: ["--dataset_generator", "wut", "--dataset_name", "z2"]
           # - values: ["--dataset_generator", "wut", "--dataset_name", "z3"]
     outputs:
