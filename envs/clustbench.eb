@@ -80,13 +80,14 @@ exts_list = [
     ## ('wget', '3.2'), ## skipped because shipped as a zipfile (?) these wgets are not maintained
     ('hurry.filesize', '0.9'),
     ('python3-wget', '0.0.2-beta1', {
-       'sanity_pip_check': False,
        'modulename': 'wget'
     }),
     ## ('joblib', '1.4.2'),
     ## ('threadpoolctl', '3.5.0'),
     ## ('scikit-learn', '1.4.2'), #'1.6.1'),
-    ('clustering_benchmarks', '1.1.5')
+    ('clustering_benchmarks', '1.1.5', {
+       'modulename': 'clustbench'
+    })
 ]
 
 sanity_check_paths = {
