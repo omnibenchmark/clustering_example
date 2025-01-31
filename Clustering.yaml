@@ -6,25 +6,28 @@ storage: https://play.min.io
 benchmark_yaml_spec: 0.01
 storage_api: S3
 storage_bucket_name: clustering_example
-software_backend: apptainer
+software_backend: envmodules
 software_environments:
   clustbench:
     description: "clustbench on py3.12.6"
     conda: envs/clustbench.yml
-    easyconfig: zlib-1.2.8.eb # clustbench.eb
+    envmodule: clustbench
     apptainer: envs/clustbench.sif
   sklearn:
     description: "Daniel's on py3.12.6"
     conda: envs/sklearn.yml
     apptainer: envs/sklearn.sif
+    envmodule: clustbench # not true, but
   R:
     description: "Daniel's R with readr, dplyr, mclust, caret"
     conda: envs/r.yml
     apptainer: envs/r.sif
+    envmodule: fcps # not true, but
   fcps:
     description: "CRAN's FCPS"
     conda: envs/fcps.yml
     apptainer: envs/fcps.sif
+    envmodule: fcps
 stages:
 
   ## clustbench data ##########################################################
