@@ -44,5 +44,7 @@ Lorem ipsum.
 ### How to build
 
 1. Mind https://github.com/easybuilders/easybuild-easyconfigs/commit/e29210626f076e3a207f1abf3759ea124e28f8b2
-2. `eb fcps.eb --robot --ignore-checksums`
-3. `eb clustbench.eb --robot --ignore-checksums`
+2. Mind `clustbench` is only installable from https://github.com/gagolews/genieclust/archive/refs/tags/v1.1.6.tar.gz and not from pypi's tgz (!), download it locally and ideally update the easyconfig to automate this
+3. `python3-wget` from pypi doesn't look very well maintaned
+4. `eb fcps.eb --robot --ignore-checksums`
+5. `eb clustbench.eb --robot --ignore-checksums`

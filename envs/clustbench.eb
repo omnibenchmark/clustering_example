@@ -16,10 +16,12 @@ dependencies = [
     ('Python-bundle-PyPI', '2023.10'), ## so GCC 13.2.0 like foss-2023b
     ('SciPy-bundle', '2023.11'),
     ('meson-python', '0.15.0'),
-    ('matplotlib', '3.8.2')
+    ('matplotlib', '3.8.2'),
+    ('scikit-learn', '1.4.0')
+
 ]
 
-sanity_pip_check = True
+sanity_pip_check = True 
 use_pip = True
 
 exts_default_options = {
@@ -51,32 +53,18 @@ source_urls = [PYPI_SOURCE,
                'https://files.pythonhosted.org/packages/6a/ef/6e3736663ee67369f7f5b697674bfbd3efc91e7096ddd4452bbbc80065ff/hypothesis-6.124.7.tar.gz',
                'https://files.pythonhosted.org/packages/03/c6/14a17e10813b8db20d1e800ff9a3a898e65d25f2b0e9d6a94616f1e3362c/numpy-1.23.0.tar.gz',
                'https://files.pythonhosted.org/packages/f6/d8/ab692a75f584d13c6542c3994f75def5bce52ded9399f52e230fe402819d/numpy-1.22.4.zip',
-               'https://files.pythonhosted.org/packages/65/6e/09db70a523a96d25e115e71cc56a6f9031e7b8cd166c1ac8438307c14058/numpy-1.26.4.tar.gz']
+               'https://files.pythonhosted.org/packages/65/6e/09db70a523a96d25e115e71cc56a6f9031e7b8cd166c1ac8438307c14058/numpy-1.26.4.tar.gz',
+               'https://files.pythonhosted.org/packages/64/33/60135848598c076ce4b231e1b1895170f45fbcaeaa2c9d5e38b04db70c35/joblib-1.4.2.tar.gz',
+               'https://files.pythonhosted.org/packages/bd/55/b5148dcbf72f5cde221f8bfe3b6a540da7aa1842f6b491ad979a6c8b84af/threadpoolctl-3.5.0.tar.gz',
+               'https://files.pythonhosted.org/packages/9e/a5/4ae3b3a0755f7b35a280ac90b28817d1f380318973cff14075ab41ef50d9/scikit_learn-1.6.1.tar.gz',
+               'https://files.pythonhosted.org/packages/ef/e5/c09d20723bfd91315f6f4ddc77912b0dcc09588b4ca7ad2ffa204607ad7f/scikit-learn-1.4.2.tar.gz',
+               'https://files.pythonhosted.org/packages/ee/5e/16e17bedcf54d5b618dc0771690deda77178e5c310402881c3d2d6c5f27c/hurry.filesize-0.9.tar.gz']
 
 
-## to-do write a patch!
-## cd ~/.local/easybuild/sources/c/clustbench/extensions
-## wget https://files.pythonhosted.org/packages/a2/45/eaaacaa4f4f2931a80d40e453df275d9af7c07616c5d753272d3055fb79e/genieclust-1.1.6-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl -o genieclust-1.1.6.whl
-
-## fails with
-##       [1/1] Cythonizing genieclust/cluster_validity.pyx
-##       building 'genieclust.cluster_validity' extension
-##       gcc -DNDEBUG -g -fwrapv -O3 -Wall -O2 -ftree-vectorize -march=native -fno-math-errno -fPIC -O2 -ftree-vectorize -march=native -fno-math-errno -fPIC -O2 -ftree-vectorize -march=native -fno-math-errno -I/home/imallona/.local/easybuild/software/FFTW/3.3.10-GCC-13.2.0/include -I/home/imallona/.local/easybuild/software/FlexiBLAS/3.3.1-GCC-13.2.0/include -I/home/imallona/.local/easybuild/software/FlexiBLAS/3.3.1-GCC-13.2.0/include/flexiblas -fPIC -I/home/imallona/.local/easybuild/software/clustbench/1-foss-2023b/lib/python3.11/site-packages/numpy/core/include -Isrc/ -I../src/ -I/home/imallona/.local/easybuild/software/Python/3.11.5-GCCcore-13.2.0/include/python3.11 -c genieclust/cluster_validity.cpp -o build/temp.linux-x86_64-cpython-311/genieclust/cluster_validity.o -fopenmp -std=c++11
-##       In file included from /home/imallona/.local/easybuild/software/clustbench/1-foss-2023b/lib/python3.11/site-packages/numpy/core/include/numpy/ndarraytypes.h:1929,
-##                        from /home/imallona/.local/easybuild/software/clustbench/1-foss-2023b/lib/python3.11/site-packages/numpy/core/include/numpy/ndarrayobject.h:12,
-##                        from /home/imallona/.local/easybuild/software/clustbench/1-foss-2023b/lib/python3.11/site-packages/numpy/core/include/numpy/arrayobject.h:5,
-##                        from genieclust/cluster_validity.cpp:1296:
-##       /home/imallona/.local/easybuild/software/clustbench/1-foss-2023b/lib/python3.11/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:17:2: warning: #warning "Using deprecated NumPy API, disable it with " "#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION" [-Wcpp]
-##          17 | #warning "Using deprecated NumPy API, disable it with " \
-##             |  ^~~~~~~
-##       In file included from genieclust/cluster_validity.cpp:1302:
-##       genieclust/../src/c_cvi.h:30:10: fatal error: cvi.h: No such file or directory
-##          30 | #include "cvi.h"
-##             |          ^~~~~~~
-##       compilation terminated.
-##       error: command '/home/imallona/.local/easybuild/software/GCCcore/13.2.0/bin/gcc' failed with exit code 1
-##       [end of output]
-
+## caution download genieclust here, not pypi, they differ and pypi's it's not installable!
+## cd /home/imallona/.local/easybuild/sources/c/clustbench/extensions/
+## wget wget https://github.com/gagolews/genieclust/archive/refs/tags/v1.1.6.tar.gz -O genieclust-1.1.6.tar.gz
+## todo automate this within the easyconfig!
 
 exts_list = [
     ## ('meson_python', '0.17.1'),
@@ -88,15 +76,22 @@ exts_list = [
     ('hypothesis', '6.124.7'),
     ('numpy', '1.26.4'),
     ('fastcluster', '1.2.6'),
-    ('genieclust', '1.1.6'), # doesn't install
-    ## ('wget', '3.2'), ## shipped as a zipfile (?)
-    ('python3-wget', '0.0.2-beta1'), ## hoping is a replacement for wget
-    ('clustering_benchmarks', '1.1.5'),
+    ('genieclust', '1.1.6'), 
+    ## ('wget', '3.2'), ## skipped because shipped as a zipfile (?) these wgets are not maintained
+    ('hurry.filesize', '0.9'),
+    ('python3-wget', '0.0.2-beta1', {
+       'sanity_pip_check': False,
+       'modulename': 'wget'
+    }),
+    ## ('joblib', '1.4.2'),
+    ## ('threadpoolctl', '3.5.0'),
+    ## ('scikit-learn', '1.4.2'), #'1.6.1'),
+    ('clustering_benchmarks', '1.1.5')
 ]
 
 sanity_check_paths = {
     'files': [],
-    'dirs': ['clustering_benchmarks', 'genieclust']
+    'dirs': ['lib/python3.11/site-packages/clustbench/']
 }
 
 moduleclass = 'bio'
