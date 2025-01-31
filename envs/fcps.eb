@@ -199,9 +199,9 @@ exts_list = [
 
 modextrapaths = {'R_LIBS_SITE': ''}
 
-## sanity_check_paths = {
-##     'files': [],
-##     'dirs': ['AnnotationDbi', 'BiocManager', 'GenomicFeatures'],
-## }
+sanity_check_paths = {
+    'files': [],
+    'dirs': ['FCPS', 'dbscan', 'energy'],
+}
 
 moduleclass = 'bio'

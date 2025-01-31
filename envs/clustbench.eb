@@ -10,54 +10,95 @@ description = "Bundle of Python packages for ob clustering_example"
 
 toolchain = {'name': 'foss', 'version': '2023b'}
 
-## builddependencies = [
-##     ('hatchling', '1.18.0'),
-## ]
-
 
 dependencies = [
     ('Python', '3.11.5'),
-    ('Python-bundle-PyPI', '2023.10'),
+    ('Python-bundle-PyPI', '2023.10'), ## so GCC 13.2.0 like foss-2023b
     ('SciPy-bundle', '2023.11'),
+    ('meson-python', '0.15.0'),
+    ('matplotlib', '3.8.2')
 ]
 
+sanity_pip_check = True
 use_pip = True
 
-source_urls = [PYPI_LOWER_SOURCE]
-  
-## exts_default_options = {
-##    'use_pip': True,
-## }
-
-## not really managing to automate downloads from pypi, downloading the source and placing them in 'extensions'
+exts_default_options = {
+    'sanity_pip_check': True,
+    'use_pip' : True
+}
 
 ## https://files.pythonhosted.org/packages/27/fe/e78538f4cd7b1b28e9c625eabd21f314004d00644a8347d0b01473e72ffa/clustering_benchmarks-1.1.5.tar.gz
 ## https://files.pythonhosted.org/packages/47/6a/62e288da7bcda82b935ff0c6cfe542970f04e29c756b0e147251b2fb251f/wget-3.2.zip
 ## https://files.pythonhosted.org/packages/5d/b8/f143d907d93bd4a3dd51d07c4e79b37bedbfc2177f4949bfa0d6ba0af647/fastcluster-1.2.6.tar.gz
 ## https://files.pythonhosted.org/packages/68/7c/d465bab9f98b75c5c1f5e80165dd82847a504ced655d162b585df08a717b/genieclust-1.1.6.tar.gz
 ## https://files.pythonhosted.org/packages/a2/45/eaaacaa4f4f2931a80d40e453df275d9af7c07616c5d753272d3055fb79e/genieclust-1.1.6-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-##   and named the latter as genieclust-1.1.6.whl
+
+source_urls = [PYPI_SOURCE,
+               'https://files.pythonhosted.org/packages/27/fe/e78538f4cd7b1b28e9c625eabd21f314004d00644a8347d0b01473e72ffa/',
+               'https://files.pythonhosted.org/packages/68/7c/d465bab9f98b75c5c1f5e80165dd82847a504ced655d162b585df08a717b/',
+               'https://files.pythonhosted.org/packages/47/6a/62e288da7bcda82b935ff0c6cfe542970f04e29c756b0e147251b2fb251f/',
+               'https://files.pythonhosted.org/packages/5d/b8/f143d907d93bd4a3dd51d07c4e79b37bedbfc2177f4949bfa0d6ba0af647/',
+               'https://files.pythonhosted.org/packages/65/6e/09db70a523a96d25e115e71cc56a6f9031e7b8cd166c1ac8438307c14058/',
+               'https://files.pythonhosted.org/packages/84/4d/b720d6000f4ca77f030bd70f12550820f0766b568e43f11af7f7ad9061aa/',
+               'https://files.pythonhosted.org/packages/68/dd/fa2e1a45fce2d09f4aea3cee169760e672c8262325aa5796c49d543dc7e6/',
+               'https://files.pythonhosted.org/packages/84/4d/b720d6000f4ca77f030bd70f12550820f0766b568e43f11af7f7ad9061aa',
+               'https://files.pythonhosted.org/packages/67/66/91d242ea8dd1729addd36069318ba2cd03874872764f316c3bb51b633ed2/',
+               'https://files.pythonhosted.org/packages/e2/a9/a0c57aee75f77794adaf35322f8b6404cbd0f89ad45c87197a937764b7d0/',
+               'https://files.pythonhosted.org/packages/d2/c1/72b9622fcb32ff98b054f724e213c7f70d6898baa714f4516288456ceaba/',
+               'https://github.com/pybind/pybind11/archive/',
+               'https://files.pythonhosted.org/packages/a9/95/a3dbbb5028f35eafb79008e7522a75244477d2838f38cbb722248dabc2a8/',
+               'https://files.pythonhosted.org/packages/84/a4/d9da2989a3d937e94616ef07f0630c507f6baa77ad37f94ceb06b36cacc1/python3-wget-0.0.2-beta1.tar.gz',
+               'https://files.pythonhosted.org/packages/6a/ef/6e3736663ee67369f7f5b697674bfbd3efc91e7096ddd4452bbbc80065ff/hypothesis-6.124.7.tar.gz',
+               'https://files.pythonhosted.org/packages/03/c6/14a17e10813b8db20d1e800ff9a3a898e65d25f2b0e9d6a94616f1e3362c/numpy-1.23.0.tar.gz',
+               'https://files.pythonhosted.org/packages/f6/d8/ab692a75f584d13c6542c3994f75def5bce52ded9399f52e230fe402819d/numpy-1.22.4.zip',
+               'https://files.pythonhosted.org/packages/65/6e/09db70a523a96d25e115e71cc56a6f9031e7b8cd166c1ac8438307c14058/numpy-1.26.4.tar.gz']
+
+
+## to-do write a patch!
+## cd ~/.local/easybuild/sources/c/clustbench/extensions
+## wget https://files.pythonhosted.org/packages/a2/45/eaaacaa4f4f2931a80d40e453df275d9af7c07616c5d753272d3055fb79e/genieclust-1.1.6-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl -o genieclust-1.1.6.whl
+
+## fails with
+##       [1/1] Cythonizing genieclust/cluster_validity.pyx
+##       building 'genieclust.cluster_validity' extension
+##       gcc -DNDEBUG -g -fwrapv -O3 -Wall -O2 -ftree-vectorize -march=native -fno-math-errno -fPIC -O2 -ftree-vectorize -march=native -fno-math-errno -fPIC -O2 -ftree-vectorize -march=native -fno-math-errno -I/home/imallona/.local/easybuild/software/FFTW/3.3.10-GCC-13.2.0/include -I/home/imallona/.local/easybuild/software/FlexiBLAS/3.3.1-GCC-13.2.0/include -I/home/imallona/.local/easybuild/software/FlexiBLAS/3.3.1-GCC-13.2.0/include/flexiblas -fPIC -I/home/imallona/.local/easybuild/software/clustbench/1-foss-2023b/lib/python3.11/site-packages/numpy/core/include -Isrc/ -I../src/ -I/home/imallona/.local/easybuild/software/Python/3.11.5-GCCcore-13.2.0/include/python3.11 -c genieclust/cluster_validity.cpp -o build/temp.linux-x86_64-cpython-311/genieclust/cluster_validity.o -fopenmp -std=c++11
+##       In file included from /home/imallona/.local/easybuild/software/clustbench/1-foss-2023b/lib/python3.11/site-packages/numpy/core/include/numpy/ndarraytypes.h:1929,
+##                        from /home/imallona/.local/easybuild/software/clustbench/1-foss-2023b/lib/python3.11/site-packages/numpy/core/include/numpy/ndarrayobject.h:12,
+##                        from /home/imallona/.local/easybuild/software/clustbench/1-foss-2023b/lib/python3.11/site-packages/numpy/core/include/numpy/arrayobject.h:5,
+##                        from genieclust/cluster_validity.cpp:1296:
+##       /home/imallona/.local/easybuild/software/clustbench/1-foss-2023b/lib/python3.11/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:17:2: warning: #warning "Using deprecated NumPy API, disable it with " "#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION" [-Wcpp]
+##          17 | #warning "Using deprecated NumPy API, disable it with " \
+##             |  ^~~~~~~
+##       In file included from genieclust/cluster_validity.cpp:1302:
+##       genieclust/../src/c_cvi.h:30:10: fatal error: cvi.h: No such file or directory
+##          30 | #include "cvi.h"
+##             |          ^~~~~~~
+##       compilation terminated.
+##       error: command '/home/imallona/.local/easybuild/software/GCCcore/13.2.0/bin/gcc' failed with exit code 1
+##       [end of output]
+
 
 exts_list = [
-    ## ('asciitree', '0.3.3', {
-    ##     'checksums': ['4aa4b9b649f85e3fcb343363d97564aa1fb62e249677f2e18a96765145cc0f6e'],
-    ## }),
-    ## ('toolz', '1.0.0', {
-    ##     'checksums': ['2c86e3d9a04798ac556793bced838816296a2f085017664e4995cb40a1047a02'],
-    ## }),
-    ## ('cytoolz', '1.0.0', {
-    ##     'checksums': ['eb453b30182152f9917a5189b7d99046b6ce90cdf8aeb0feff4b2683e600defd'],
-    ## }),
-    ## (name, version, {
-    ##     'checksums': ['3780a2e69b2ec89882dfc2775de5d9b54ccb79569dc5f042b4851599388112dc'],
-    ## }),
-    ('clustering_benchmarks', '1.1.5'),
-    ('wget', '3.2'),
+    ## ('meson_python', '0.17.1'),
+    ## ('pybind11', '2.13.6'),
+    ## ('cycler', '0.12.1'),
+    ## ('matplotlib', '3.9.0'),
+    ('natsort', '8.4.0'),
+    ('cython', '3.0.11'),
+    ('hypothesis', '6.124.7'),
+    ('numpy', '1.26.4'),
     ('fastcluster', '1.2.6'),
-    ('genieclust', '1.1.6'),
+    ('genieclust', '1.1.6'), # doesn't install
+    ## ('wget', '3.2'), ## shipped as a zipfile (?)
+    ('python3-wget', '0.0.2-beta1'), ## hoping is a replacement for wget
+    ('clustering_benchmarks', '1.1.5'),
 ]
 
-sanity_pip_check = True
+sanity_check_paths = {
+    'files': [],
+    'dirs': ['clustering_benchmarks', 'genieclust']
+}
 
 moduleclass = 'bio'
+
 
