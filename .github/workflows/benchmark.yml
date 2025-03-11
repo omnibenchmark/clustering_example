@@ -1,0 +1,49 @@
+name: Run Benchmark
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+    pull_request:
+
+jobs:
+  run-tests:
+    permissions: write-all
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.12"]
+    defaults:
+      run:
+        shell: bash
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Load cache
+        id: cache-benchmark
+        uses: actions/cache@v3
+        with:
+          path: |
+            out/
+          key: benchmark-${{ runner.os }}-${{ hashFiles('Clustering.yaml') }}
+
+      - name: Install omnibenchmark CLI
+        run: |
+          pip install git+https://github.com/omnibenchmark/omnibenchmark.git@dev
+
+      - name: Run benchmark
+        run: |
+          ob run benchmark -b Clustering.yaml --local --threads 10
+    
