@@ -68,7 +68,7 @@ jobs:
       - name: Upload zipped output
         uses: actions/upload-artifact@v4
         with:
-          name: benchmark-output-zip
+          name: benchmark-output
           path: benchmark_output.zip
           retention-days: 7
     
