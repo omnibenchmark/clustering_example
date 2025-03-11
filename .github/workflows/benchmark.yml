@@ -8,9 +8,11 @@ on:
     branches:
       - main
   pull_request:
+  workflow_dispatch:
 
 jobs:
-  run-tests:
+  run-benchmark:
+    name: Run Benchmark
     permissions: write-all
 
     strategy:
@@ -31,19 +33,51 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Load cache
-        id: cache-benchmark
+      - name: Cache pip packages
+        id: cache-pip
         uses: actions/cache@v3
         with:
-          path: |
-            out/
-          key: benchmark-${{ runner.os }}-${{ hashFiles('Clustering.yaml') }}
+          path: ~/.cache/pip
+          key: pip-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('requirements.txt') }}
 
       - name: Install omnibenchmark CLI
         run: |
           pip install git+https://github.com/omnibenchmark/omnibenchmark.git@dev
 
+      - name: Load benchmark cache
+        id: cache-benchmark
+        uses: actions/cache@v3
+        with:
+          path: out/
+          key: benchmark-${{ runner.os }}-${{ hashFiles('Clustering.yaml') }}
+
       - name: Run benchmark
         run: |
-          ob run benchmark -b Clustering.yaml --local --threads 10
+          ob run benchmark -b Clustering.yaml --local --threads 20
+
+  download-artifact:
+    name: Download Benchmark Output
+    runs-on: ubuntu-latest
+    needs: run-benchmark
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Load cached output
+        uses: actions/cache@v3
+        with:
+          path: out/
+          key: benchmark-${{ runner.os }}-${{ hashFiles('Clustering.yaml') }}
+
+      - name: Zip output folder
+        run: |
+          zip -r benchmark_output.zip out/
+
+      - name: Upload zipped output
+        uses: actions/upload-artifact@v3
+        with:
+          name: benchmark-output-zip
+          path: benchmark_output.zip
+          retention-days: 7
     
