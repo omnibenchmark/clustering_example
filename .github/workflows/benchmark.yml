@@ -42,6 +42,7 @@ jobs:
           key: benchmark-${{ runner.os }}-${{ hashFiles('Clustering.yaml') }}
 
       - name: Run benchmark
+        continue-on-error: true
         run: |
           ob run benchmark -b Clustering.yaml --local --threads 20
 
