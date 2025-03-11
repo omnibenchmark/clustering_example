@@ -34,7 +34,7 @@ metric_collectors:
     software_environment: "R"
     repository:
       url: https://github.com/omnibenchmark-example/metric-collector.git
-      commit: ef4a601
+      commit: 14c581b
     inputs:
       - metrics.scores
     outputs:
