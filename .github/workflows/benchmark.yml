@@ -4,41 +4,31 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
   pull_request:
+    workflow_dispatch:
 
 jobs:
   run-benchmark:
     name: Run Benchmark
-    permissions: write-all
-
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        python-version: ["3.12"]
-    defaults:
-      run:
-        shell: bash
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.12"
 
       - name: Cache pip packages
         id: cache-pip
         uses: actions/cache@v3
         with:
           path: ~/.cache/pip
-          key: pip-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('requirements.txt') }}
+          key: pip-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
 
       - name: Install omnibenchmark CLI
         run: |
@@ -55,8 +45,8 @@ jobs:
         run: |
           ob run benchmark -b Clustering.yaml --local --threads 20
 
-  download-artifact:
-    name: Download Benchmark Output
+  upload-artifact:
+    name: Benchmark Artifact
     runs-on: ubuntu-latest
     needs: run-benchmark
     steps:
@@ -74,7 +64,7 @@ jobs:
           zip -r benchmark_output.zip out/
 
       - name: Upload zipped output
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: benchmark-output-zip
           path: benchmark_output.zip
