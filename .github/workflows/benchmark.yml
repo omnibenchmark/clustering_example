@@ -44,7 +44,7 @@ jobs:
       - name: Run benchmark
         continue-on-error: true
         run: |
-          ob run benchmark -b Clustering.yaml --local --threads 20
+          ob run benchmark -b Clustering.yaml --local --threads 20 --continue-on-error
 
   upload-artifact:
     name: Benchmark Artifact
