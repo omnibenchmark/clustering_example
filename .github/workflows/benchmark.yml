@@ -1,0 +1,111 @@
+name: Run Benchmark
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    workflow_dispatch:
+
+permissions:
+  id-token: write
+  pages: write
+
+jobs:
+  run-benchmark:
+    name: Run Benchmark
+    ## runs-on: ubuntu-latest
+    runs-on: self-hosted
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Mambaforge
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-variant: Miniforge3
+          use-mamba: true
+          activate-environment: omnibenchmark-env
+          python-version: "3.12"
+          auto-update-conda: true
+          channels: conda-forge
+
+      - name: Cache environment
+        id: cache-env
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.conda/pkgs
+            ~/.conda/envs/omnibenchmark-env
+            ~/.cache/pip
+          key: ${{ runner.os }}-conda-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-conda-pip-
+
+      - name: Install omnibenchmark CLI
+        shell: bash -l {0}
+        run: |
+          mamba install -y pip
+          pip install git+https://github.com/omnibenchmark/omnibenchmark.git@dev
+
+      - name: Load benchmark cache
+        id: cache-benchmark
+        uses: actions/cache@v3
+        with:
+          path: out/
+          key: benchmark-${{ runner.os }}-${{ hashFiles('Clustering.yaml') }}
+
+      - name: Run benchmark
+        shell: bash -l {0}
+        continue-on-error: true
+        run: |
+          echo "y" | ob run benchmark -b Clustering.yaml --local --threads 20 --continue-on-error
+
+  upload-artifact:
+    name: Benchmark Artifact
+    ## runs-on: ubuntu-latest
+    runs-on: self-hosted
+    needs: run-benchmark
+    if: always()
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Load cached output
+        uses: actions/cache@v3
+        with:
+          path: out/
+          key: benchmark-${{ runner.os }}-${{ hashFiles('Clustering.yaml') }}
+
+      - name: Prepare output
+        run: |
+          zip -r benchmark_output.zip out/
+          mkdir -p gh-pages
+          cp out/plotting/plotting_report.html gh-pages/index.html
+
+      - name: Upload zipped output
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-output
+          path: benchmark_output.zip
+          retention-days: 7
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: gh-pages
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+          
+      - name: Create Job Summary
+        if: always()
+        run: |
+          echo "### Reports" >> $GITHUB_STEP_SUMMARY
+          echo "- [Plotting Report](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }})" >> $GITHUB_STEP_SUMMARY
+          echo "### All Outputs" >> $GITHUB_STEP_SUMMARY
+          echo "- [Complete Benchmark Output](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts)" >> $GITHUB_STEP_SUMMARY
+    
