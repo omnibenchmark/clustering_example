@@ -1,0 +1,10 @@
+# image build artifacts
+envs/*.sif
+
+# snakemake
+snakemake.log
+.snakemake/
+
+# vim swaps
+*.swp
+*.swo
