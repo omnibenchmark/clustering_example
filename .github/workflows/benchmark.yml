@@ -49,7 +49,7 @@ jobs:
         shell: bash -l {0}
         run: |
           mamba install -y pip
-          pip install git+https://github.com/omnibenchmark/omnibenchmark.git@dev
+          pip install git+https://github.com/omnibenchmark/omnibenchmark.git@reduce_install_scope
 
       - name: Load benchmark cache
         id: cache-benchmark
@@ -62,7 +62,7 @@ jobs:
         shell: bash -l {0}
         continue-on-error: true
         run: |
-          echo "y" | ob run benchmark -b Clustering.yaml --local --threads 20 --continue-on-error
+          echo "y" | ob run benchmark -b Clustering.yaml --local --threads 3 --continue-on-error
 
   upload-artifact:
     name: Benchmark Artifact
