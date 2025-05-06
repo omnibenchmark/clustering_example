@@ -17,8 +17,8 @@ permissions:
 jobs:
   run-benchmark:
     name: Run Benchmark
-    ## runs-on: ubuntu-latest
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
+    ## runs-on: self-hosted
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -66,8 +66,8 @@ jobs:
 
   upload-artifact:
     name: Benchmark Artifact
-    ## runs-on: ubuntu-latest
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
+    ## runs-on: self-hosted
     needs: run-benchmark
     if: always()
     steps:
