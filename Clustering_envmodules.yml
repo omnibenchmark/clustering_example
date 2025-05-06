@@ -39,7 +39,7 @@ metric_collectors:
     software_environment: "rmarkdown"
     repository:
       url: https://github.com/imallona/clustering_report
-      commit: f1a5876
+      commit: 1d6bdf5
     inputs:
       - metrics.scores
     outputs:
