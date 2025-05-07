@@ -38,13 +38,14 @@ metric_collectors:
     name: "Single-backend metric collector."
     software_environment: "rmarkdown"
     repository:
-      url: https://github.com/imallona/clustering_report # Daniel?
-      commit: ca3aebb
+      url: https://github.com/imallona/clustering_report
+      commit: 1d6bdf5
     inputs:
       - metrics.scores
     outputs:
-      - id: just_an_error_trace
-        path: "{input}/plotting/stderr.log"
+      - id: plotting.html
+        path: "{input}/{name}/plotting_report.html"
+
 stages:
   ## clustbench data ##########################################################
 
