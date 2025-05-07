@@ -1,4 +1,4 @@
-name: Run Benchmark
+name: micromamba
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -17,53 +17,55 @@ on:
 
 jobs:
   run-benchmark:
-    name: Run Benchmark
+    name: run_clustbench
     runs-on: ubuntu-latest
     ## runs-on: self-hosted
+    strategy:
+      matrix:
+        ob_branch: [dev, reduce_install_scope, main]
+        micromamba_version: ['2.0.5-0', '1.5.12-0']
+      fail-fast: false
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Install Mambaforge
-        uses: conda-incubator/setup-miniconda@v3
+        
+      - name: Install (with) micromamba
+        uses: mamba-org/setup-micromamba@v2
         with:
-          miniforge-variant: Miniforge3
-          use-mamba: true
-          activate-environment: omnibenchmark-env
-          python-version: "3.12"
-          auto-update-conda: true
-          channels: conda-forge
+          cache-environment: true
+          micromamba-version: ${{ matrix.micromamba_version }}
 
-      - name: Cache environment
-        id: cache-env
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.conda/pkgs
-            ~/.conda/envs/omnibenchmark-env
-            ~/.cache/pip
-          key: ${{ runner.os }}-conda-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-conda-pip-
-
-      - name: Install omnibenchmark CLI
+      - name: Overwrite omnibenchmark CLI to branch
         shell: bash -l {0}
         run: |
           mamba install -y pip
-          pip install git+https://github.com/omnibenchmark/omnibenchmark.git@dev
+          pip install git+https://github.com/omnibenchmark/omnibenchmark.git@${{ matrix.ob_branch }}
 
-      - name: Load benchmark cache
-        id: cache-benchmark
-        uses: actions/cache@v3
-        with:
-          path: out/
-          key: benchmark-${{ runner.os }}-${{ hashFiles('Clustering.yaml') }}
+      # - name: Enable a benchmarking `out` cache
+      #   id: cache-benchmark
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: out/
+      #     key: benchmark-${{ runner.os }}-${{ hashFiles('Clustering.yaml') }}
 
       - name: Run benchmark
         shell: bash -l {0}
-        continue-on-error: true
+        continue-on-error: false
         run: |
-          echo "y" | ob run benchmark -b Clustering.yaml --local --cores 3 --continue-on-error
+          date
+          echo "y" | ob run benchmark -b Clustering.yaml --local --cores 2 --continue-on-error
+          date
+        if: matrix.ob_branch == 'dev' || matrix.ob_branch == 'reduce_install_scope'
+
+      - name: Run benchmark
+        shell: bash -l {0}
+        continue-on-error: false
+        run: |
+          date
+          echo "y" | ob run benchmark -b Clustering.yaml --local --threads 2
+          date
+        if: matrix.ob_branch == 'main'
 
   # upload-artifact:
   #   name: Benchmark Artifact
