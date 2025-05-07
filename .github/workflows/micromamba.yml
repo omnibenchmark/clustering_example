@@ -18,8 +18,8 @@ on:
 jobs:
   run-benchmark:
     name: run_clustbench
-    runs-on: ubuntu-latest
-    ## runs-on: self-hosted
+    ## runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         ob_branch: [dev, reduce_install_scope, main]
@@ -33,13 +33,17 @@ jobs:
       - name: Install (with) micromamba
         uses: mamba-org/setup-micromamba@v2
         with:
-          # cache-environment: true
+          cache-environment: true
           micromamba-version: ${{ matrix.micromamba_version }}
-
+          environment-name: test-env
+          create-args: >-
+            python=3.12
+            pip
+            conda
+      
       - name: Overwrite omnibenchmark CLI to branch
         shell: bash -l {0}
         run: |
-          mamba install -y pip
           pip install git+https://github.com/omnibenchmark/omnibenchmark.git@${{ matrix.ob_branch }}
 
       # - name: Enable a benchmarking `out` cache
@@ -51,19 +55,17 @@ jobs:
 
       - name: Run benchmark
         shell: bash -l {0}
-        continue-on-error: false
         run: |
           date
-          echo "y" | ob run benchmark -b Clustering.yaml --local --cores 2 --continue-on-error
+          echo "y" | ob run benchmark -b Clustering.yaml --local --cores 10 --continue-on-error
           date
         if: matrix.ob_branch == 'dev' || matrix.ob_branch == 'reduce_install_scope'
 
       - name: Run benchmark
         shell: bash -l {0}
-        continue-on-error: false
         run: |
           date
-          echo "y" | ob run benchmark -b Clustering.yaml --local --threads 2
+          echo "y" | ob run benchmark -b Clustering.yaml --local --threads 10
           date
         if: matrix.ob_branch == 'main'
 
