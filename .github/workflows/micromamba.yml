@@ -62,6 +62,7 @@ jobs:
           if echo "$output" | grep -i 'Error\|S3 storage'; then
              status=1
           fi
+          echo -e $output
           sh -c "exit $status"
         if: matrix.ob_branch == 'dev' || matrix.ob_branch == 'reduce_install_scope'
 
@@ -70,10 +71,11 @@ jobs:
         run: |
           env
           output=$( ob run benchmark -b Clustering.yaml --local --threads 10  2>&1 )
-          status=$?
+          status=$?          
           if echo "$output" | grep -i 'Error\|S3 storage'; then
              status=1
           fi
+          echo -e $output
           sh -c "exit $status"
         if: matrix.ob_branch == 'main'
 
