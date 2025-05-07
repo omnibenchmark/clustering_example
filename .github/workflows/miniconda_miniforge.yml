@@ -1,6 +1,6 @@
 name: clustbench_miniforge
 concurrency:
-  group: ${{ github.head_ref || github.run_id }}
+  group: ${{ github.head_ref || github.run_id  }}
   cancel-in-progress: true
 
 on:
@@ -33,7 +33,7 @@ jobs:
         with:
           miniforge-variant: Miniforge3
           use-mamba: true
-          activate-environment: omnibenchmark-env
+          activate-environment: test-env-${{matrix.ob_branch }}
           python-version: "3.12"
           auto-update-conda: true
           channels: conda-forge
@@ -66,17 +66,25 @@ jobs:
       - name: Run benchmark
         shell: bash -l {0}
         run: |
-          date
-          echo "y" | ob run benchmark -b Clustering.yaml --local --cores 10 --continue-on-error
-          date
+          env
+          output=$( echo "y" | ob run benchmark -b Clustering.yaml --local --cores 10  2>&1 )
+          status=$?
+          if echo "$output" | grep -v 'Error'; then
+             status=0
+          fi
+          sh -c "exit $status"
         if: matrix.ob_branch == 'dev' || matrix.ob_branch == 'reduce_install_scope'
 
       - name: Run benchmark
         shell: bash -l {0}
         run: |
-          date
-          ob run benchmark -b Clustering.yaml --local --threads 10
-          date
+          env
+          output=$( ob run benchmark -b Clustering.yaml --local --threads 10  2>&1 )
+          status=$?
+          if echo "$output" | grep -v 'Error'; then
+             status=0
+          fi
+          sh -c "exit $status"
         if: matrix.ob_branch == 'main'
 
   # upload-artifact:

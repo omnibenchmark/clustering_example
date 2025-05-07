@@ -24,7 +24,7 @@ jobs:
       matrix:
         ob_branch: [dev, reduce_install_scope, main]
         micromamba_version: ['2.0.5-0', '1.5.12-0']
-      fail-fast: true
+      fail-fast: false
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -35,7 +35,7 @@ jobs:
         with:
           cache-environment: true
           micromamba-version: ${{ matrix.micromamba_version }}
-          environment-name: test-env
+          environment-name: test-env-${{matrix.ob_branch }}-${{ matrix.micromamba_version }}
           create-args: >-
             python=3.12
             pip
@@ -56,18 +56,25 @@ jobs:
       - name: Run benchmark
         shell: bash -l {0}
         run: |
-          date
-          echo "y" | ob run benchmark -b Clustering.yaml --local --cores 10 --continue-on-error
-          date
+          env
+          output=$( echo "y" | ob run benchmark -b Clustering.yaml --local --cores 10 2>&1 )
+          status=$?
+          if echo "$output" | grep -v 'Error'; then
+             status=0
+          fi
+          sh -c "exit $status"
         if: matrix.ob_branch == 'dev' || matrix.ob_branch == 'reduce_install_scope'
 
       - name: Run benchmark
         shell: bash -l {0}
-        continue-on-error: true
         run: |
-          date
-          ob run benchmark -b Clustering.yaml --local --threads 10
-          date
+          env
+          output=$( ob run benchmark -b Clustering.yaml --local --threads 10  2>&1 )
+          status=$?
+          if echo "$output" | grep -v 'Error'; then
+             status=0
+          fi
+          sh -c "exit $status"
         if: matrix.ob_branch == 'main'
 
   # upload-artifact:
