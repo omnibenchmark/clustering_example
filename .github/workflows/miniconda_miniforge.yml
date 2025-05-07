@@ -73,10 +73,9 @@ jobs:
 
       - name: Run benchmark
         shell: bash -l {0}
-        continue-on-error: false
         run: |
           date
-          echo "y" | ob run benchmark -b Clustering.yaml --local --threads 10
+          ob run benchmark -b Clustering.yaml --local --threads 10
           date
         if: matrix.ob_branch == 'main'
 

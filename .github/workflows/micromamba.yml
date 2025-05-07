@@ -24,7 +24,7 @@ jobs:
       matrix:
         ob_branch: [dev, reduce_install_scope, main]
         micromamba_version: ['2.0.5-0', '1.5.12-0']
-      fail-fast: false
+      fail-fast: true
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -63,9 +63,10 @@ jobs:
 
       - name: Run benchmark
         shell: bash -l {0}
+        continue-on-error: true
         run: |
           date
-          echo "y" | ob run benchmark -b Clustering.yaml --local --threads 10
+          ob run benchmark -b Clustering.yaml --local --threads 10
           date
         if: matrix.ob_branch == 'main'
 
