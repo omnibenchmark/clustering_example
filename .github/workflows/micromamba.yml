@@ -33,7 +33,7 @@ jobs:
       - name: Install (with) micromamba
         uses: mamba-org/setup-micromamba@v2
         with:
-          cache-environment: true
+          # cache-environment: true
           micromamba-version: ${{ matrix.micromamba_version }}
 
       - name: Overwrite omnibenchmark CLI to branch
