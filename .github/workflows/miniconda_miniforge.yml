@@ -1,7 +1,7 @@
 name: clustbench_miniforge
-concurrency:
-  group: ${{ github.head_ref || github.run_id  }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.head_ref || github.run_id  }}
+#   cancel-in-progress: true
 
 on:
   push:
@@ -24,6 +24,9 @@ jobs:
       matrix:
         ob_branch: [dev, reduce_install_scope, main]
       fail-fast: false
+    concurrency:
+      group: miniconda
+      cancel-in-progress: false # true
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
