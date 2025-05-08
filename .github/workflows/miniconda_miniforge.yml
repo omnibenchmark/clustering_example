@@ -4,12 +4,14 @@ name: clustbench_miniforge
 #   cancel-in-progress: true
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-  workflow_dispatch:
-
+  # push:
+  #   branches:
+  #     - main
+  # pull_request:
+  # workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *" # midnight, daily
+    
 ## these permissions are only for deployment to gh pages
 # permissions:
 #   id-token: write
