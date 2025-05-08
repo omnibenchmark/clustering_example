@@ -25,7 +25,7 @@ jobs:
         ob_branch: [dev, reduce_install_scope, main]
       fail-fast: false
     concurrency:
-      group: miniconda
+      group: mambaforge-${{ matrix.ob_branch }}
       cancel-in-progress: false # true
     steps:
       - name: Check out repository
