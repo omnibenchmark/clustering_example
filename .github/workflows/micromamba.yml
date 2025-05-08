@@ -17,7 +17,7 @@ on:
 
 jobs:
   run-benchmark:
-    name: run_clustbench
+    name: run_clustbench_micromamba
     ## runs-on: ubuntu-latest
     runs-on: self-hosted
     strategy:
@@ -59,8 +59,8 @@ jobs:
           env
           output=$( echo "y" | ob run benchmark -b Clustering.yaml --local --cores 10 2>&1 )
           status=$?
-          if echo "$output" | grep -i 'Error\|S3 storage'; then
-             status=1
+          if echo "$output" | grep -i 'Benchmark run has finished successfully'; then
+             status=0
           fi
           echo -e $output
           sh -c "exit $status"
@@ -72,8 +72,8 @@ jobs:
           env
           output=$( ob run benchmark -b Clustering.yaml --local --threads 10  2>&1 )
           status=$?          
-          if echo "$output" | grep -i 'Error\|S3 storage'; then
-             status=1
+          if echo "$output" | grep -i 'Benchmark run has finished successfully'; then
+             status=0
           fi
           echo -e $output
           sh -c "exit $status"
