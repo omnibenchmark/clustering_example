@@ -7,8 +7,8 @@ on:
   pull_request:
   workflow_dispatch:
   schedule:
-    - cron: "*/30 * * * *"  # Runs every 30 minutes for testing
-
+    # - cron: "*/30 * * * *"  # Runs every 30 minutes for testing
+    - cron: "30 1 * * *" # at 1.30am
 ## these permissions are only for deployment to gh pages
 # permissions:
 #   id-token: write
