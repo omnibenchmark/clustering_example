@@ -76,4 +76,4 @@ jobs:
              status=0
           fi
           echo -e $output
-          sh -c "exit $status"'
+          sh -c "exit $status"
