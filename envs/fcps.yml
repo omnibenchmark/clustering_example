@@ -23,3 +23,4 @@ dependencies:
   - bioconda::bioconductor-complexheatmap
   - conda-forge::r-jsonlite
   - conda-forge::r-dplyr
+  - conda-forge::r-r.utils
