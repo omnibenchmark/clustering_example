@@ -168,20 +168,20 @@ stages:
         software_environment: "fcps"
         repository:
           url: https://github.com/imallona/clustbench_fcps
-          commit: 03cf33e # 9e86a22
+          commit: e8888d4 # 65a746b
         parameters:
           # - values: ["--method", "FCPS_AdaptiveDensityPeak"] # not in conda
-          - values: ["--method", "FCPS_Minimax"]
-          - values: ["--method", "FCPS_MinEnergy"]
-          - values: ["--method", "FCPS_HDBSCAN_2"]
-          - values: ["--method", "FCPS_HDBSCAN_4"]
-          - values: ["--method", "FCPS_HDBSCAN_8"]
-          - values: ["--method", "FCPS_Diana"]
-          - values: ["--method", "FCPS_Fanny"]
-          - values: ["--method", "FCPS_Hardcl"]
-          - values: ["--method", "FCPS_Softcl"]
-          - values: ["--method", "FCPS_Clara"]
-          - values: ["--method", "FCPS_PAM"]
+          - values: ["--method", "FCPS_Minimax", "--seed", 2]
+          - values: ["--method", "FCPS_MinEnergy", "--seed", 2]
+          - values: ["--method", "FCPS_HDBSCAN_2", "--seed", 2]
+          - values: ["--method", "FCPS_HDBSCAN_4", "--seed", 2]
+          - values: ["--method", "FCPS_HDBSCAN_8", "--seed", 2]
+          - values: ["--method", "FCPS_Diana", "--seed", 2]
+          - values: ["--method", "FCPS_Fanny", "--seed", 2]
+          # - values: ["--method", "FCPS_Hardcl", "--seed", 2] ## nondeterministic
+          # - values: ["--method", "FCPS_Softcl", "--seed", 2] ## nondeterministic
+          - values: ["--method", "FCPS_Clara", "--seed", 2]
+          - values: ["--method", "FCPS_PAM", "--seed", 2]
     inputs:
       - entries:
           - data.matrix
