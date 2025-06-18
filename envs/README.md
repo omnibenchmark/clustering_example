@@ -39,9 +39,7 @@ No need to prepare/build anything; let `ob run benchmark -b Clustering_oras.yml 
 
 ## Apptainer (reproducible) with easybuild
 
-Doing...
-
-Lorem ipsum.
+This is pending work
 
 ## envmodules - reproducible builds with easybuild
 
@@ -49,13 +47,11 @@ Lorem ipsum.
 
 - `clustbench.eb`
 - `fcps.eb`
-- `rmarkdown.eb`
 
-### How to build
+### How to build and warnings
 
 1. Mind https://github.com/easybuilders/easybuild-easyconfigs/commit/e29210626f076e3a207f1abf3759ea124e28f8b2
 2. Mind `clustbench` is only installable from https://github.com/gagolews/genieclust/archive/refs/tags/v1.1.6.tar.gz and not from pypi's tgz (!), download it locally and ideally update the easyconfig to automate this
 3. `python3-wget` from pypi doesn't look very well maintaned
-4. `eb fcps.eb --robot`
-5. `eb clustbench.eb --robot`
-6. `eb rmarkdown.eb --robot` 
+4. `eb fcps.eb --robot --ignore-checksums`
+5. `eb clustbench.eb --robot --ignore-checksums`

@@ -83,7 +83,7 @@ exts_list = [
         'checksums': ['aab886efa7b6bba7ac124f4498153d053e5a08b822d2254926b7206cdf5a8aa6'],
     }),
     ('genieclust', '1.1.6', {
-        'checksums': ['fb5b4ff68eef9e73496afa5949e726c8522c72e51f092716a6a598b03d5c09d6'],
+        'checksums': ['4c159f507b84b6d6d171883223648d837c520a9bcce650944a6ee0cb320e2151'],
     }),
     ('hurry.filesize', '0.9', {
         'checksums': ['f5368329adbef86accd3bc9490522340bb79260455ae89b1a42c10f63801b9a6'],

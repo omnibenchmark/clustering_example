@@ -23,11 +23,11 @@ run_with_default_envs:
 	cp Clustering_envmodules.yml out
 	mv out out_envmodules_$(shell date +'%Y%m%d_%H%M')
 
-## derived from Mark's plots to process multiple benchmark runs at once
-knit_report: 
-	## todo incorporate this report to this repo, downloading from a temporary branch `mark` is a bad idea
-	## also control the environment this is run with
-	wget -nc https://raw.githubusercontent.com/imallona/clustering_report/refs/heads/mark/07_metrics_across_backends.Rmd
-	R -e 'rmarkdown::render("07_metrics_across_backends.Rmd", params = list(performance_bn = "performance-results.rds", metrics_bn = "metrics-results.rds", clustering_dir =  "."))'
-	wget -nc https://github.com/imallona/clustering_report/blob/mark/08_performances_across_backends.Rmd
-	R -e 'rmarkdown::render("08_performances_across_backends.Rmd", params = list(performance_bn = "performance-results.rds", metrics_bn = "metrics-results.rds", clustering_dir =  "."))'
+# ## derived from Mark's plots to process multiple benchmark runs at once
+# knit_report: 
+# 	## todo incorporate this report to this repo, downloading from a temporary branch `mark` is a bad idea
+# 	## also control the environment this is run with
+# 	wget -nc https://raw.githubusercontent.com/imallona/clustering_report/refs/heads/mark/07_metrics_across_backends.Rmd
+# 	R -e 'rmarkdown::render("07_metrics_across_backends.Rmd", params = list(performance_bn = "performance-results.rds", metrics_bn = "metrics-results.rds", clustering_dir =  "."))'
+# 	wget -nc https://github.com/imallona/clustering_report/blob/mark/08_performances_across_backends.Rmd
+# 	R -e 'rmarkdown::render("08_performances_across_backends.Rmd", params = list(performance_bn = "performance-results.rds", metrics_bn = "metrics-results.rds", clustering_dir =  "."))'
