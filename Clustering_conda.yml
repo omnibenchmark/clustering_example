@@ -165,7 +165,7 @@ stages:
         software_environment: "fcps"
         repository:
           url: https://github.com/imallona/clustbench_fcps
-          commit: e8888d4 # 65a746b
+          commit: fc37faa
         parameters:
           # - values: ["--method", "FCPS_AdaptiveDensityPeak"] # not in conda
           - values: ["--method", "FCPS_Minimax", "--seed", 2]
@@ -175,8 +175,8 @@ stages:
           - values: ["--method", "FCPS_HDBSCAN_8", "--seed", 2]
           - values: ["--method", "FCPS_Diana", "--seed", 2]
           - values: ["--method", "FCPS_Fanny", "--seed", 2]
-          # - values: ["--method", "FCPS_Hardcl", "--seed", 2] # non deterministic
-          # - values: ["--method", "FCPS_Softcl", "--seed", 2] # non deterministic
+          - values: ["--method", "FCPS_Hardcl", "--seed", 2] 
+          - values: ["--method", "FCPS_Softcl", "--seed", 2] 
           - values: ["--method", "FCPS_Clara", "--seed", 2]
           - values: ["--method", "FCPS_PAM", "--seed", 2]
     inputs:
