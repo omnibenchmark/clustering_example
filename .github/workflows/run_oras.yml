@@ -1,18 +1,14 @@
 name: run_on_oras
 on:
-  # pull_request:
+  push:
   workflow_dispatch:
-  schedule:
-    - cron: "30 1 * * *" # at 1.30am
+  # schedule:
+  #   - cron: "30 1 * * *" # at 1.30am
     
 jobs:
   run-benchmark:
     name: Run on oras
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        ob_branch: [main]
-      fail-fast: false
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,4 +18,4 @@ jobs:
         with:
           yaml: Clustering_oras.yml
           backend: apptainer
-          omnibenchmark_branch: ${{ matrix.ob_branch }}
+          omnibenchmark_branch: 'dev'

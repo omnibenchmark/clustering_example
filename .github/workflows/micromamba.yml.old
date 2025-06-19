@@ -1,0 +1,69 @@
+name: micromamba
+# concurrency:
+#   group: ${{ github.head_ref || github.run_id }}
+#   cancel-in-progress: true
+
+on:
+  # pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 1 * * *" # at 1.30am
+## these permissions are only for deployment to gh pages
+# permissions:
+#   id-token: write
+#   pages: write
+
+jobs:
+  run-benchmark-micromamba:
+    name: run_clustbench_micromamba
+    ## runs-on: ubuntu-latest
+    runs-on: self-hosted
+    strategy:
+      matrix:
+        ob_branch: [dev, reduce_install_scope, main]
+        micromamba-version: ['2.1.1-0', '1.5.12-0']
+      fail-fast: false
+    concurrency:
+      group: micromamba-${{ matrix.micromamba-version }}-${{ matrix.ob_branch }}
+      cancel-in-progress: false # true
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install (with) micromamba
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          cache-environment: false # true
+          micromamba-version: ${{ matrix.micromamba-version }}
+          download-micromamba: true
+          micromamba-binary-path:  ${{ runner.temp }}/bin/micromamba-${{ matrix.micromamba-version }}/micromamba
+          environment-name: test-env-${{matrix.ob_branch }}-${{ matrix.micromamba-version }}
+          create-args: >-
+            python=3.12
+            pip
+            conda
+          post-cleanup: environment # all
+      - name: Overwrite omnibenchmark CLI to branch
+        shell: bash -l {0}
+        run: |
+          micromamba --version
+          pip install git+https://github.com/omnibenchmark/omnibenchmark.git@${{ matrix.ob_branch }}
+
+      # - name: Enable a benchmarking `out` cache
+      #   id: cache-benchmark
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: out/
+      #     key: benchmark-${{ runner.os }}-${{ hashFiles('Clustering.yaml') }}
+
+      - name: Run benchmark
+        shell: bash -l {0}
+        run: |
+          env
+          output=$( echo "y" | ob run benchmark -b Clustering_conda.yml --local --cores 10 2>&1 )
+          status=$?
+          if echo "$output" | grep -i 'Benchmark run has finished successfully'; then
+             status=0
+          fi
+          echo -e $output
+          sh -c "exit $status"
