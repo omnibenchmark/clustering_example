@@ -1,9 +1,9 @@
 name: run_on_conda
 on:
-  pull_request:
+  # pull_request:
   workflow_dispatch:
-  # schedule:
-  #   - cron: "30 1 * * *" # at 1.30am
+  schedule:
+    - cron: "30 1 * * *" # at 1.30am
     
 jobs:
   run-benchmark:
