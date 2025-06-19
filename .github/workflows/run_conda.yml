@@ -1,0 +1,26 @@
+name: run_on_conda
+on:
+  pull_request:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "30 1 * * *" # at 1.30am
+    
+jobs:
+  run-benchmark:
+    name: Run on conda
+    ## runs-on: ubuntu-latest
+    runs-on: self-hosted
+    strategy:
+      matrix:
+        ob_branch: [main]
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use action 
+        uses: omnibenchmark/run_omnibenchmark@main
+        with:
+          yaml: Clustering_conda.yml
+          backend: conda
+          omnibenchmark_branch: ${{ matrix.ob_branch }}
