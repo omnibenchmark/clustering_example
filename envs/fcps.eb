@@ -81,8 +81,8 @@ exts_list = [
     ('R6', '2.5.1', {
         'checksums': ['8d92bd29c2ed7bf15f2778618ffe4a95556193d21d8431a7f75e7e5fc102bf48'],
     }),
-    ('jsonlite', '1.8.9', {
-        'checksums': ['89f130e0e1163328c01decd54e7712b5ebf3d0a667da0052833722cb9a6e90b0'],
+    ('jsonlite', '2.0.0', {
+        'checksums': ['75eb910c82b350ec33f094779da0f87bff154c232e4ae39c9896a9b89f3ac82d'],
     }),
     ('argparse', '2.2.5', {
         'checksums': ['53c8a9eb51041084eb3d9c271b14ebcb32dc2f50cf16afa5c54c504a97229ea4'],
@@ -192,8 +192,11 @@ exts_list = [
     ('cluster', '2.1.8', {
         'checksums': ['c32a462e34694c99d58da953efa74882b5427f8c5db7cb226ae15c54ce6060ca'],
     }),
-    ('graph', '1.84.1', {
-        'checksums': ['cd2a91c93c81c09d9c59853c417e8a9cdde39b0589bacdce4ca916b6ee5f45a7'],
+    ('graph', '1.84.0', {
+        'source_urls': ['https://mghp.osn.xsede.org/bir190004-bucket01/archive.bioconductor.org/packages/3.20/bioc/src/contrib/Archive/graph/'
+	                'https://bioconductor.org/packages/3.20/bioc/src/contrib/Archive/graph/'],
+        'sources': ['graph_1.84.0.tar.gz'],
+        'checksums': ['970bec2341a1c492f5d1cfb41659d9ffaf257a43bff50715fcd0d7cbd6b2073b'],
     }),
     ('mclust', '6.1.1', {
         'checksums': ['ddd7018e5e6ea7f92c7fc9872b391491b7e91c2cd89ef1dcaf4408afb5116775'],
@@ -268,7 +271,7 @@ exts_list = [
     }),
     ('jsonlite', '2.0.0', {
         'checksums': ['75eb910c82b350ec33f094779da0f87bff154c232e4ae39c9896a9b89f3ac82d'],
-    }), # caution from here on is untested, R.utils needed though
+    }),
     ('R.methodsS3', '1.8.2', {
         'checksums': ['822d5e61dad4c91e8883be2b38d7b89f87492046d0fe345704eb5d2658927c2e'],
     }),
