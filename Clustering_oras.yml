@@ -16,8 +16,8 @@ software_environments:
   fcps:
     description: "CRAN's FCPS"
     conda: envs/fcps.yml
-    # apptainer: oras://registry.renkulab.io/izaskun.mallona/clustering_example/fcps:latest
-    apptainer: oras://quay.io/omnibenchmark/fcps:0.1.2
+    apptainer: oras://registry.renkulab.io/izaskun.mallona/clustering_example/fcps:latest
+    ## apptainer: oras://quay.io/omnibenchmark/fcps:0.1.2
     envmodule: fcps
 metric_collectors:
   - id: plotting
