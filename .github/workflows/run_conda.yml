@@ -15,8 +15,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Use action 
-        uses: omnibenchmark/run_omnibenchmark@align_with_ob_dev_cli
+        uses: omnibenchmark/run_omnibenchmark@main
         with:
           yaml: Clustering_conda.yml
           backend: conda
-          omnibenchmark_branch: 'release/0.3.0'
+          omnibenchmark_branch: 'refactor/drop-schema-v2'
