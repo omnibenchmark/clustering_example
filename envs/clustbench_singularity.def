@@ -25,8 +25,7 @@ From: ubuntu:jammy-20240911.1
     . default/bin/activate
     
     pip3 install "clustering-benchmarks==1.1.5" "wget" "fastcluster==1.2.6" "numpy==1.26.4" "scipy==1.14.1" \
-      "isodate" "pydantic-core"  \
-      "genieclust==1.1.6" "pandas==2.2.3" "gitpython==3.1.43"
+      "isodate" "genieclust==1.1.6" "pandas==2.2.3" "gitpython==3.1.43"
 
     echo '. /opt/default/bin/activate' >> $SINGULARITY_ENVIRONMENT
 

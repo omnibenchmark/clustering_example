@@ -25,7 +25,7 @@ From: rocker/tidyverse:4.3.3
     python3.12 -m venv "default"
     . default/bin/activate
 
-    pip install gitpython==3.1.43 isodate "pydantic-core==2.34.1"
+    pip install gitpython==3.1.43 isodate 
 
     ## no versioning here - fcps deps
     Rscript -e 'BiocManager::install(c("kernlab", "cclust", "dbscan", "kohonen", "MCL", "ADPclust", "cluster", "DatabionicSwarm", "orclus", "subspace", "flexclust", "ABCanalysis", "apcluster", "pracma", "EMCluster", "pdfCluster", "parallelDist", "plotly", "ProjectionBasedClustering", "GeneralizedUmatrix", "mstknnclust", "densityClust", "parallel", "energy", "R.utils", "tclust", "Spectrum", "genie", "protoclust", "fastcluster", "clusterability", "signal", "reshape2", "PPCI", "clustrd", "smacof", "rgl", "prclust", "dendextend", "moments", "prabclus", "VarSelLCM", "sparcl", "mixtools", "HDclassif", "clustvarsel", "knitr", "rmarkdown", "R.utils", "FCPS"))' 
