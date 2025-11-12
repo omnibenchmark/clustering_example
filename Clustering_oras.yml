@@ -12,14 +12,14 @@ software_environments:
     description: "clustbench on py3.12.6"
     conda: envs/clustbench.yml
     envmodule: clustbench
-      #apptainer:  oras://registry.renkulab.io/izaskun.mallona/clustering_example/clustbench:latest
-    apptainer:  envs/clustbench.sif
+    ## apptainer: oras://registry.renkulab.io/izaskun.mallona/clustering_example/clustbench:latest
+    apptainer: oras://quay.io/imallona/clustering_example/clustbench:latest
   fcps:
     description: "CRAN's FCPS"
     conda: envs/fcps.yml
-    apptainer:  envs/fcps.sif
     ## apptainer: oras://registry.renkulab.io/izaskun.mallona/clustering_example/fcps:latest
     ## apptainer: oras://quay.io/omnibenchmark/fcps:0.1.2
+    apptainer: oras://quay.io/imallona/clustering_example/fcps:latest
     envmodule: fcps
 metric_collectors:
   - id: plotting
