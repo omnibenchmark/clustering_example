@@ -1,4 +1,4 @@
-name: run_ob_main_oras
+name: run_ob_dev_oras
 on:
   push:
   workflow_dispatch:
@@ -18,4 +18,4 @@ jobs:
         with:
           yaml: Clustering_oras.yml
           backend: apptainer
-          omnibenchmark_branch: 'main'
+          omnibenchmark_branch: 'dev'
