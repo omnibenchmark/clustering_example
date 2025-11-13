@@ -19,4 +19,4 @@ jobs:
         with:
           yaml: Clustering_conda.yml
           backend: conda
-          omnibenchmark_branch: 'dev'
+          omnibenchmark_branch: 'hotfix/0.3.2'
