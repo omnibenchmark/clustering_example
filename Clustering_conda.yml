@@ -12,11 +12,11 @@ software_environments:
     description: "clustbench on py3.12.6"
     conda: envs/clustbench.yml
     envmodule: clustbench
-    apptainer: envs/clustbench.sif
+    apptainer: oras://quay.io/imallona/clustering_example/clustbench:latest
   fcps:
     description: "CRAN's FCPS"
     conda: envs/fcps.yml
-    apptainer: envs/fcps.sif
+    apptainer: oras://quay.io/imallona/clustering_example/fcps:latest
     envmodule: fcps
 metric_collectors:
   - id: plotting
@@ -167,7 +167,7 @@ stages:
           url: https://github.com/imallona/clustbench_fcps
           commit: fc37faa
         parameters:
-          # - values: ["--method", "FCPS_AdaptiveDensityPeak"] # not in conda
+          # - values: ["--method", "FCPS_AdaptiveDensityPeak"] # not in Conda
           - values: ["--method", "FCPS_Minimax", "--seed", 2]
           # - values: ["--method", "FCPS_MinEnergy", "--seed", 2]
           # - values: ["--method", "FCPS_HDBSCAN_2", "--seed", 2]
