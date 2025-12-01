@@ -43,6 +43,14 @@ This is pending work
 
 ## envmodules - reproducible builds with easybuild
 
+Using EESSI, python 3.12, and the foss/2024a toolchain.
+
+
+```bash
+source /cvmfs/software.eessi.io/versions/2025.06/init/lmod/bash
+module load EESSI-extend/2025.06-easybuild
+```
+
 ### Files
 
 - `clustbench.eb`
@@ -50,8 +58,5 @@ This is pending work
 
 ### How to build and warnings
 
-1. Mind https://github.com/easybuilders/easybuild-easyconfigs/commit/e29210626f076e3a207f1abf3759ea124e28f8b2
-2. Mind `clustbench` is only installable from https://github.com/gagolews/genieclust/archive/refs/tags/v1.1.6.tar.gz and not from pypi's tgz (!), download it locally and ideally update the easyconfig to automate this
-3. `python3-wget` from pypi doesn't look very well maintaned
-4. `eb fcps.eb --robot --ignore-checksums`
-5. `eb clustbench.eb --robot --ignore-checksums`
+4. `eb fcps.eb --robot`
+5. `eb clustbench.eb --robot`
