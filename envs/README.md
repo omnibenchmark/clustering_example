@@ -49,6 +49,15 @@ Using EESSI, python 3.12, and the foss/2024a toolchain.
 ```bash
 source /cvmfs/software.eessi.io/versions/2025.06/init/lmod/bash
 module load EESSI-extend/2025.06-easybuild
+eb --robot clustbench.eb
+```
+
+Using EESSI and python 3.11, and the foss/2023a toolchain
+
+```bash
+source /cvmfs/software.eessi.io/versions/2023.06/init/lmod/bash
+module load EESSI-extend/2023.06-easybuild
+eb --robot fcps.eb
 ```
 
 ### Files
