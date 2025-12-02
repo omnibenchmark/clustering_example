@@ -9,14 +9,15 @@ storage_bucket_name: clusteringexampleenvmodules
 software_backend: envmodules
 software_environments:
   clustbench:
-    description: "clustbench on py3.12.6"
+    description: "clustbench python"
     conda: envs/clustbench.yml
     envmodule: clustbench
     apptainer: oras://quay.io/imallona/clustering_example/clustbench:latest
   fcps:
-    description: "CRAN's FCPS on R 4.3.2"
+    description: "R deps"
     conda: envs/fcps.yml
     apptainer: oras://quay.io/imallona/clustering_example/fcps:latest
+    envmodule: fcps
 metric_collectors:
   - id: plotting
     name: "Single-backend metric collector."

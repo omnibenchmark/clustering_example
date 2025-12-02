@@ -52,20 +52,51 @@ module load EESSI-extend/2025.06-easybuild
 eb --robot clustbench.eb
 ```
 
-Using EESSI and python 3.11, and the foss/2023a toolchain
-
-```bash
-source /cvmfs/software.eessi.io/versions/2023.06/init/lmod/bash
-module load EESSI-extend/2023.06-easybuild
-eb --robot fcps.eb
-```
-
 ### Files
 
 - `clustbench.eb`
 - `fcps.eb`
 
-### How to build and warnings
+### Full workflow, with some tuning to select where stuff are built
 
-4. `eb fcps.eb --robot`
-5. `eb clustbench.eb --robot`
+Install CVMFS and mount EESSI: follow https://www.eessi.io/docs/getting_access/native_installation/ .
+
+Extend EESSI with the extra packages needed to run clustbench via Easybuild. [Docs](https://www.eessi.io/docs/using_eessi/building_on_eessi/).
+
+```bash
+
+echo "Install cvmfs and mount EESSI; no instructions given here"
+
+echo "Load latest EESSI"
+source /cvmfs/software.eessi.io/versions/2025.06/init/lmod/bash
+module load EESSI-extend/2025.06-easybuild
+
+
+echo "Configure eb"
+export EASYBUILD_PREFIX=path_to_your_installations_update_here
+#export EASYBUILD_PREFIX=/data/imallona/.local/easybuild   ## RAID-6 in my case
+export EASYBUILD_INSTALLPATH=$EASYBUILD_PREFIX/software
+export EASYBUILD_BUILDPATH=$EASYBUILD_PREFIX/build
+# export EASYBUILD_BUILDPATH=/opt/cache/imallona/build     ## SSD in my case
+export EASYBUILD_REPOSITORYPATH=$EASYBUILD_PREFIX/ebfiles_repo
+export EASYBUILD_SOURCEPATH=$EASYBUILD_PREFIX/sources
+export EASYBUILD_PACKAGEPATH=$EASYBUILD_PREFIX/packages
+
+echo "Configure temp path"
+mkdir -p $HOME/tmp
+export TMPDIR=$HOME/tmp
+
+eb --robot fcps.eb --job-cores=10
+eb --robot clustbench.eb --job-cores=10
+```
+
+Running a benchmark:
+
+```bash
+source /cvmfs/software.eessi.io/versions/2025.06/init/lmod/bash ## if not loaded
+module load EESSI-extend/2025.06-easybuild                      ## if not loaded
+export MODULEPATH="$EASYBUILD_PREFIX"/software/modules/all:"$MODULEPATH"
+module use $MODULEPATH
+
+ob run benchmark -b Clustering_envmodules.yml  --local-storage --cores 30
+```
