@@ -2,56 +2,98 @@ We distribute `Clustering.yml` runs with different backends.
 
 - `Clustering_conda.yml`. Conda semi-reproducible (no pinning, pip)
 - `Clustering_oras.yml`. Singularity non- to semi-reproducible, prebuilt remote images.
-- `Clustering_envmodules.yml`. Easybuilt with default optimization.
+- `Clustering_envmodules.yml`. Easybuilt with default optimization. Can be built extending EESSI.
 
 
-## Conda
+# Conda
 
-### Files
+## Files
 
 - `clustbench.yml`
 - `fcps.yml`
 
-### How to build
+## How to build
 
 No need to `ob software conda pin / prepare`; let `ob run benchmark -b Clustering_conda.yml --local` do it.
 
-## Apptainer semi-reproducible and local
+# Apptainer semi-reproducible and local
 
-### Files
+## Files
 
 - `clustbench_singularity.def`
 - `fcps_singularity.def`
 
-### How to build
+## How to build
 
 - `build_singularity.sh`
 
-### How to push to renku's gitlab registry
+## How to push to a registry
 
 ```
 apptainer push --docker-username janedoe --docker-password glpat-uzh fcps.sif oras://registry.renkulab.io/izaskun.mallona/clustering_example/name:tag
 ```
 
-## Aptainer semi-reproducible and remote
+# Aptainer semi-reproducible and remote
 
 No need to prepare/build anything; let `ob run benchmark -b Clustering_oras.yml --local` do it using pre-built images from https://gitlab.renkulab.io/izaskun.mallona/clustering_example/container_registry.
 
-## Apptainer (reproducible) with easybuild
+# envmodules - reproducible builds with easybuild
 
-This is pending work
+## Compiling everything
 
-## envmodules - reproducible builds with easybuild
+It will take time (even days).
 
-### Files
+```bash
+eb --robot fcps.eb --job-cores=10
+eb --robot clustbench.eb --job-cores=10
+```
 
-- `clustbench.eb`
-- `fcps.eb`
+## EESSI
 
-### How to build and warnings
+Exteding EESSI 2025.06. cernvmfs has to be installed and EESSI configured.
 
-1. Mind https://github.com/easybuilders/easybuild-easyconfigs/commit/e29210626f076e3a207f1abf3759ea124e28f8b2
-2. Mind `clustbench` is only installable from https://github.com/gagolews/genieclust/archive/refs/tags/v1.1.6.tar.gz and not from pypi's tgz (!), download it locally and ideally update the easyconfig to automate this
-3. `python3-wget` from pypi doesn't look very well maintaned
-4. `eb fcps.eb --robot --ignore-checksums`
-5. `eb clustbench.eb --robot --ignore-checksums`
+### Full workflow to extend EESSI
+
+Install CVMFS and mount EESSI: follow https://www.eessi.io/docs/getting_access/native_installation/ .
+
+Extend EESSI with the extra packages needed to run clustbench via Easybuild. [Docs](https://www.eessi.io/docs/using_eessi/building_on_eessi/).
+
+These snippets are very verbose and tailored to omnibenchmark the machine (robinsonlab).
+
+```bash
+
+echo "Install cvmfs and mount EESSI; no instructions given here"
+
+echo "Load latest EESSI"
+source /cvmfs/software.eessi.io/versions/2025.06/init/lmod/bash
+module load EESSI-extend/2025.06-easybuild
+
+
+echo "Configure eb"
+export EASYBUILD_PREFIX=path_to_your_installations_update_here
+#export EASYBUILD_PREFIX=/data/imallona/.local/easybuild   ## RAID-6 in my case
+export EASYBUILD_INSTALLPATH=$EASYBUILD_PREFIX/software
+export EASYBUILD_BUILDPATH=$EASYBUILD_PREFIX/build
+# export EASYBUILD_BUILDPATH=/opt/cache/imallona/build     ## SSD in my case
+export EASYBUILD_REPOSITORYPATH=$EASYBUILD_PREFIX/ebfiles_repo
+export EASYBUILD_SOURCEPATH=$EASYBUILD_PREFIX/sources
+export EASYBUILD_PACKAGEPATH=$EASYBUILD_PREFIX/packages
+
+echo "Configure temp path"
+mkdir -p $HOME/tmp
+export TMPDIR=$HOME/tmp
+
+eb --robot fcps.eb --job-cores=10
+eb --robot clustbench.eb --job-cores=10
+```
+
+Running a benchmark:
+
+```bash
+source /cvmfs/software.eessi.io/versions/2025.06/init/lmod/bash ## if not loaded
+module load EESSI-extend/2025.06-easybuild                      ## if not loaded
+export MODULEPATH="$EASYBUILD_PREFIX"/software/modules/all:"$MODULEPATH"
+module use $MODULEPATH
+
+ob run benchmark -b Clustering_envmodules.yml  --local-storage --cores 30
+```

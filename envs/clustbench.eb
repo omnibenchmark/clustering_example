@@ -1,36 +1,40 @@
-## largely as https://github.com/easybuilders/easybuild-easyconfigs/blob/949c266db9e17440ec2829eb8ffdbdb87ceaf543/easybuild/easyconfigs/c/cooler/cooler-0.10.2-foss-2023b.eb#L4
+## source /cvmfs/software.eessi.io/versions/2025.06/init/lmod/bash
+## module load EESSI-extend/2025.06-easybuild
+
+## eb --robot clustbench.eb --job-cores 120
 
 easyblock = 'PythonBundle'
 
 name = 'clustbench'
-version = '1.6'
+version = '1.1.6'
 
 homepage = 'https://python.org/'
-description = "Bundle of Python packages for ob clustering_example"
+description = "clustering_benchmarks Python bundle."
 
-toolchain = {'name': 'foss', 'version': '2023b'}
+toolchain = {'name': 'foss', 'version': '2024a'}
+
+
+builddependencies = [
+    ('pkgconf', '2.2.0'),
+    ('Cython', '3.0.10'),
+]
 
 
 dependencies = [
-    ('Python', '3.11.5'),
-    ('Python-bundle-PyPI', '2023.10'), ## so GCC 13.2.0 like foss-2023b
-    ('SciPy-bundle', '2023.11'),
-    ('meson-python', '0.15.0'),
-    ('matplotlib', '3.8.2'),
-    ('scikit-learn', '1.4.0')
-
+    ('Python', '3.12.3'),
+    ('SciPy-bundle', '2024.05'),
+    ('matplotlib', '3.9.2'),
+    ('scikit-learn', '1.6.1')
 ]
 
-sanity_pip_check = True 
+sanity_pip_check = True
 use_pip = True
 
-exts_default_options = {
-    'sanity_pip_check': True,
-    'use_pip' : True
-}
 
 exts_list = [
     ('natsort', '8.4.0', {
+         'use_pip': True,
+         'source_urls': [PYPI_SOURCE],
         'checksums': ['45312c4a0e5507593da193dedd04abb1469253b601ecaf63445ad80f0a1ea581'],
     }),
     ('cython', '3.0.11', {
@@ -39,12 +43,13 @@ exts_list = [
     ('hypothesis', '6.124.7', {
         'checksums': ['8ed6c6ae47e7d26d869c1dc3dee04e8fc50c95240715bb9915ded88d6d920f0e'],
     }),
-    ('numpy', '1.26.4', {
-        'checksums': ['2a02aba9ed12e4ac4eb3ea9421c420301a0c6460d9830d74a9df87efa4912010'],
-    }),
     ('fastcluster', '1.2.6', {
         'checksums': ['aab886efa7b6bba7ac124f4498153d053e5a08b822d2254926b7206cdf5a8aa6'],
     }),
+    ## ('scikit-learn', '1.6.1', {
+    ##    'modulename': 'sklearn',
+    ##     'source_urls' : [PYPI_SOURCE]
+    ## }),
     ('genieclust', '1.1.6', {
         'source_urls': ['https://github.com/gagolews/genieclust/archive/refs/tags/'],
         'sources': ['v1.1.6.tar.gz'],
@@ -60,12 +65,11 @@ exts_list = [
         'modulename': 'clustbench',	
         'source_urls': ['https://github.com/gagolews/clustering-benchmarks/releases/download/v1.1.6/'],
         'sources': ['clustering_benchmarks-1.1.6.tar.gz'],
-    }),]
+    })]
 
-sanity_check_paths = {
-    'files': [],
-    'dirs': ['lib/python3.11/site-packages/clustbench/']
-}
+## sanity_check_paths = {
+##     'files': [],
+##     'dirs': ['lib/python3.12/site-packages/clustbench/']
+## }
 
 moduleclass = 'bio'
-
