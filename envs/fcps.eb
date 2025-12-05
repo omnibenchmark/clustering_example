@@ -13,8 +13,7 @@ versionsuffix = '-r-%(rver)s'
 local_biocver = '3.20'
 
 homepage = 'https://bioconductor.org'
-description = """Bioconductor provides tools for the analysis and coprehension
- of high-throughput genomic data."""
+description = """FCPS package on Bioconductor 3.20, R 4.4.2."""
 
 toolchain = {'name': 'foss', 'version': '2024a'}
 

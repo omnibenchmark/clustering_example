@@ -9,7 +9,7 @@ name = 'clustbench'
 version = '1.1.6'
 
 homepage = 'https://python.org/'
-description = "Bundle of Python packages for ob clustering_example"
+description = "clustering_benchmarks Python bundle."
 
 toolchain = {'name': 'foss', 'version': '2024a'}
 
