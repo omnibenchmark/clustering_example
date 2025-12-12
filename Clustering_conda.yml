@@ -76,7 +76,7 @@ stages:
           # - values: ["--dataset_generator", "sipu", "--dataset_name", "spiral"] #	3	1
           # - values: ["--dataset_generator", "sipu", "--dataset_name", "unbalance"] #	8	1
           - values: ["--dataset_generator", "uci", "--dataset_name", "ecoli"] #	8	1
-          # - values: ["--dataset_generator", "uci", "--dataset_name", "ionosphere"] #	2	1
+          - values: ["--dataset_generator", "uci", "--dataset_name", "ionosphere"] #	2	1
           # - values: ["--dataset_generator", "uci", "--dataset_name", "sonar"] #	2	1
           # - values: ["--dataset_generator", "uci", "--dataset_name", "statlog"] #	7	1
           # - values: ["--dataset_generator", "uci", "--dataset_name", "wdbc"] #	2	1
