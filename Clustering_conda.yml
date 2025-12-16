@@ -1,11 +1,11 @@
 id: clustering_example_conda
 description: Clustering benchmark on Gagolewski's, true number of clusters plus minus 2.
-version: 1.4
+version: "1.5.0"
 benchmarker: "Izaskun Mallona, Daniel Incicau, Ben Carrillo"
-storage: http://omnibenchmark.org:9000
-benchmark_yaml_spec: 0.04
-storage_api: S3
-storage_bucket_name: clusteringexampleconda
+storage:
+  api: S3
+  endpoint: http://omnibenchmark.mls.uzh.ch:9000
+  bucket_name: clusteringexampleconda
 software_backend: conda
 software_environments:
   clustbench:
@@ -29,7 +29,7 @@ metric_collectors:
       - metrics.scores
     outputs:
       - id: plotting.html
-        path: "{input}/{name}/plotting_report.html"
+        path: plotting_report.html
 stages:
   ## clustbench data ##########################################################
 
@@ -42,8 +42,9 @@ stages:
           url: https://github.com/imallona/clustbench_data
           commit: 366c5a2
         parameters:  # comments depict the possible cardinalities and the number of curated labelsets
-          - values: ["--dataset_generator", "fcps", "--dataset_name", "atom"] #	2	1
-          - values: ["--dataset_generator", "fcps", "--dataset_name", "chainlink"] #	2	1
+          - dataset_generator: "fcps"
+            dataset_name: ["atom", "chainlink"] #	2	1
+
           # - values: ["--dataset_generator", "fcps", "--dataset_name", "engytime"] #	2	2
           # - values: ["--dataset_generator", "fcps", "--dataset_name", "hepta"] #	7	1
           # - values: ["--dataset_generator", "fcps", "--dataset_name", "lsun"] #	3	1
@@ -106,12 +107,12 @@ stages:
           # - values: ["--dataset_generator", "wut", "--dataset_name", "z3"] #	4	1
     outputs:
       - id: data.matrix
-        path: "{input}/{stage}/{module}/{params}/{dataset}.data.gz"
+        path: "{dataset}.data.gz"
       - id: data.true_labels
-        path: "{input}/{stage}/{module}/{params}/{dataset}.labels0.gz"
+        path: "{dataset}.labels0.gz"
 
   ## clustbench methods (fastcluster) ###################################################################
-  
+
   - id: clustering
     modules:
       - id: fastcluster
@@ -122,7 +123,8 @@ stages:
           # url: /home/imallona/src/clustbench_fastcluster/
           commit: "45e43d3"
         parameters:
-          - values: ["--linkage", "complete"]
+          - linkage: "complete"
+
           # - values: ["--linkage", "ward"]
           # - values: ["--linkage", "average"]
           # - values: ["--linkage", "weighted"]
@@ -136,7 +138,7 @@ stages:
           #url: /home/imallona/src/clustbench_sklearn
           commit: 5877378
         parameters:
-          - values: ["--method", "birch"]
+          - method: "birch"
           # - values: ["--method", "kmeans"]
           # - values: ["--method", "spectral"] ## too slow
           # - values: ["--method", "gm"]
@@ -147,7 +149,7 @@ stages:
           url: https://github.com/imallona/clustbench_agglomerative
           commit: 5454368
         parameters:
-          - values: ["--linkage", "average"]
+          - linkage: "average"
           # - values: ["--linkage", "complete"]
           # - values: ["--linkage", "ward"]
       - id: genieclust
@@ -157,7 +159,8 @@ stages:
           url: https://github.com/imallona/clustbench_genieclust
           commit: 6090043
         parameters:
-          - values: ["--method", "genie", "--gini_threshold", 0.5]
+          - method: "genie"
+            gini_threshold: 0.5
           # -  values: ["--method", "gic"]
           # - values: ["--method", "ica"]
       - id: fcps
@@ -168,24 +171,24 @@ stages:
           commit: fc37faa
         parameters:
           # - values: ["--method", "FCPS_AdaptiveDensityPeak"] # not in Conda
-          - values: ["--method", "FCPS_Minimax", "--seed", 2]
+          - method: "FCPS_Minimax"
+            seed: 2
           # - values: ["--method", "FCPS_MinEnergy", "--seed", 2]
           # - values: ["--method", "FCPS_HDBSCAN_2", "--seed", 2]
           # - values: ["--method", "FCPS_HDBSCAN_4", "--seed", 2]
           # - values: ["--method", "FCPS_HDBSCAN_8", "--seed", 2]
           # - values: ["--method", "FCPS_Diana", "--seed", 2]
           # - values: ["--method", "FCPS_Fanny", "--seed", 2]
-          # - values: ["--method", "FCPS_Hardcl", "--seed", 2] 
-          # - values: ["--method", "FCPS_Softcl", "--seed", 2] 
+          # - values: ["--method", "FCPS_Hardcl", "--seed", 2]
+          # - values: ["--method", "FCPS_Softcl", "--seed", 2]
           # - values: ["--method", "FCPS_Clara", "--seed", 2]
           # - values: ["--method", "FCPS_PAM", "--seed", 2]
     inputs:
-      - entries:
-          - data.matrix
-          - data.true_labels
+        - data.matrix
+        - data.true_labels
     outputs:
       - id: clustering.predicted_ks_range
-        path: "{input}/{stage}/{module}/{params}/{dataset}_ks_range.labels.gz"
+        path: "{dataset}_ks_range.labels.gz"
 
   - id: metrics
     modules:
@@ -196,8 +199,7 @@ stages:
           url: https://github.com/imallona/clustbench_metrics
           commit: 9132d45
         parameters:
-          - values: ["--metric", "normalized_clustering_accuracy"]
-          - values: ["--metric", "adjusted_fm_score"]
+          - metric: ["normalized_clustering_accuracy", "adjusted_fm_score"]
           # - values: ["--metric", "adjusted_mi_score"]
           # - values: ["--metric", "adjusted_rand_score"]
           # - values: ["--metric", "fm_score"]
@@ -208,9 +210,8 @@ stages:
           # - values: ["--metric", "pair_sets_index"]
           # - values: ["--metric", "rand_score"]
     inputs:
-      - entries:
-          - clustering.predicted_ks_range
-          - data.true_labels
+        - clustering.predicted_ks_range
+        - data.true_labels
     outputs:
       - id: metrics.scores
-        path: "{input}/{stage}/{module}/{params}/{dataset}.scores.gz"
+        path: "{dataset}.scores.gz"
