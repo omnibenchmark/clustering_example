@@ -29,7 +29,7 @@ metric_collectors:
       - metrics.scores
     outputs:
       - id: plotting.html
-        path: plotting_report.html
+        path: "{input}/{name}/plotting_report.html"
 stages:
   ## clustbench data ##########################################################
 

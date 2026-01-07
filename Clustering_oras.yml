@@ -29,7 +29,7 @@ metric_collectors:
       - metrics.scores
     outputs:
       - id: plotting.html
-        path: plotting_report.html
+        path: "{input}/{name}/plotting_report.html"
 stages:
   ## clustbench data ##########################################################
 
@@ -43,7 +43,7 @@ stages:
           commit: 366c5a2
         parameters:  # comments depict the possible cardinalities and the number of curated labelsets
           - dataset_generator: "fcps"
-            dataset_name: ["atom", "chainlink"] #	2	1
+            dataset_name: ["atom"] #	2	1
 
           # - dataset_generator: "fcps"
           #   dataset_name: "engytime" #	2	2
@@ -202,57 +202,6 @@ stages:
           # - method: "kmeans"
           # - method: "spectral" ## too slow
           # - method: "gm"
-      - id: agglomerative
-        name: "agglomerative"
-        software_environment: "clustbench"
-        repository:
-          url: https://github.com/imallona/clustbench_agglomerative
-          commit: 5454368
-        parameters:
-          - linkage: "average"
-          # - linkage: "complete"
-          # - linkage: "ward"
-      - id: genieclust
-        name: "genieclust"
-        software_environment: "clustbench"
-        repository:
-          url: https://github.com/imallona/clustbench_genieclust
-          commit: 6090043
-        parameters:
-          - method: "genie"
-            gini_threshold: 0.5
-          # - method: "gic"
-          # - method: "ica"
-      - id: fcps
-        name: "fcps"
-        software_environment: "fcps"
-        repository:
-          url: https://github.com/imallona/clustbench_fcps
-          commit: fc37faa
-        parameters:
-          # - method: "FCPS_AdaptiveDensityPeak" # not in Conda
-          - method: "FCPS_Minimax"
-            seed: 2
-          # - method: "FCPS_MinEnergy"
-          #   seed: 2
-          # - method: "FCPS_HDBSCAN_2"
-          #   seed: 2
-          # - method: "FCPS_HDBSCAN_4"
-          #   seed: 2
-          # - method: "FCPS_HDBSCAN_8"
-          #   seed: 2
-          # - method: "FCPS_Diana"
-          #   seed: 2
-          # - method: "FCPS_Fanny"
-          #   seed: 2
-          # - method: "FCPS_Hardcl"
-          #   seed: 2
-          # - method: "FCPS_Softcl"
-          #   seed: 2
-          # - method: "FCPS_Clara"
-          #   seed: 2
-          # - method: "FCPS_PAM"
-          #   seed: 2
     inputs:
         - data.matrix
         - data.true_labels
@@ -269,7 +218,7 @@ stages:
           url: https://github.com/imallona/clustbench_metrics
           commit: 9132d45
         parameters:
-          - metric: ["normalized_clustering_accuracy", "adjusted_fm_score"]
+          - metric: ["normalized_clustering_accuracy"]
           # - metric: "adjusted_mi_score"
           # - metric: "adjusted_rand_score"
           # - metric: "fm_score"
