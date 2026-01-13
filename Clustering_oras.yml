@@ -40,7 +40,7 @@ stages:
         software_environment: "clustbench"
         repository:
           url: https://github.com/imallona/clustbench_data
-          commit: 366c5a2
+          commit: 8fd8744
         parameters:  # comments depict the possible cardinalities and the number of curated labelsets
           - dataset_generator: "fcps"
             dataset_name: ["atom"] #	2	1
