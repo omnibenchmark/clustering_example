@@ -40,10 +40,10 @@ stages:
         software_environment: "clustbench"
         repository:
           url: https://github.com/imallona/clustbench_data
-          commit: 8fd8744
+          commit: fc67ebd
         parameters:  # comments depict the possible cardinalities and the number of curated labelsets
           - dataset_generator: "fcps"
-            dataset_name: ["atom"] #	2	1
+            dataset_name: ["atom", "chainlink"] #	2	1
 
           # - dataset_generator: "fcps"
           #   dataset_name: "engytime" #	2	2
@@ -180,28 +180,59 @@ stages:
         software_environment: "clustbench"
         repository:
           url: https://github.com/imallona/clustbench_fastcluster
-          # url: /home/imallona/src/clustbench_fastcluster/
-          commit: "45e43d3"
+          commit: e644ce5
         parameters:
           - linkage: "complete"
-
-          # - linkage: "ward"
-          # - linkage: "average"
-          # - linkage: "weighted"
-          # - linkage: "median"
-          # - linkage: "centroid"
+          #- linkage: ["ward", "average", "weighted", "median", "centroid"]
       - id: sklearn
         name: "sklearn"
         software_environment: "clustbench"
         repository:
           url: https://github.com/imallona/clustbench_sklearn
-          #url: /home/imallona/src/clustbench_sklearn
-          commit: 5877378
+          commit: dcf35e1
         parameters:
           - method: "birch"
-          # - method: "kmeans"
-          # - method: "spectral" ## too slow
-          # - method: "gm"
+          # ["kmeans, "gm"]
+          # ["spectral"] ## too slow
+      - id: agglomerative
+        name: "agglomerative"
+        software_environment: "clustbench"
+        repository:
+          url: https://github.com/imallona/clustbench_agglomerative
+          commit: 9d086a9
+        parameters:
+          - linkage: "average"
+          # ["complete", "ward"]
+      - id: genieclust
+        name: "genieclust"
+        software_environment: "clustbench"
+        repository:
+          url: https://github.com/imallona/clustbench_genieclust
+          commit: 7d9e799
+        parameters:
+          - method: "genie"
+            # method: ["gic", "ica"]
+            gini_threshold: 0.5
+      - id: fcps
+        name: "fcps"
+        software_environment: "fcps"
+        repository:
+          url: https://github.com/imallona/clustbench_fcps
+          commit: e780fed
+        parameters:
+          - method: "FCPS_Minimax"
+            seed: 2
+          # - "FCPS_AdaptiveDensityPeak" # not in Conda
+          # - "FCPS_MinEnergy",
+          # - "FCPS_HDBSCAN_2",
+          # - "FCPS_HDBSCAN_4",
+          # - "FCPS_HDBSCAN_8",
+          # - "FCPS_Diana",
+          # - "FCPS_Fanny",
+          # - "FCPS_Hardcl",
+          # - "FCPS_Softcl",
+          # - "FCPS_Clara",
+          # - "FCPS_PAM"
     inputs:
         - data.matrix
         - data.true_labels
@@ -216,18 +247,18 @@ stages:
         software_environment: "clustbench"
         repository:
           url: https://github.com/imallona/clustbench_metrics
-          commit: 9132d45
+          commit: c4eda85
         parameters:
-          - metric: ["normalized_clustering_accuracy"]
-          # - metric: "adjusted_mi_score"
-          # - metric: "adjusted_rand_score"
-          # - metric: "fm_score"
-          # - metric: "mi_score"
-          # - metric: "normalized_clustering_accuracy"
-          # - metric: "normalized_mi_score"
-          # - metric: "normalized_pivoted_accuracy"
-          # - metric: "pair_sets_index"
-          # - metric: "rand_score"
+          - metric: ["normalized_clustering_accuracy", "adjusted_fm_score"]
+          # - "adjusted_mi_score"
+          # - "adjusted_rand_score"
+          # - "fm_score"
+          # - "mi_score"
+          # - "normalized_clustering_accuracy"
+          # - "normalized_mi_score"
+          # - "normalized_pivoted_accuracy"
+          # - "pair_sets_index"
+          # - "rand_score"
     inputs:
         - clustering.predicted_ks_range
         - data.true_labels
