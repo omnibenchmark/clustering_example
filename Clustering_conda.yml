@@ -1,7 +1,7 @@
 id: omni-clustbench-conda
-description: Clustering benchmark on Gagolewski's, true number of clusters plus minus 2.
+description: "Clustering benchmark on Gagolewski's, true number of clusters plus minus 2."
 version: "1.5.0"
-benchmarker: "Izaskun Mallona, Daniel Incicau, Ben Carrillo"
+benchmarker: "Izaskun Mallona, Daniel Incicau, Ben Carrillo, Mark Robinson"
 storage:
   api: S3
   endpoint: http://omnibenchmark.mls.uzh.ch:9000
@@ -17,7 +17,7 @@ software_environments:
 #metric_collectors:
 #  - id: plotting
 #    name: "Single-backend metric collector."
-#    software_environment: "fcps"
+#    software_environment: fcps
 #    repository:
 #      url: https://github.com/imallona/clustering_report
 #      commit: 040

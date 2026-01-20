@@ -9,10 +9,10 @@ storage:
 software_backend: envmodules
 software_environments:
   clustbench:
-    description: "clustbench python"
+    description: "clustbench on py3.12.6"
     envmodule: clustbench
   fcps:
-    description: "R deps"
+    description: "CRAN's FCPS"
     envmodule: fcps
 #metric_collectors:
 #  - id: plotting
