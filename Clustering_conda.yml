@@ -1,4 +1,4 @@
-id: clustering_example_conda
+id: omni-clustbench
 description: Clustering benchmark on Gagolewski's, true number of clusters plus minus 2.
 version: "1.5.0"
 benchmarker: "Izaskun Mallona, Daniel Incicau, Ben Carrillo"
