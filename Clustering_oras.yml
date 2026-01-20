@@ -1,7 +1,7 @@
-id: clustering_example_oras
+id: omni-clustbench-apptainer
 description: "Clustering benchmark on Gagolewski's, true number of clusters plus minus 2."
 version: "1.5.0"
-benchmarker: "Izaskun Mallona, Daniel Incicau, Ben Carrillo"
+benchmarker: "Izaskun Mallona, Daniel Incicau, Ben Carrillo, Mark Robinson"
 storage:
   api: S3
   endpoint: http://omnibenchmark.mls.uzh.ch:9000
@@ -10,26 +10,22 @@ software_backend: apptainer
 software_environments:
   clustbench:
     description: "clustbench on py3.12.6"
-    conda: envs/clustbench.yml
-    envmodule: clustbench
     apptainer: oras://quay.io/imallona/clustering_example/clustbench:latest
   fcps:
     description: "CRAN's FCPS"
-    conda: envs/fcps.yml
     apptainer: oras://quay.io/imallona/clustering_example/fcps:latest
-    envmodule: fcps
-metric_collectors:
-  - id: plotting
-    name: "Single-backend metric collector."
-    software_environment: fcps
-    repository:
-      url: https://github.com/imallona/clustering_report
-      commit: 040
-    inputs:
-      - metrics.scores
-    outputs:
-      - id: plotting.html
-        path: "{name}/plotting_report.html"
+#metric_collectors:
+#  - id: plotting
+#    name: "Single-backend metric collector."
+#    software_environment: fcps
+#    repository:
+#      url: https://github.com/imallona/clustering_report
+#      commit: 040
+#    inputs:
+#      - metrics.scores
+#    outputs:
+#      - id: plotting.html
+#        path: "{name}/plotting_report.html"
 stages:
   ## clustbench data ##########################################################
 
@@ -43,128 +39,17 @@ stages:
           commit: fc67ebd
         parameters:  # comments depict the possible cardinalities and the number of curated labelsets
           - dataset_generator: "fcps"
-            dataset_name: ["atom", "chainlink"] #	2	1
-
-          # - dataset_generator: "fcps"
-          #   dataset_name: "engytime" #	2	2
-          # - dataset_generator: "fcps"
-          #   dataset_name: "hepta" #	7	1
-          # - dataset_generator: "fcps"
-          #   dataset_name: "lsun" #	3	1
-          # - dataset_generator: "fcps"
-          #   dataset_name: "target" #	2, 6	2
-          # - dataset_generator: "fcps"
-          #   dataset_name: "tetra" #	4	1
-          # - dataset_generator: "fcps"
-          #   dataset_name: "twodiamonds" #	2	1
-          # - dataset_generator: "fcps"
-          #   dataset_name: "wingnut" #	2	1
-          # - dataset_generator: "graves"
-          #   dataset_name: "dense" #	2	1
-          # - dataset_generator: "graves"
-          #   dataset_name: "fuzzyx" #	2, 4, 5	6
-          # - dataset_generator: "graves"
-          #   dataset_name: "line" #	2	1
-          # - dataset_generator: "graves"
-          #   dataset_name: "parabolic" #	2, 42
-          # - dataset_generator: "graves"
-          #   dataset_name: "ring" #	2	1
-          # - dataset_generator: "graves"
-          #   dataset_name: "ring_noisy" #	2	1
-          # - dataset_generator: "graves"
-          #   dataset_name: "ring_outliers" #	2, 52
-          # - dataset_generator: "graves"
-          #   dataset_name: "zigzag" #	3, 5	2
-          # - dataset_generator: "graves"
-          #   dataset_name: "zigzag_noisy" #	3, 52
-          # - dataset_generator: "graves"
-          #   dataset_name: "zigzag_outliers" #	3, 52
-          # - dataset_generator: "other"
-          #   dataset_name: "chameleon_t4_8k" #	6	1
-          # - dataset_generator: "other"
-          #   dataset_name: "chameleon_t5_8k" #	6	1
-          # - dataset_generator: "other"
-          #   dataset_name: "hdbscan" #	6	1
-          # - dataset_generator: "other"
-          #   dataset_name: "iris" #	3	1
-          # - dataset_generator: "other"
-          #   dataset_name: "iris5" #	3	1
-          # - dataset_generator: "other"
-          #   dataset_name: "square" #	2	1
-          # - dataset_generator: "sipu"
-          #   dataset_name: "aggregation" #	7	1
-          # - dataset_generator: "sipu"
-          #   dataset_name: "compound" #	4, 5, 6	5
-          # - dataset_generator: "sipu"
-          #   dataset_name: "flame" #	2	2
-          # - dataset_generator: "sipu"
-          #   dataset_name: "jain" #	2	1
-          # - dataset_generator: "sipu"
-          #   dataset_name: "pathbased" #	3, 4	2
-          # - dataset_generator: "sipu"
-          #   dataset_name: "r15" #	8, 9, 15	3
-          # - dataset_generator: "sipu"
-          #   dataset_name: "spiral" #	3	1
-          # - dataset_generator: "sipu"
-          #   dataset_name: "unbalance" #	8	1
-          # - dataset_generator: "uci"
-          #   dataset_name: "ecoli" #	8	1
-          # - dataset_generator: "uci"
-          #   dataset_name: "ionosphere" #	2	1
-          # - dataset_generator: "uci"
-          #   dataset_name: "sonar" #	2	1
-          # - dataset_generator: "uci"
-          #   dataset_name: "statlog" #	7	1
-          # - dataset_generator: "uci"
-          #   dataset_name: "wdbc" #	2	1
-          # - dataset_generator: "uci"
-          #   dataset_name: "wine" #	3	1
-          # - dataset_generator: "uci"
-          #   dataset_name: "yeast" #	10	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "circles" #	4	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "cross" #	4	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "graph" #	10	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "isolation" #	3	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "labirynth" #	6	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "mk1" #	3	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "mk2" #	2	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "mk3" #	3	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "mk4" #	3	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "olympic" #	5	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "smile" #	4, 6	2
-          # - dataset_generator: "wut"
-          #   dataset_name: "stripes" #	2	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "trajectories" #	4	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "trapped_lovers" #	3	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "twosplashes" #	2	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "windows" #	5	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "x1" #	3	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "x2" #	3	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "x3" #	4	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "z1" #	3	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "z2" #	5	1
-          # - dataset_generator: "wut"
-          #   dataset_name: "z3" #	4	1
+            dataset_name: ["atom", "chainlink", "engytime", "hepta", "lsun", "target", "tetra", "twodiamonds", "wingnut"]
+          - dataset_generator: "graves"
+            dataset_name: ["dense", "fuzzyx", "line", "parabolic", "ring", "ring_noisy", "ring_outliers", "zigzag", "zigzag_noisy", "zigzag_outliers"] 
+          - dataset_generator: "other"
+            dataset_name: ["chameleon_t4_8k", "chameleon_t5_8k", "hdbscan", "iris", "iris5", "square"]
+          - dataset_generator: "sipu"
+            dataset_name: ["aggregation", "compound", "flame", "jain", "pathbased", "r15", "spiral", "unbalance"]
+          - dataset_generator: "uci"
+            dataset_name: ["ecoli", "ionosphere", "sonar", "statlog", "wdbc", "wine", "yeast"]
+          - dataset_generator: "wut"
+            dataset_name: ["circles", "cross", "graph", "isolation", "labirynth", "mk1", "mk2", "mk3", "mk4", "olympic", "smile", "stripes", "trajectories", "trapped_lovers", "twosplashes", "windows", "x1", "x2", "x3", "z1", "z2", "z3"]
     outputs:
       - id: data.matrix
         path: "{dataset}.data.gz"
@@ -182,8 +67,7 @@ stages:
           url: https://github.com/imallona/clustbench_fastcluster
           commit: e644ce5
         parameters:
-          - linkage: "complete"
-          #- linkage: ["ward", "average", "weighted", "median", "centroid"]
+          - linkage: ["complete", "ward", "average", "weighted", "median", "centroid"]
       - id: sklearn
         name: "sklearn"
         software_environment: "clustbench"
@@ -191,9 +75,8 @@ stages:
           url: https://github.com/imallona/clustbench_sklearn
           commit: dcf35e1
         parameters:
-          - method: "birch"
-          # ["kmeans, "gm"]
-          # ["spectral"] ## too slow
+          - method: ["birch", "kmeans", "gm"]
+          # "spectral" ## too slow
       - id: agglomerative
         name: "agglomerative"
         software_environment: "clustbench"
@@ -201,8 +84,7 @@ stages:
           url: https://github.com/imallona/clustbench_agglomerative
           commit: 9d086a9
         parameters:
-          - linkage: "average"
-          # ["complete", "ward"]
+          - linkage: ["average", "complete", "ward"]
       - id: genieclust
         name: "genieclust"
         software_environment: "clustbench"
@@ -211,8 +93,8 @@ stages:
           commit: 7d9e799
         parameters:
           - method: "genie"
-            # method: ["gic", "ica"]
             gini_threshold: 0.5
+          - method: ["gic", "ica"]
       - id: fcps
         name: "fcps"
         software_environment: "fcps"
@@ -220,19 +102,9 @@ stages:
           url: https://github.com/imallona/clustbench_fcps
           commit: e780fed
         parameters:
-          - method: "FCPS_Minimax"
+          - method: ["FCPS_Minimax", "FCPS_MinEnergy", "FCPS_HDBSCAN_2", "FCPS_HDBSCAN_4", "FCPS_HDBSCAN_8", "FCPS_Diana", "FCPS_Fanny", "FCPS_Hardcl", "FCPS_Softcl", "FCPS_Clara", "FCPS_PAM"]
             seed: 2
           # - "FCPS_AdaptiveDensityPeak" # not in Conda
-          # - "FCPS_MinEnergy",
-          # - "FCPS_HDBSCAN_2",
-          # - "FCPS_HDBSCAN_4",
-          # - "FCPS_HDBSCAN_8",
-          # - "FCPS_Diana",
-          # - "FCPS_Fanny",
-          # - "FCPS_Hardcl",
-          # - "FCPS_Softcl",
-          # - "FCPS_Clara",
-          # - "FCPS_PAM"
     inputs:
         - data.matrix
         - data.true_labels
@@ -249,7 +121,7 @@ stages:
           url: https://github.com/imallona/clustbench_metrics
           commit: c4eda85
         parameters:
-          - metric: ["normalized_clustering_accuracy", "adjusted_fm_score"]
+          - metric: ["normalized_clustering_accuracy", "adjusted_fm_score", "adjusted_rand_score"]
           # - "adjusted_mi_score"
           # - "adjusted_rand_score"
           # - "fm_score"
