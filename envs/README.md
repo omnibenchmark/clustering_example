@@ -87,13 +87,20 @@ eb --robot fcps.eb --job-cores=10
 eb --robot clustbench.eb --job-cores=10
 ```
 
-Running a benchmark:
+Running a benchmark assuming the modules were installed within the `MODULE_BASEPATH`/software/modules/all path (perhaps `MODULE_BASEPATH` equals `$EASYBUILD_PREFIX`):
 
 ```bash
+# during a debugging session, this was `/home/mark/envmodules_debug/.local/easybuild/`
+MODULE_BASEPATH='updateme'
+
 source /cvmfs/software.eessi.io/versions/2025.06/init/lmod/bash ## if not loaded
 module load EESSI-extend/2025.06-easybuild                      ## if not loaded
-export MODULEPATH="$EASYBUILD_PREFIX"/software/modules/all:"$MODULEPATH"
+export MODULEPATH="$MODULE_BASEPATH"/software/modules/all:"$MODULEPATH"
 module use $MODULEPATH
+echo $MODULEPATH
+
+# during a debugging session, the resulting $MODULEPATH contained both the MODULE_BASEPATH and EESSI's injections
+# /home/mark/envmodules_debug/.local/easybuild/software/modules/all:/home/mark/eessi/versions/2025.06/software/linux/x86_64/amd/zen2/modules/all:/cvmfs/software.eessi.io/host_injections/2025.06/software/linux/x86_64/amd/zen2/modules/all:/cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/modules/all:/cvmfs/software.eessi.io/versions/2025.06/init/modules
 
 ob run benchmark -b Clustering_envmodules.yml  --local-storage --cores 30
 ```

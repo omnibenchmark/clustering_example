@@ -23,8 +23,7 @@ builddependencies = [
 dependencies = [
     ('Python', '3.12.3'),
     ('SciPy-bundle', '2024.05'),
-    ('matplotlib', '3.9.2'),
-    ('scikit-learn', '1.6.1')
+    ('matplotlib', '3.9.2')
 ]
 
 sanity_pip_check = True
@@ -46,10 +45,10 @@ exts_list = [
     ('fastcluster', '1.2.6', {
         'checksums': ['aab886efa7b6bba7ac124f4498153d053e5a08b822d2254926b7206cdf5a8aa6'],
     }),
-    ## ('scikit-learn', '1.6.1', {
-    ##    'modulename': 'sklearn',
-    ##     'source_urls' : [PYPI_SOURCE]
-    ## }),
+    ('scikit-learn', '1.4.2', {
+        'modulename': 'sklearn',
+         'source_urls' : [PYPI_SOURCE]
+    }),
     ('genieclust', '1.1.6', {
         'source_urls': ['https://github.com/gagolews/genieclust/archive/refs/tags/'],
         'sources': ['v1.1.6.tar.gz'],
