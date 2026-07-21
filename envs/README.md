@@ -35,7 +35,7 @@ apptainer push --docker-username janedoe --docker-password glpat-uzh fcps.sif or
 
 # Aptainer semi-reproducible and remote
 
-No need to prepare/build anything; let `ob run benchmark -b Clustering_oras.yml --local` do it using pre-built images from https://gitlab.renkulab.io/izaskun.mallona/clustering_example/container_registry.
+No need to prepare/build anything; let `ob run Clustering_oras.yml --cores 2` do it using pre-built images from https://gitlab.renkulab.io/izaskun.mallona/clustering_example/container_registry.
 
 # envmodules - reproducible builds with easybuild
 
@@ -44,8 +44,8 @@ No need to prepare/build anything; let `ob run benchmark -b Clustering_oras.yml 
 It will take time (even days).
 
 ```bash
-eb --robot fcps.eb --job-cores=10
-eb --robot clustbench.eb --job-cores=10
+eb --robot envs/fcps.eb --job-cores=10
+eb --robot envs/clustbench.eb --job-cores=10
 ```
 
 ## EESSI
@@ -58,7 +58,7 @@ Install CVMFS and mount EESSI: follow https://www.eessi.io/docs/getting_access/n
 
 Extend EESSI with the extra packages needed to run clustbench via Easybuild. [Docs](https://www.eessi.io/docs/using_eessi/building_on_eessi/).
 
-These snippets are very verbose and tailored to omnibenchmark the machine (robinsonlab).
+These snippets are verbose and somewhat tailored to our omnibenchmark machine.
 
 ```bash
 
@@ -68,9 +68,8 @@ echo "Load latest EESSI"
 source /cvmfs/software.eessi.io/versions/2025.06/init/lmod/bash
 module load EESSI-extend/2025.06-easybuild
 
-
 echo "Configure eb"
-export EASYBUILD_PREFIX=path_to_your_installations_update_here
+export EASYBUILD_PREFIX=/path/to/install  # e.g., /data/mark/eessi/versions/2025.06/software/linux/x86_64/amd/zen2/
 #export EASYBUILD_PREFIX=/data/imallona/.local/easybuild   ## RAID-6 in my case
 export EASYBUILD_INSTALLPATH=$EASYBUILD_PREFIX/software
 export EASYBUILD_BUILDPATH=$EASYBUILD_PREFIX/build
@@ -83,15 +82,14 @@ echo "Configure temp path"
 mkdir -p $HOME/tmp
 export TMPDIR=$HOME/tmp
 
-eb --robot fcps.eb --job-cores=10
-eb --robot clustbench.eb --job-cores=10
+eb --robot envs/fcps.eb --job-cores=10
+eb --robot envs/clustbench.eb --job-cores=10
 ```
 
 Running a benchmark assuming the modules were installed within the `MODULE_BASEPATH`/software/modules/all path (perhaps `MODULE_BASEPATH` equals `$EASYBUILD_PREFIX`):
 
 ```bash
-# during a debugging session, this was `/home/mark/envmodules_debug/.local/easybuild/`
-MODULE_BASEPATH='updateme'
+MODULE_BASEPATH='path/to/sw' # e.g., /data/mark/eessi/versions/2025.06/software/linux/x86_64/amd/zen2
 
 source /cvmfs/software.eessi.io/versions/2025.06/init/lmod/bash ## if not loaded
 module load EESSI-extend/2025.06-easybuild                      ## if not loaded
@@ -99,8 +97,8 @@ export MODULEPATH="$MODULE_BASEPATH"/software/modules/all:"$MODULEPATH"
 module use $MODULEPATH
 echo $MODULEPATH
 
-# during a debugging session, the resulting $MODULEPATH contained both the MODULE_BASEPATH and EESSI's injections
-# /home/mark/envmodules_debug/.local/easybuild/software/modules/all:/home/mark/eessi/versions/2025.06/software/linux/x86_64/amd/zen2/modules/all:/cvmfs/software.eessi.io/host_injections/2025.06/software/linux/x86_64/amd/zen2/modules/all:/cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/modules/all:/cvmfs/software.eessi.io/versions/2025.06/init/modules
+# the resulting $MODULEPATH should contain both the MODULE_BASEPATH and EESSI's injections
+# /data/mark/eessi/versions/2025.06/software/linux/x86_64/amd/zen2/software/modules/all:/home/mark/eessi/versions/2025.06/software/linux/x86_64/amd/zen2/modules/all:/cvmfs/software.eessi.io/host_injections/2025.06/software/linux/x86_64/amd/zen2/modules/all:/cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/modules/all:/cvmfs/software.eessi.io/init/modules
 
-ob run benchmark -b Clustering_envmodules.yml  --local-storage --cores 30
+ob run Clustering_envmodules.yml --cores 10
 ```
