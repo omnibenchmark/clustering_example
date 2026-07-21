@@ -94,13 +94,20 @@ stages:
         parameters:
           - method: "genie"
             gini_threshold: 0.5
+      - id: genieclust2
+        name: "genieclust"
+        software_environment: "clustbench"
+        repository:
+          url: https://github.com/imallona/clustbench_genieclust
+          commit: 7d9e799
+        parameters:
           - method: ["gic", "ica"]
       - id: fcps
         name: "fcps"
         software_environment: "fcps"
         repository:
-          url: https://github.com/imallona/clustbench_fcps
-          commit: e780fed
+          url: https://github.com/markrobinsonuzh/clustbench_fcps.git
+          commit: c19094f
         parameters:
           - method: ["FCPS_Minimax", "FCPS_MinEnergy", "FCPS_HDBSCAN_2", "FCPS_HDBSCAN_4", "FCPS_HDBSCAN_8", "FCPS_Diana", "FCPS_Fanny", "FCPS_Hardcl", "FCPS_Softcl", "FCPS_Clara", "FCPS_PAM"]
             seed: 2

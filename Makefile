@@ -1,25 +1,25 @@
 MAX_CORES ?= 50
 
-# without continue on error (-k)
-OB_CMD=ob run benchmark --local --cores ${MAX_CORES} --yes
+# vanilla ob command
+OB_CMD=ob run --cores ${MAX_CORES}
 
 # prepare_apptainer_env:
 # 	cd envs && bash build_singularity.sh
 
-all: run_with_default_conda run_with_unpinned_oras run_with_default_envs # knit_report
+all: run_with_default_conda run_with_unpinned_oras run_with_default_envs
 
 run_with_default_conda:
-	${OB_CMD} -b Clustering_conda.yml
+	${OB_CMD} Clustering_conda.yml
 	cp Clustering_conda.yml out
 	mv out out_conda_$(shell date +'%Y%m%d_%H%M')
 
 run_with_unpinned_oras:
-	${OB_CMD} -b Clustering_oras.yml
+	${OB_CMD} Clustering_oras.yml
 	cp Clustering_oras.yml out
 	mv out out_singularity_$(shell date +'%Y%m%d_%H%M')
 
 run_with_default_envs:
-	${OB_CMD} -b Clustering_envmodules.yml
+	${OB_CMD} Clustering_envmodules.yml
 	cp Clustering_envmodules.yml out
 	mv out out_envmodules_$(shell date +'%Y%m%d_%H%M')
 
