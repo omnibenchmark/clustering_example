@@ -22,26 +22,61 @@ stages:
   ## clustbench data ##########################################################
 
   - id: data
-    modules:
-      - id: clustbench
-        name: "clustbench datasets, from https://www.sciencedirect.com/science/article/pii/S0020025521010082#t0005 Table1"
+    modules:  # Table 1 of https://www.sciencedirect.com/science/article/pii/S0020025521010082
+      - id: fcps
+        name: "clustbench fcps datasets"
         software_environment: "clustbench"
         repository:
           url: /home/b/lab/clustbench08/clustbench-data
-          commit: e7e4750
-        parameters:  # comments depict the possible cardinalities and the number of curated labelsets
+          commit: 27f4877
+        parameters:
           - dataset_generator: "fcps"
-            dataset_name: ["atom", "chainlink", "engytime", "hepta", "lsun", "target", "tetra", "twodiamonds", "wingnut"]
+            dataset: ["atom", "chainlink", "engytime", "hepta", "lsun", "target", "tetra", "twodiamonds", "wingnut"]
+      - id: graves
+        name: "clustbench graves datasets"
+        software_environment: "clustbench"
+        repository:
+          url: /home/b/lab/clustbench08/clustbench-data
+          commit: 27f4877
+        parameters:
           - dataset_generator: "graves"
-            dataset_name: ["dense", "fuzzyx", "line", "parabolic", "ring", "ring_noisy", "ring_outliers", "zigzag", "zigzag_noisy", "zigzag_outliers"] 
+            dataset: ["dense", "fuzzyx", "line", "parabolic", "ring", "ring_noisy", "ring_outliers", "zigzag", "zigzag_noisy", "zigzag_outliers"]
+      - id: other
+        name: "clustbench other datasets"
+        software_environment: "clustbench"
+        repository:
+          url: /home/b/lab/clustbench08/clustbench-data
+          commit: 27f4877
+        parameters:
           - dataset_generator: "other"
-            dataset_name: ["chameleon_t4_8k", "chameleon_t5_8k", "hdbscan", "iris", "iris5", "square"]
+            dataset: ["chameleon_t4_8k", "chameleon_t5_8k", "hdbscan", "iris", "iris5", "square"]
+      - id: sipu
+        name: "clustbench sipu datasets"
+        software_environment: "clustbench"
+        repository:
+          url: /home/b/lab/clustbench08/clustbench-data
+          commit: 27f4877
+        parameters:
           - dataset_generator: "sipu"
-            dataset_name: ["aggregation", "compound", "flame", "jain", "pathbased", "r15", "spiral", "unbalance"]
+            dataset: ["aggregation", "compound", "flame", "jain", "pathbased", "r15", "spiral", "unbalance"]
+      - id: uci
+        name: "clustbench uci datasets"
+        software_environment: "clustbench"
+        repository:
+          url: /home/b/lab/clustbench08/clustbench-data
+          commit: 27f4877
+        parameters:
           - dataset_generator: "uci"
-            dataset_name: ["ecoli", "ionosphere", "sonar", "statlog", "wdbc", "wine", "yeast"]
+            dataset: ["ecoli", "ionosphere", "sonar", "statlog", "wdbc", "wine", "yeast"]
+      - id: wut
+        name: "clustbench wut datasets"
+        software_environment: "clustbench"
+        repository:
+          url: /home/b/lab/clustbench08/clustbench-data
+          commit: 27f4877
+        parameters:
           - dataset_generator: "wut"
-            dataset_name: ["circles", "cross", "graph", "isolation", "labirynth", "mk1", "mk2", "mk3", "mk4", "olympic", "smile", "stripes", "trajectories", "trapped_lovers", "twosplashes", "windows", "x1", "x2", "x3", "z1", "z2", "z3"]
+            dataset: ["circles", "cross", "graph", "isolation", "labirynth", "mk1", "mk2", "mk3", "mk4", "olympic", "smile", "stripes", "trajectories", "trapped_lovers", "twosplashes", "windows", "x1", "x2", "x3", "z1", "z2", "z3"]
     outputs:
       - id: data_matrix
         path: "data.gz"
@@ -111,7 +146,7 @@ stages:
         software_environment: "clustbench"
         repository:
           url: /home/b/lab/clustbench08/clustbench-metrics
-          commit: 349d092
+          commit: 4939270
         parameters:
           - metric: ["normalized_clustering_accuracy", "adjusted_fm_score", "adjusted_rand_score"]
           # - "adjusted_mi_score"
@@ -142,7 +177,7 @@ stages:
         software_environment: "clustbench"
         repository:
           url: /home/b/lab/clustbench08/clustbench-metrics
-          commit: 349d092
+          commit: 4939270
           entrypoint: summary
     outputs:
       - id: metrics_summary

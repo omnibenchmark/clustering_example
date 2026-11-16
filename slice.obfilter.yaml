@@ -1,8 +1,8 @@
 # Two small datasets through every method and metric, for a quick check:
 #   ob run Clustering_conda.yml --filter slice.obfilter.yaml
-# The hashes are the data nodes' parameter hashes, as in out/data.clustbench.<hash>/
+# The hashes are the data nodes' parameter hashes, as in out/data.fcps.<hash>/
 picks:
-  data: {clustbench: [1f2b8e54, 46bb23e0]}   # fcps/atom, fcps/chainlink
+  data: {fcps: [19e07dfb, 3c92d668]}   # atom, chainlink; the other generators are pruned
   clustering: {'*': all}
   metrics: {'*': all}
   metrics_summary: {'*': all}
