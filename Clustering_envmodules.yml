@@ -181,4 +181,4 @@ stages:
         path: "summary.tsv"
 
   ## The `report` stage of Clustering_conda.yml needs a quarto environment,
-  ## which has no image or easyconfig yet.
+  ## which has no easyconfig yet.

@@ -23,7 +23,7 @@ every method and metric:
 - `report` (conda plan) renders `reports/report.Rmd` over those tables into
   `out/report/report.html`.
 - `reports/across_backends.Rmd` compares several runs (backends, seeds, repeats).
-  It is not part of a run: `make run_conda run_oras run_envmodules across_backends`.
+  It is not part of a run: `make run_conda run_docker run_envmodules across_backends`.
 
 # Disclaimer
 
@@ -106,7 +106,7 @@ A yaml such as [0a88c91](https://github.com/omnibenchmark/clustering_example/blo
   
 # Software backends
 
-In `envs`: conda, apptainer, easybuild (lmod modules)
+In `envs`: conda, Docker (built locally), easybuild (lmod modules)
 
 # Warnings
 

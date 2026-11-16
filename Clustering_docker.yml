@@ -1,4 +1,4 @@
-id: omni-clustbench-apptainer
+id: omni-clustbench-docker
 description: "Clustering benchmark on Gagolewski's, true number of clusters plus minus 2."
 version: "2.0.0"
 api_version: "0.8.0"
@@ -6,15 +6,21 @@ benchmarker: "Izaskun Mallona, Daniel Incicau, Ben Carrillo, Mark Robinson"
 storage:
   api: S3
   endpoint: http://omnibenchmark.mls.uzh.ch:9000
-  bucket_name: clusteringexampleoras
+  bucket_name: clusteringexampledocker
+# Images built locally from envs/docker/*.Dockerfile: `make -C envs`. Snakemake
+# < 10 runs containers through apptainer only, so the plan names the apptainer
+# images converted from them.
 software_backend: apptainer
 software_environments:
   clustbench:
     description: "clustbench on py3.12.6"
-    apptainer: oras://quay.io/imallona/clustering_example/clustbench:latest
+    apptainer: envs/clustbench.sif
   fcps:
     description: "CRAN's FCPS"
-    apptainer: oras://quay.io/imallona/clustering_example/fcps:latest
+    apptainer: envs/fcps.sif
+  quarto:
+    description: "quarto and the R packages reports/report.Rmd loads"
+    apptainer: envs/quarto.sif
 stages:
   ## clustbench data ##########################################################
 
@@ -180,5 +186,21 @@ stages:
       - id: metrics_summary
         path: "summary.tsv"
 
-  ## The `report` stage of Clustering_conda.yml needs a quarto environment,
-  ## which has no image or easyconfig yet.
+  ## one report over every dataset ############################################
+
+  - id: report
+    gather:
+      from: metrics_summary
+      path: report                      # out/report/, no hash in the path
+    modules:
+      - id: quarto
+        name: "clustering metrics report"
+        software_environment: "quarto"
+        repository:
+          url: /home/b/lab/omni-quarto-report
+          commit: 3218ef8
+        parameters:
+          - template: reports/report.Rmd   # in this repository
+    outputs:
+      - id: report_html
+        path: "report.html"
