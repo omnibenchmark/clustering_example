@@ -8,3 +8,10 @@ snakemake.log
 # vim swaps
 *.swp
 *.swo
+
+# output trees and run logs
+out/
+out_*/
+*.log
+.plan_seed_*.yml
+reports/*.html

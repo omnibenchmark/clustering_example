@@ -1,33 +1,31 @@
 MAX_CORES ?= 50
+SEED ?= 2
+RUN ?= 1
+OB_FLAGS ?=          # e.g. OB_FLAGS="--filter slice.obfilter.yaml" for two datasets
 
-# vanilla ob command
-OB_CMD=ob run --cores ${MAX_CORES}
+# One output tree per backend, seed and run, named as reports/across_backends.Rmd
+# expects: out_<backend>_seed_<seed>_run_<run>
+define run_plan
+	sed 's/seed: [0-9]\+/seed: $(SEED)/' $(1) > .plan_seed_$(SEED).yml
+	ob run .plan_seed_$(SEED).yml --cores $(MAX_CORES) --out-dir out_$(2)_seed_$(SEED)_run_$(RUN) $(OB_FLAGS)
+	ob collect performance -o out_$(2)_seed_$(SEED)_run_$(RUN)
+	rm .plan_seed_$(SEED).yml
+endef
 
-# prepare_apptainer_env:
-# 	cd envs && bash build_singularity.sh
+all: run_conda run_oras run_envmodules across_backends
 
-all: run_with_default_conda run_with_unpinned_oras run_with_default_envs
+run_conda:
+	$(call run_plan,Clustering_conda.yml,conda)
 
-run_with_default_conda:
-	${OB_CMD} Clustering_conda.yml
-	cp Clustering_conda.yml out
-	mv out out_conda_$(shell date +'%Y%m%d_%H%M')
+run_oras:
+	$(call run_plan,Clustering_oras.yml,oras)
 
-run_with_unpinned_oras:
-	${OB_CMD} Clustering_oras.yml
-	cp Clustering_oras.yml out
-	mv out out_singularity_$(shell date +'%Y%m%d_%H%M')
+run_envmodules:
+	$(call run_plan,Clustering_envmodules.yml,envmodules)
 
-run_with_default_envs:
-	${OB_CMD} Clustering_envmodules.yml
-	cp Clustering_envmodules.yml out
-	mv out out_envmodules_$(shell date +'%Y%m%d_%H%M')
+# Compares every out_<backend>_seed_<seed>_run_<run> tree in this directory.
+# Needs R with rmarkdown, dplyr, ggplot2 and jsonlite (envs/quarto.yml has them).
+across_backends:
+	Rscript -e 'rmarkdown::render("reports/across_backends.Rmd", params = list(runs_dir = normalizePath(".")), output_dir = ".")'
 
-# ## derived from Mark's plots to process multiple benchmark runs at once
-# knit_report: 
-# 	## todo incorporate this report to this repo, downloading from a temporary branch `mark` is a bad idea
-# 	## also control the environment this is run with
-# 	wget -nc https://raw.githubusercontent.com/imallona/clustering_report/refs/heads/mark/07_metrics_across_backends.Rmd
-# 	R -e 'rmarkdown::render("07_metrics_across_backends.Rmd", params = list(performance_bn = "performance-results.rds", metrics_bn = "metrics-results.rds", clustering_dir =  "."))'
-# 	wget -nc https://github.com/imallona/clustering_report/blob/mark/08_performances_across_backends.Rmd
-# 	R -e 'rmarkdown::render("08_performances_across_backends.Rmd", params = list(performance_bn = "performance-results.rds", metrics_bn = "metrics-results.rds", clustering_dir =  "."))'
+.PHONY: all run_conda run_oras run_envmodules across_backends

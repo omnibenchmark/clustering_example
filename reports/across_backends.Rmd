@@ -1,0 +1,167 @@
+---
+title: "omni-clustering-benchmarks across backends, seeds and runs"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+    number_sections: true
+    theme: readable
+params:
+  runs_dir: "."
+  reference: "conda"
+---
+
+<!-- Compares several runs of the plans in this repository (api 0.8.0). Not part
+     of a run: render it over a directory of output trees, see `make across_backends`.
+
+     Each run directory is named out_<backend>_seed_<seed>_run_<run> and holds
+       - the summary.tsv tables written by the `metrics_summary` stage, and
+       - performances.tsv, written by `ob collect performance -o <run dir>`.
+     Datasets, methods and parameters are read from those tables, never from
+     the directory names below a run. -->
+
+```{r setup, message = FALSE}
+suppressPackageStartupMessages({
+    library(dplyr)
+    library(ggplot2)
+    library(jsonlite)
+})
+knitr::opts_chunk$set(fig.width = 10, fig.height = 5, warning = FALSE)
+
+run_pattern <- "^out_([a-z]+)_seed_([0-9]+)_run_([0-9]+)$"
+runs <- list.dirs(params$runs_dir, recursive = FALSE)
+runs <- runs[grepl(run_pattern, basename(runs))]
+stopifnot("no out_<backend>_seed_<seed>_run_<run> directory found" = length(runs) > 0)
+
+run_label <- function(d) {
+    m <- regmatches(basename(d), regexec(run_pattern, basename(d)))[[1]]
+    data.frame(backend = m[2], seed = factor(m[3]), run = factor(m[4]))
+}
+
+# "k=v;k=v" with sorted keys, as the `metrics_summary` stage writes method_params
+params_label <- function(p) {
+    keys <- sort(names(p), method = "radix")
+    paste0(keys, "=", unlist(p[keys]), collapse = ";")
+}
+
+module_colours <- c(fcps = "grey70", agglomerative = "salmon", fastcluster = "lightsteelblue",
+                    sklearn = "orange", genieclust = "darkgreen")
+```
+
+Runs found: `r paste(basename(runs), collapse = ", ")`.
+
+# Clustering metrics
+
+```{r scores}
+scores <- lapply(runs, function(d) {
+    files <- list.files(d, pattern = "^summary\\.tsv$", recursive = TRUE, full.names = TRUE)
+    files <- files[!grepl("/by-params/", files)]    # a derived view of the same files
+    lapply(files, read.delim, colClasses = c(method_params = "character")) |>
+        bind_rows() |>
+        cbind(run_label(d))
+}) |>
+    bind_rows() |>
+    mutate(data = paste0(dataset_generator, "/", dataset), module = method,
+           method = paste0(module, " ", method_params))
+
+table(scores$backend, is.na(scores$score))
+
+ari <- scores |> filter(metric == "adjusted_rand_score", k_position == "k", !is.na(score))
+ari_cmp <- inner_join(ari |> filter(backend != params$reference),
+                      ari |> filter(backend == params$reference),
+                      by = c("seed", "run", "data", "method", "module"),
+                      suffix = c("", ".ref"))
+
+ggplot(ari_cmp, aes(score.ref, score, shape = seed, colour = module)) +
+    geom_abline(linetype = "dashed") +
+    geom_point(size = 3, alpha = .8) +
+    scale_colour_manual(values = module_colours) +
+    facet_wrap(~ backend) +
+    xlab(paste("Adjusted Rand Index:", params$reference)) +
+    ylab("Adjusted Rand Index") +
+    theme_classic()
+```
+
+Scores that differ from the reference backend by more than 0.001:
+
+```{r}
+ari_cmp |>
+    filter(abs(score - score.ref) > 0.001) |>
+    select(backend, seed, run, data, method, score.ref, score)
+```
+
+# Computational performance
+
+Only the clustering nodes, and only those Snakemake measured a CPU time for
+(very short jobs have none).
+
+```{r performance}
+perf <- lapply(runs, function(d) {
+    f <- file.path(d, "performances.tsv")
+    if (!file.exists(f)) stop(f, " is missing: run `ob collect performance -o ", d, "`")
+    p <- read.delim(f) |> filter(stage == "clustering")
+    # per-stage parameter values of each node (the table also has a `lineage` column)
+    by_stage <- lapply(p$params, fromJSON)
+    p |>
+        transmute(data = sapply(by_stage, function(l) paste0(l$data$dataset_generator, "/", l$data$dataset_name)),
+                  method = paste0(module, " ", sapply(by_stage, function(l) params_label(l$clustering))),
+                  module, s, cpu_time, max_rss) |>
+        cbind(run_label(d))
+}) |>
+    bind_rows() |>
+    filter(!is.na(cpu_time))
+
+perf_cmp <- inner_join(perf |> filter(backend != params$reference),
+                       perf |> filter(backend == params$reference),
+                       by = c("seed", "run", "data", "method", "module"),
+                       suffix = c("", ".ref"))
+
+perf_cmp |>
+    group_by(backend) |>
+    summarize(n = n(),
+              median_cpu_time_ratio = median(cpu_time / cpu_time.ref, na.rm = TRUE),
+              median_max_rss_ratio = median(max_rss / max_rss.ref, na.rm = TRUE))
+
+ratio_plot <- function(d, x, y, xlab, ylab) {
+    ggplot(d, aes({{ x }}, {{ y }}, shape = seed, colour = module)) +
+        geom_hline(yintercept = 1, linetype = "dashed") +
+        geom_point(size = 3, alpha = .8) +
+        scale_x_log10() + scale_y_log10() +
+        scale_colour_manual(values = module_colours) +
+        facet_wrap(~ backend) +
+        xlab(xlab) + ylab(ylab) +
+        theme_classic()
+}
+```
+
+## CPU time
+
+```{r}
+ratio_plot(perf_cmp |> filter(cpu_time.ref > 0, cpu_time > 0), cpu_time.ref, cpu_time / cpu_time.ref,
+           paste("CPU time (s):", params$reference), paste("CPU time ratio to", params$reference))
+```
+
+Restricted to jobs above 1 s of CPU time and ratios between 0.5 and 2:
+
+```{r}
+long <- perf_cmp |> filter(cpu_time.ref > 1, cpu_time / cpu_time.ref > .5, cpu_time / cpu_time.ref < 2)
+long |> group_by(backend) |> summarize(n = n(), median_cpu_time_ratio = median(cpu_time / cpu_time.ref))
+if (nrow(long) > 0)
+    ratio_plot(long, cpu_time.ref, cpu_time / cpu_time.ref,
+               paste("CPU time (s):", params$reference), paste("CPU time ratio to", params$reference))
+```
+
+## Memory
+
+```{r}
+ratio_plot(perf_cmp |> filter(!is.na(max_rss), !is.na(max_rss.ref)), max_rss.ref, max_rss / max_rss.ref,
+           paste("Maximum RSS (MB):", params$reference), paste("Maximum RSS ratio to", params$reference))
+```
+
+# Trace
+
+```{r}
+sessionInfo()
+```

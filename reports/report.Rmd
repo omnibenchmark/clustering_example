@@ -1,0 +1,108 @@
+---
+title: "omni-clustering-benchmarks: clustering metrics of one run"
+date: "`r format(Sys.time(), '%d %B, %Y %H:%M:%S')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+    number_sections: true
+    df_print: kable
+    theme: lumen
+---
+
+<!-- Rendered by the `report` stage (omni-quarto-report), which writes
+     manifest.json next to this file. Its inputs are the per-dataset tables of
+     the `metrics_summary` stage; every label comes from those tables. -->
+
+```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+suppressPackageStartupMessages({
+    library(dplyr)
+    library(ggplot2)
+    library(tidyr)
+    library(jsonlite)
+})
+
+summaries <- unlist(fromJSON("manifest.json")$inputs$metrics_summary)
+
+scores <- lapply(summaries, read.delim, colClasses = c(method_params = "character")) |>
+    bind_rows() |>
+    mutate(data = paste0(dataset_generator, "/", dataset),
+           module = method,
+           method = paste0(module, " ", method_params),
+           k_position = factor(k_position, levels = c("k-2", "k-1", "k", "k+1", "k+2")))
+```
+
+# Summary stats
+
+```{r}
+# Total number of distinct datasets, methods and metrics
+scores |>
+    summarize(nDatasets = n_distinct(data),
+              nMethods = n_distinct(method),
+              nMetrics = n_distinct(metric))
+
+# Number of methods and metrics per dataset
+scores |>
+    group_by(data) |>
+    summarize(nMethods = n_distinct(method), nMetrics = n_distinct(metric)) |>
+    arrange(nMethods)
+
+# Number of datasets and metrics for each method
+scores |>
+    group_by(method) |>
+    summarize(nDatasets = n_distinct(data), nMetrics = n_distinct(metric)) |>
+    arrange(nDatasets)
+
+# Combinations of the grid without a score
+grid <- table(scores$data, scores$method, scores$metric)
+w <- which(grid < 1, arr.ind = TRUE)
+dn <- dimnames(grid)
+data.frame(data = dn[[1]][w[, 1]], method = dn[[2]][w[, 2]], metric = dn[[3]][w[, 3]])
+```
+
+# Metrics at the true number of clusters
+
+```{r}
+#| fig.width: 10
+#| fig.height: 7
+#| warning: false
+
+ggplot(scores |> filter(k_position == "k"), aes(x = method, y = score, fill = module)) +
+    geom_boxplot() +
+    facet_wrap(~ metric, ncol = 1) +
+    theme_classic() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "top")
+```
+
+# Misspecifying the number of clusters
+
+Change in each metric against the run at the true `k`. Positions that the
+clustering modules clamp to `k = 2` are left out.
+
+```{r}
+#| fig.width: 10
+#| fig.height: 7
+#| warning: false
+
+true_k <- scores |> filter(k_position == "k") |> select(data, method, metric, true_k = k, at_k = score)
+
+scores |>
+    inner_join(true_k, by = c("data", "method", "metric")) |>
+    filter(k_position != "k",
+           k == true_k + c("k-2" = -2, "k-1" = -1, "k+1" = 1, "k+2" = 2)[as.character(k_position)]) |>
+    ggplot(aes(x = k_position, y = score - at_k)) +
+    geom_hline(yintercept = 0, linetype = "dashed") +
+    geom_boxplot(aes(fill = module)) +
+    facet_wrap(~ metric) +
+    ylab("score - score(true k)") +
+    xlab("Cluster number misspecification") +
+    theme_classic() +
+    theme(legend.position = "top")
+```
+
+# Trace
+
+```{r}
+sessionInfo()
+```

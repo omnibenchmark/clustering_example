@@ -7,6 +7,24 @@ A clustering example for omnibenchmark
 3. Move to the cloned repository `cd clustering_example`
 4. Run locally, somewhat in parallel `ob run CLUSTERING.YAML --cores 6`. Choose `Clustering.yml` plan based on whether running it with conda, easybuild, apptainer, etc. [More details about the available backends](https://github.com/omnibenchmark/clustering_example/blob/main/envs/README.md).
 
+The plans are written for omnibenchmark api 0.8.0.
+
+## A quick check on two datasets
+
+`slice.obfilter.yaml` keeps two small datasets (`fcps/atom`, `fcps/chainlink`) and
+every method and metric:
+
+    ob run Clustering_conda.yml --filter slice.obfilter.yaml --cores 6
+
+## Reports
+
+- `metrics_summary` (every plan) writes one `summary.tsv` per dataset, with the
+  dataset, method, parameters and metric of each score.
+- `report` (conda plan) renders `reports/report.Rmd` over those tables into
+  `out/report/report.html`.
+- `reports/across_backends.Rmd` compares several runs (backends, seeds, repeats).
+  It is not part of a run: `make run_conda run_oras run_envmodules across_backends`.
+
 # Disclaimer
 
 This does not work in arm64.
