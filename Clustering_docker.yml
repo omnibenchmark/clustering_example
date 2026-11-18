@@ -7,20 +7,32 @@ storage:
   api: S3
   endpoint: http://omnibenchmark.mls.uzh.ch:9000
   bucket_name: clusteringexampledocker
-# Images built locally from envs/docker/*.Dockerfile: `make -C envs`. Snakemake
-# < 10 runs containers through apptainer only, so the plan names the apptainer
-# images converted from them.
+# Images built from envs/docker by .github/workflows/images.yml and pushed to
+# the GitHub registry; apptainer pulls them. Hosts without /dev/fuse:
+# `make run_docker SANDBOX=1`.
 software_backend: apptainer
 software_environments:
   clustbench:
-    description: "clustbench on py3.12.6"
-    apptainer: envs/clustbench.sif
+    description: "clustbench on py3.12.6 (data, metrics)"
+    apptainer: docker://ghcr.io/omnibenchmark/clustering_example/clustbench:2.0.0
+  fastcluster:
+    description: "fastcluster 1.2.6"
+    apptainer: docker://ghcr.io/omnibenchmark/clustering_example/fastcluster:2.0.0
+  sklearn:
+    description: "scikit-learn 1.9.1"
+    apptainer: docker://ghcr.io/omnibenchmark/clustering_example/sklearn:2.0.0
+  agglomerative:
+    description: "scikit-learn 1.9.1"
+    apptainer: docker://ghcr.io/omnibenchmark/clustering_example/agglomerative:2.0.0
+  genieclust:
+    description: "genieclust 1.1.6"
+    apptainer: docker://ghcr.io/omnibenchmark/clustering_example/genieclust:2.0.0
   fcps:
     description: "CRAN's FCPS"
-    apptainer: envs/fcps.sif
+    apptainer: docker://ghcr.io/omnibenchmark/clustering_example/fcps:2.0.0
   quarto:
     description: "quarto and the R packages reports/report.Rmd loads"
-    apptainer: envs/quarto.sif
+    apptainer: docker://ghcr.io/omnibenchmark/clustering_example/quarto:2.0.0
 stages:
   ## clustbench data ##########################################################
 
@@ -92,7 +104,7 @@ stages:
     modules:
       - id: fastcluster
         name: "fastcluster algorithm"
-        software_environment: "clustbench"
+        software_environment: "fastcluster"
         repository:
           url: /home/b/lab/clustbench08/clustbench-fastcluster
           commit: 414d92f
@@ -100,7 +112,7 @@ stages:
           - linkage: ["complete", "ward", "average", "weighted", "median", "centroid"]
       - id: sklearn
         name: "sklearn"
-        software_environment: "clustbench"
+        software_environment: "sklearn"
         repository:
           url: /home/b/lab/clustbench08/clustbench-sklearn
           commit: 43c7e22
@@ -109,7 +121,7 @@ stages:
           # "spectral" ## too slow
       - id: agglomerative
         name: "agglomerative"
-        software_environment: "clustbench"
+        software_environment: "agglomerative"
         repository:
           url: /home/b/lab/clustbench08/clustbench-agglomerative
           commit: fd0dbae
@@ -117,7 +129,7 @@ stages:
           - linkage: ["average", "complete", "ward"]
       - id: genieclust
         name: "genieclust"
-        software_environment: "clustbench"
+        software_environment: "genieclust"
         repository:
           url: /home/b/lab/clustbench08/clustbench-genieclust
           commit: 24539e3

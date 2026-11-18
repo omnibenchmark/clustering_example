@@ -1,24 +1,36 @@
-# Build the container images of Clustering_docker.yml locally. Nothing is
-# pushed anywhere.
+# Container images of Clustering_docker.yml: one per method, plus clustbench
+# (data, metrics) and quarto (report).
 #
-#   make -C envs              # docker images, then apptainer images from them
-#   make -C envs SANDBOX=1    # hosts without /dev/fuse: apptainer directories
-#
-# Snakemake (< 10) runs containers through apptainer only, so each Docker
-# image is converted from the local Docker daemon into envs/<name>.sif.
+#   make -C envs              # docker build
+#   make -C envs push         # build and push to $(REGISTRY); CI does this
+#                             # (.github/workflows/images.yml)
+#   make -C envs sandbox      # hosts without /dev/fuse, which cannot run the
+#                             # images apptainer pulls: envs/<name>.sif directories
 
+REGISTRY ?= ghcr.io/omnibenchmark/clustering_example
 TAG ?= 2.0.0
-SANDBOX ?= 0
-IMAGES = clustbench fcps quarto
+IMAGES = clustbench fastcluster sklearn agglomerative genieclust fcps quarto
 
-all: $(IMAGES:%=%.sif)
+build: $(IMAGES:%=build-%)
+push: $(IMAGES:%=push-%)
+sandbox: $(IMAGES:%=%.sif)
 
-%.sif: docker/%.Dockerfile $(wildcard docker/requirements-%.txt)
-	docker build -t clustering_example/$*:$(TAG) -f $< docker
+# docker/<name>.Dockerfile if there is one, else python.Dockerfile with
+# requirements-<name>.txt. The source label links the package to the repository.
+build-%:
+	docker build -t $(REGISTRY)/$*:$(TAG) --build-arg NAME=$* \
+	  --label org.opencontainers.image.source=$(REGISTRY:ghcr.io/%=https://github.com/%) \
+	  -f $(or $(wildcard docker/$*.Dockerfile),docker/python.Dockerfile) docker
+
+push-%: build-%
+	docker push $(REGISTRY)/$*:$(TAG)
+
+%.sif: $(wildcard docker/*)
+	$(MAKE) build-$*
 	rm -rf $@
-	apptainer build $(if $(filter 1,$(SANDBOX)),--sandbox) $@ docker-daemon:clustering_example/$*:$(TAG)
+	apptainer build --sandbox $@ docker-daemon:$(REGISTRY)/$*:$(TAG)
 
 clean:
 	rm -rf $(IMAGES:%=%.sif)
 
-.PHONY: all clean
+.PHONY: build push sandbox clean
