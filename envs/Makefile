@@ -9,7 +9,7 @@
 
 REGISTRY ?= ghcr.io/omnibenchmark/clustering_example
 TAG ?= 2.0.0
-IMAGES = clustbench fastcluster sklearn agglomerative genieclust fcps quarto
+IMAGES = clustbench fastcluster sklearn genieclust fcps quarto
 
 build: $(IMAGES:%=build-%)
 push: $(IMAGES:%=push-%)

@@ -19,11 +19,8 @@ software_environments:
     description: "fastcluster 1.2.6"
     apptainer: docker://ghcr.io/omnibenchmark/clustering_example/fastcluster:2.0.0
   sklearn:
-    description: "scikit-learn 1.9.1"
+    description: "scikit-learn 1.9.1 (sklearn, agglomerative)"
     apptainer: docker://ghcr.io/omnibenchmark/clustering_example/sklearn:2.0.0
-  agglomerative:
-    description: "scikit-learn 1.9.1"
-    apptainer: docker://ghcr.io/omnibenchmark/clustering_example/agglomerative:2.0.0
   genieclust:
     description: "genieclust 1.1.6"
     apptainer: docker://ghcr.io/omnibenchmark/clustering_example/genieclust:2.0.0
@@ -121,7 +118,7 @@ stages:
           # "spectral" ## too slow
       - id: agglomerative
         name: "agglomerative"
-        software_environment: "agglomerative"
+        software_environment: "sklearn"
         repository:
           url: /home/b/lab/clustbench08/clustbench-agglomerative
           commit: fd0dbae
