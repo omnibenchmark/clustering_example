@@ -1,0 +1,20 @@
+name: images
+on:
+  push:
+    paths:
+      - envs/docker/**
+      - envs/Makefile
+      - .github/workflows/images.yml
+  workflow_dispatch:
+
+jobs:
+  push:
+    name: Build and push to ghcr.io
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - run: make -C envs push REGISTRY=ghcr.io/${{ github.repository }}
