@@ -17,9 +17,10 @@ all: run_conda run_docker run_envmodules across_backends
 run_conda:
 	$(call run_plan,Clustering_conda.yml,conda)
 
-# Containers see only the out dir: bind the plan read-only (report template)
-# and the out dir writable again. ob should do this itself (omnibenchmark BUGS.md).
-DOCKER_BINDS = $(CURDIR):$(CURDIR):ro,$(CURDIR)/out_docker_seed_$(SEED)_run_$(RUN):$(CURDIR)/out_docker_seed_$(SEED)_run_$(RUN)
+# Containers see only the out dir: bind the plan directory too (report
+# template). Not read-only: ":ro" reaches apptainer mangled. ob should bind it
+# itself (omnibenchmark BUGS.md).
+DOCKER_BINDS = $(CURDIR)
 
 # SANDBOX=1, for hosts without /dev/fuse: build the images here and run them
 # from envs/<name>.sif directories instead of pulling from the registry.
