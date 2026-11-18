@@ -18,8 +18,9 @@ every method and metric:
 
 ## Reports
 
-- `metrics_summary` (every plan) writes one `summary.tsv` per dataset, with the
-  dataset, method, parameters and metric of each score.
+- `metrics` (every plan) gathers the clusterings of a dataset and writes one
+  `summary.tsv` for it: every metric of the plan's `metrics` list, with the
+  dataset, method and parameters of each score.
 - `report` (conda plan) renders `reports/report.Rmd` over those tables into
   `out/report/report.html`.
 - `reports/across_backends.Rmd` compares several runs (backends, seeds, repeats).

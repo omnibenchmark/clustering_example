@@ -136,46 +136,26 @@ stages:
       - id: clustering_predicted_ks_range
         path: "ks_range.labels.gz"
 
+  ## every metric over every clustering of a dataset: one tidy table each ####
+
   - id: metrics
+    gather:
+      from: clustering_predicted_ks_range
+      group_by: data
+    inputs:
+      - data_true_labels
     modules:
       - id: partition_metrics
-        name: "clustbench partition metrics"
+        name: "clustbench partition metrics, labelled from the lineage"
         software_environment: "clustbench"
         repository:
           url: /home/b/lab/clustbench08/clustbench-metrics
-          commit: 4939270
+          commit: 653d705
         parameters:
-          - metric: ["normalized_clustering_accuracy", "adjusted_fm_score", "adjusted_rand_score"]
-          # - "adjusted_mi_score"
-          # - "adjusted_rand_score"
-          # - "fm_score"
-          # - "mi_score"
-          # - "normalized_clustering_accuracy"
-          # - "normalized_mi_score"
-          # - "normalized_pivoted_accuracy"
-          # - "pair_sets_index"
-          # - "rand_score"
-    inputs:
-        - clustering_predicted_ks_range
-        - data_true_labels
-    outputs:
-      - id: metrics_scores
-        path: "scores.gz"
-
-  ## one tidy table of scores per dataset #####################################
-
-  - id: metrics_summary
-    gather:
-      from: metrics_scores
-      group_by: data
-    modules:
-      - id: summary
-        name: "scores of one dataset, labelled from the lineage"
-        software_environment: "clustbench"
-        repository:
-          url: /home/b/lab/clustbench08/clustbench-metrics
-          commit: 4939270
-          entrypoint: summary
+          # one node computes them all; a YAML list here would be a grid.
+          # Also: adjusted_mi_score, fm_score, mi_score, normalized_mi_score,
+          # normalized_pivoted_accuracy, pair_sets_index, rand_score
+          - metrics: "normalized_clustering_accuracy,adjusted_fm_score,adjusted_rand_score"
     outputs:
       - id: metrics_summary
         path: "summary.tsv"

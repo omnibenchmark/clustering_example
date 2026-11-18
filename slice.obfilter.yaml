@@ -5,5 +5,4 @@ picks:
   data: {fcps: [19e07dfb, 3c92d668]}   # atom, chainlink; the other generators are pruned
   clustering: {'*': all}
   metrics: {'*': all}
-  metrics_summary: {'*': all}
   report: {'*': all}

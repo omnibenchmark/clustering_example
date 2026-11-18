@@ -17,7 +17,7 @@ params:
      of a run: render it over a directory of output trees, see `make across_backends`.
 
      Each run directory is named out_<backend>_seed_<seed>_run_<run> and holds
-       - the summary.tsv tables written by the `metrics_summary` stage, and
+       - the summary.tsv tables written by the `metrics` stage, and
        - performances.tsv, written by `ob collect performance -o <run dir>`.
      Datasets, methods and parameters are read from those tables, never from
      the directory names below a run. -->
@@ -40,7 +40,7 @@ run_label <- function(d) {
     data.frame(backend = m[2], seed = factor(m[3]), run = factor(m[4]))
 }
 
-# "k=v;k=v" with sorted keys, as the `metrics_summary` stage writes method_params
+# "k=v;k=v" with sorted keys, as the `metrics` stage writes method_params
 params_label <- function(p) {
     keys <- sort(names(p), method = "radix")
     paste0(keys, "=", unlist(p[keys]), collapse = ";")
