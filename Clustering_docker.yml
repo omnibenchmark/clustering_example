@@ -187,7 +187,7 @@ stages:
         software_environment: "quarto"
         repository:
           url: ./modules/report/quarto
-          commit: 3218ef8
+          commit: 56c44f7
         parameters:
           - template: reports/report.Rmd   # in this repository
     outputs:
