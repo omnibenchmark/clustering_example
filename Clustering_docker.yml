@@ -39,7 +39,7 @@ stages:
         name: "clustbench fcps datasets"
         software_environment: "clustbench"
         repository:
-          url: ./modules/data/clustbench@88278de
+          url: ./modules/data/clustbench
           commit: 88278de
         parameters:
           - generator: "{module.id}"
@@ -48,7 +48,7 @@ stages:
         name: "clustbench graves datasets"
         software_environment: "clustbench"
         repository:
-          url: ./modules/data/clustbench@88278de
+          url: ./modules/data/clustbench
           commit: 88278de
         parameters:
           - generator: "{module.id}"
@@ -57,7 +57,7 @@ stages:
         name: "clustbench other datasets"
         software_environment: "clustbench"
         repository:
-          url: ./modules/data/clustbench@88278de
+          url: ./modules/data/clustbench
           commit: 88278de
         parameters:
           - generator: "{module.id}"
@@ -66,7 +66,7 @@ stages:
         name: "clustbench sipu datasets"
         software_environment: "clustbench"
         repository:
-          url: ./modules/data/clustbench@88278de
+          url: ./modules/data/clustbench
           commit: 88278de
         parameters:
           - generator: "{module.id}"
@@ -75,7 +75,7 @@ stages:
         name: "clustbench uci datasets"
         software_environment: "clustbench"
         repository:
-          url: ./modules/data/clustbench@88278de
+          url: ./modules/data/clustbench
           commit: 88278de
         parameters:
           - generator: "{module.id}"
@@ -84,7 +84,7 @@ stages:
         name: "clustbench wut datasets"
         software_environment: "clustbench"
         repository:
-          url: ./modules/data/clustbench@88278de
+          url: ./modules/data/clustbench
           commit: 88278de
         parameters:
           - generator: "{module.id}"
@@ -103,7 +103,7 @@ stages:
         name: "fastcluster algorithm"
         software_environment: "fastcluster"
         repository:
-          url: ./modules/methods/fastcluster@414d92f
+          url: ./modules/methods/fastcluster
           commit: 414d92f
         parameters:
           - linkage: ["complete", "ward", "average", "weighted", "median", "centroid"]
@@ -111,7 +111,7 @@ stages:
         name: "sklearn"
         software_environment: "sklearn"
         repository:
-          url: ./modules/methods/sklearn@43c7e22
+          url: ./modules/methods/sklearn
           commit: 43c7e22
         parameters:
           - method: ["birch", "kmeans", "gm"]
@@ -120,7 +120,7 @@ stages:
         name: "agglomerative"
         software_environment: "sklearn"
         repository:
-          url: ./modules/methods/agglomerative@fd0dbae
+          url: ./modules/methods/agglomerative
           commit: fd0dbae
         parameters:
           - linkage: ["average", "complete", "ward"]
@@ -128,7 +128,7 @@ stages:
         name: "genieclust"
         software_environment: "genieclust"
         repository:
-          url: ./modules/methods/genieclust@24539e3
+          url: ./modules/methods/genieclust
           commit: 24539e3
         parameters:
           - method: "genie"
@@ -138,7 +138,7 @@ stages:
         name: "fcps"
         software_environment: "fcps"
         repository:
-          url: ./modules/methods/fcps@a81079e
+          url: ./modules/methods/fcps
           commit: a81079e
         parameters:
           - method: ["FCPS_Minimax", "FCPS_MinEnergy", "FCPS_HDBSCAN_2", "FCPS_HDBSCAN_4", "FCPS_HDBSCAN_8", "FCPS_Diana", "FCPS_Fanny", "FCPS_Hardcl", "FCPS_Softcl", "FCPS_Clara", "FCPS_PAM"]
@@ -164,7 +164,7 @@ stages:
         name: "clustbench partition metrics, labelled from the lineage"
         software_environment: "clustbench"
         repository:
-          url: ./modules/metrics/partition_metrics@0a5ff63
+          url: ./modules/metrics/partition_metrics
           commit: 0a5ff63
         parameters:
           # one node computes them all; a YAML list here would be a grid.
@@ -186,7 +186,7 @@ stages:
         name: "clustering metrics report"
         software_environment: "quarto"
         repository:
-          url: ./modules/report/quarto@3218ef8
+          url: ./modules/report/quarto
           commit: 3218ef8
         parameters:
           - template: reports/report.Rmd   # in this repository

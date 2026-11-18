@@ -3,7 +3,7 @@ A clustering example for omnibenchmark
 # How to run
 
 1. Install omnibenchmark using [our tutorial](https://docs.omnibenchmark.org/latest/howto/#install-omnibenchmark)
-2. Clone the benchmark plan / this repository with `git clone --recurse-submodules git@github.com:omnibenchmark/clustering_example.git`. The modules are git submodules under `modules/`, each pinned to the commit in its directory name (`modules/methods/fastcluster@414d92f`); in an existing clone, `git submodule update --init`
+2. Clone the benchmark plan / this repository with `git clone --recurse-submodules git@github.com:omnibenchmark/clustering_example.git`. The modules are git submodules under `modules/`, each pinned to a commit (`git submodule status`); in an existing clone, `git submodule update --init`
 3. Move to the cloned repository `cd clustering_example`
 4. Run locally, somewhat in parallel `ob run CLUSTERING.YAML --dirty --cores 6` (`--dirty` because the plans name the modules by local path). Choose `Clustering.yml` plan based on whether running it with conda, easybuild, apptainer, etc. [More details about the available backends](https://github.com/omnibenchmark/clustering_example/blob/main/envs/README.md).
 

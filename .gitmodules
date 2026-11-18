@@ -1,32 +1,32 @@
-[submodule "modules/data/clustbench@88278de"]
-	path = modules/data/clustbench@88278de
+[submodule "modules/data/clustbench"]
+	path = modules/data/clustbench
 	url = https://github.com/omnibenchmark/clustbench_data.git
 	branch = api-0.8
-[submodule "modules/methods/fastcluster@414d92f"]
-	path = modules/methods/fastcluster@414d92f
-	url = https://github.com/omnibenchmark/clustbench_fastcluster.git
-	branch = api-0.8
-[submodule "modules/methods/sklearn@43c7e22"]
-	path = modules/methods/sklearn@43c7e22
-	url = https://github.com/omnibenchmark/clustbench_sklearn.git
-	branch = api-0.8
-[submodule "modules/methods/agglomerative@fd0dbae"]
-	path = modules/methods/agglomerative@fd0dbae
+[submodule "modules/methods/agglomerative"]
+	path = modules/methods/agglomerative
 	url = https://github.com/omnibenchmark/clustbench_agglomerative.git
 	branch = api-0.8
-[submodule "modules/methods/genieclust@24539e3"]
-	path = modules/methods/genieclust@24539e3
-	url = https://github.com/omnibenchmark/clustbench_genieclust.git
+[submodule "modules/methods/fastcluster"]
+	path = modules/methods/fastcluster
+	url = https://github.com/omnibenchmark/clustbench_fastcluster.git
 	branch = api-0.8
-[submodule "modules/methods/fcps@a81079e"]
-	path = modules/methods/fcps@a81079e
+[submodule "modules/methods/fcps"]
+	path = modules/methods/fcps
 	url = https://github.com/omnibenchmark/clustbench_fcps.git
 	branch = api-0.8
-[submodule "modules/metrics/partition_metrics@0a5ff63"]
-	path = modules/metrics/partition_metrics@0a5ff63
+[submodule "modules/methods/genieclust"]
+	path = modules/methods/genieclust
+	url = https://github.com/omnibenchmark/clustbench_genieclust.git
+	branch = api-0.8
+[submodule "modules/methods/sklearn"]
+	path = modules/methods/sklearn
+	url = https://github.com/omnibenchmark/clustbench_sklearn.git
+	branch = api-0.8
+[submodule "modules/metrics/partition_metrics"]
+	path = modules/metrics/partition_metrics
 	url = https://github.com/omnibenchmark/clustbench_metrics.git
 	branch = api-0.8
-[submodule "modules/report/quarto@3218ef8"]
-	path = modules/report/quarto@3218ef8
+[submodule "modules/report/quarto"]
+	path = modules/report/quarto
 	url = https://github.com/omnibenchmark/omni-quarto-report.git
 	branch = api-0.8
