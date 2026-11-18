@@ -24,6 +24,9 @@ every method and metric:
 - `report` (conda plan) renders `reports/report.Rmd` over those tables into
   `out/report/report.html`.
 - `reports/across_backends.Rmd` compares several runs (backends, seeds, repeats).
+- `tools/verify_zenodo.py OUT` checks the scores of a run against the runs
+  archived with the paper (https://doi.org/10.5281/zenodo.18598405). The
+  archive used seeds 20, 54 and 85: `make run_conda SEED=20`.
   It is not part of a run: `make run_conda run_docker run_envmodules across_backends`.
 
 # Disclaimer
