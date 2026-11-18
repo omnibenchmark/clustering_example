@@ -1,0 +1,195 @@
+id: omni-clustbench-docker
+description: "Clustering benchmark on Gagolewski's, true number of clusters plus minus 2."
+version: "2.0.0"
+api_version: "0.8.0"
+benchmarker: "Izaskun Mallona, Daniel Incicau, Ben Carrillo, Mark Robinson"
+storage:
+  api: S3
+  endpoint: http://omnibenchmark.mls.uzh.ch:9000
+  bucket_name: clusteringexampledocker
+# Images built from envs/docker by .github/workflows/images.yml and pushed to
+# the GitHub registry; apptainer pulls them. Hosts without /dev/fuse:
+# `make run_docker SANDBOX=1`.
+software_backend: apptainer
+software_environments:
+  clustbench:
+    description: "clustbench on py3.12.6 (data, metrics)"
+    apptainer: docker://ghcr.io/omnibenchmark/clustering_example/clustbench:2.0.0
+  fastcluster:
+    description: "fastcluster 1.2.6"
+    apptainer: docker://ghcr.io/omnibenchmark/clustering_example/fastcluster:2.0.0
+  sklearn:
+    description: "scikit-learn 1.9.1 (sklearn, agglomerative)"
+    apptainer: docker://ghcr.io/omnibenchmark/clustering_example/sklearn:2.0.0
+  genieclust:
+    description: "genieclust 1.1.6"
+    apptainer: docker://ghcr.io/omnibenchmark/clustering_example/genieclust:2.0.0
+  fcps:
+    description: "CRAN's FCPS"
+    apptainer: docker://ghcr.io/omnibenchmark/clustering_example/fcps:2.0.0
+  quarto:
+    description: "quarto and the R packages reports/report.Rmd loads"
+    apptainer: docker://ghcr.io/omnibenchmark/clustering_example/quarto:2.0.0
+stages:
+  ## clustbench data ##########################################################
+
+  - id: data
+    modules:  # Table 1 of https://www.sciencedirect.com/science/article/pii/S0020025521010082
+      - id: fcps
+        name: "clustbench fcps datasets"
+        software_environment: "clustbench"
+        repository:
+          url: ./modules/data/clustbench
+          commit: 88278de
+        parameters:
+          - generator: "{module.id}"
+            dataset: ["atom", "chainlink", "engytime", "hepta", "lsun", "target", "tetra", "twodiamonds", "wingnut"]
+      - id: graves
+        name: "clustbench graves datasets"
+        software_environment: "clustbench"
+        repository:
+          url: ./modules/data/clustbench
+          commit: 88278de
+        parameters:
+          - generator: "{module.id}"
+            dataset: ["dense", "fuzzyx", "line", "parabolic", "ring", "ring_noisy", "ring_outliers", "zigzag", "zigzag_noisy", "zigzag_outliers"]
+      - id: other
+        name: "clustbench other datasets"
+        software_environment: "clustbench"
+        repository:
+          url: ./modules/data/clustbench
+          commit: 88278de
+        parameters:
+          - generator: "{module.id}"
+            dataset: ["chameleon_t4_8k", "chameleon_t5_8k", "hdbscan", "iris", "iris5", "square"]
+      - id: sipu
+        name: "clustbench sipu datasets"
+        software_environment: "clustbench"
+        repository:
+          url: ./modules/data/clustbench
+          commit: 88278de
+        parameters:
+          - generator: "{module.id}"
+            dataset: ["aggregation", "compound", "flame", "jain", "pathbased", "r15", "spiral", "unbalance"]
+      - id: uci
+        name: "clustbench uci datasets"
+        software_environment: "clustbench"
+        repository:
+          url: ./modules/data/clustbench
+          commit: 88278de
+        parameters:
+          - generator: "{module.id}"
+            dataset: ["ecoli", "ionosphere", "sonar", "statlog", "wdbc", "wine", "yeast"]
+      - id: wut
+        name: "clustbench wut datasets"
+        software_environment: "clustbench"
+        repository:
+          url: ./modules/data/clustbench
+          commit: 88278de
+        parameters:
+          - generator: "{module.id}"
+            dataset: ["circles", "cross", "graph", "isolation", "labirynth", "mk1", "mk2", "mk3", "mk4", "olympic", "smile", "stripes", "trajectories", "trapped_lovers", "twosplashes", "windows", "x1", "x2", "x3", "z1", "z2", "z3"]
+    outputs:
+      - id: data_matrix
+        path: "data.gz"
+      - id: data_true_labels
+        path: "labels0.gz"
+
+  ## clustbench methods (fastcluster) ###################################################################
+
+  - id: clustering
+    modules:
+      - id: fastcluster
+        name: "fastcluster algorithm"
+        software_environment: "fastcluster"
+        repository:
+          url: ./modules/methods/fastcluster
+          commit: 414d92f
+        parameters:
+          - linkage: ["complete", "ward", "average", "weighted", "median", "centroid"]
+      - id: sklearn
+        name: "sklearn"
+        software_environment: "sklearn"
+        repository:
+          url: ./modules/methods/sklearn
+          commit: 43c7e22
+        parameters:
+          - method: ["birch", "kmeans", "gm"]
+          # "spectral" ## too slow
+      - id: agglomerative
+        name: "agglomerative"
+        software_environment: "sklearn"
+        repository:
+          url: ./modules/methods/agglomerative
+          commit: fd0dbae
+        parameters:
+          - linkage: ["average", "complete", "ward"]
+      - id: genieclust
+        name: "genieclust"
+        software_environment: "genieclust"
+        repository:
+          url: ./modules/methods/genieclust
+          commit: 24539e3
+        parameters:
+          - method: "genie"
+            gini_threshold: 0.5
+          - method: ["gic", "ica"]
+      - id: fcps
+        name: "fcps"
+        software_environment: "fcps"
+        repository:
+          url: ./modules/methods/fcps
+          commit: a81079e
+        parameters:
+          - method: ["FCPS_Minimax", "FCPS_MinEnergy", "FCPS_HDBSCAN_2", "FCPS_HDBSCAN_4", "FCPS_HDBSCAN_8", "FCPS_Diana", "FCPS_Fanny", "FCPS_Hardcl", "FCPS_Softcl", "FCPS_Clara", "FCPS_PAM"]
+            seed: 2
+          # - "FCPS_AdaptiveDensityPeak" # not in Conda
+    inputs:
+        - data_matrix
+        - data_true_labels
+    outputs:
+      - id: clustering_predicted_ks_range
+        path: "ks_range.labels.gz"
+
+  ## every metric over every clustering of a dataset: one tidy table each ####
+
+  - id: metrics
+    gather:
+      from: clustering_predicted_ks_range
+      group_by: data
+    inputs:
+      - data_true_labels
+    modules:
+      - id: partition_metrics
+        name: "clustbench partition metrics, labelled from the lineage"
+        software_environment: "clustbench"
+        repository:
+          url: ./modules/metrics/partition_metrics
+          commit: 0a5ff63
+        parameters:
+          # one node computes them all; a YAML list here would be a grid.
+          # Also: adjusted_mi_score, fm_score, mi_score, normalized_mi_score,
+          # normalized_pivoted_accuracy, pair_sets_index, rand_score
+          - metrics: "normalized_clustering_accuracy,adjusted_fm_score,adjusted_rand_score"
+    outputs:
+      - id: metrics_summary
+        path: "summary.tsv"
+
+  ## one report over every dataset ############################################
+
+  - id: report
+    gather:
+      from: metrics_summary
+      path: report                      # out/report/, no hash in the path
+    modules:
+      - id: quarto
+        name: "clustering metrics report"
+        software_environment: "quarto"
+        repository:
+          url: ./modules/report/quarto
+          commit: 56c44f7
+        parameters:
+          - template: reports/report.Rmd   # in this repository
+    outputs:
+      - id: report_html
+        path: "report.html"
