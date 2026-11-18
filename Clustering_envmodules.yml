@@ -24,7 +24,7 @@ stages:
         name: "clustbench fcps datasets"
         software_environment: "clustbench"
         repository:
-          url: /home/b/lab/clustbench08/clustbench-data
+          url: ./modules/data/clustbench@88278de
           commit: 88278de
         parameters:
           - generator: "{module.id}"
@@ -33,7 +33,7 @@ stages:
         name: "clustbench graves datasets"
         software_environment: "clustbench"
         repository:
-          url: /home/b/lab/clustbench08/clustbench-data
+          url: ./modules/data/clustbench@88278de
           commit: 88278de
         parameters:
           - generator: "{module.id}"
@@ -42,7 +42,7 @@ stages:
         name: "clustbench other datasets"
         software_environment: "clustbench"
         repository:
-          url: /home/b/lab/clustbench08/clustbench-data
+          url: ./modules/data/clustbench@88278de
           commit: 88278de
         parameters:
           - generator: "{module.id}"
@@ -51,7 +51,7 @@ stages:
         name: "clustbench sipu datasets"
         software_environment: "clustbench"
         repository:
-          url: /home/b/lab/clustbench08/clustbench-data
+          url: ./modules/data/clustbench@88278de
           commit: 88278de
         parameters:
           - generator: "{module.id}"
@@ -60,7 +60,7 @@ stages:
         name: "clustbench uci datasets"
         software_environment: "clustbench"
         repository:
-          url: /home/b/lab/clustbench08/clustbench-data
+          url: ./modules/data/clustbench@88278de
           commit: 88278de
         parameters:
           - generator: "{module.id}"
@@ -69,7 +69,7 @@ stages:
         name: "clustbench wut datasets"
         software_environment: "clustbench"
         repository:
-          url: /home/b/lab/clustbench08/clustbench-data
+          url: ./modules/data/clustbench@88278de
           commit: 88278de
         parameters:
           - generator: "{module.id}"
@@ -88,7 +88,7 @@ stages:
         name: "fastcluster algorithm"
         software_environment: "clustbench"
         repository:
-          url: /home/b/lab/clustbench08/clustbench-fastcluster
+          url: ./modules/methods/fastcluster@414d92f
           commit: 414d92f
         parameters:
           - linkage: ["complete", "ward", "average", "weighted", "median", "centroid"]
@@ -96,7 +96,7 @@ stages:
         name: "sklearn"
         software_environment: "clustbench"
         repository:
-          url: /home/b/lab/clustbench08/clustbench-sklearn
+          url: ./modules/methods/sklearn@43c7e22
           commit: 43c7e22
         parameters:
           - method: ["birch", "kmeans", "gm"]
@@ -105,7 +105,7 @@ stages:
         name: "agglomerative"
         software_environment: "clustbench"
         repository:
-          url: /home/b/lab/clustbench08/clustbench-agglomerative
+          url: ./modules/methods/agglomerative@fd0dbae
           commit: fd0dbae
         parameters:
           - linkage: ["average", "complete", "ward"]
@@ -113,7 +113,7 @@ stages:
         name: "genieclust"
         software_environment: "clustbench"
         repository:
-          url: /home/b/lab/clustbench08/clustbench-genieclust
+          url: ./modules/methods/genieclust@24539e3
           commit: 24539e3
         parameters:
           - method: "genie"
@@ -123,7 +123,7 @@ stages:
         name: "fcps"
         software_environment: "fcps"
         repository:
-          url: /home/b/lab/clustbench08/clustbench-fcps
+          url: ./modules/methods/fcps@a81079e
           commit: a81079e
         parameters:
           - method: ["FCPS_Minimax", "FCPS_MinEnergy", "FCPS_HDBSCAN_2", "FCPS_HDBSCAN_4", "FCPS_HDBSCAN_8", "FCPS_Diana", "FCPS_Fanny", "FCPS_Hardcl", "FCPS_Softcl", "FCPS_Clara", "FCPS_PAM"]
@@ -149,7 +149,7 @@ stages:
         name: "clustbench partition metrics, labelled from the lineage"
         software_environment: "clustbench"
         repository:
-          url: /home/b/lab/clustbench08/clustbench-metrics
+          url: ./modules/metrics/partition_metrics@0a5ff63
           commit: 0a5ff63
         parameters:
           # one node computes them all; a YAML list here would be a grid.

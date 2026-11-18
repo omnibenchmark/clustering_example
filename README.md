@@ -3,9 +3,9 @@ A clustering example for omnibenchmark
 # How to run
 
 1. Install omnibenchmark using [our tutorial](https://docs.omnibenchmark.org/latest/howto/#install-omnibenchmark)
-2. Clone the benchmark plan / this repository with `git clone git@github.com:omnibenchmark/clustering_example.git`
+2. Clone the benchmark plan / this repository with `git clone --recurse-submodules git@github.com:omnibenchmark/clustering_example.git`. The modules are git submodules under `modules/`, each pinned to the commit in its directory name (`modules/methods/fastcluster@414d92f`); in an existing clone, `git submodule update --init`
 3. Move to the cloned repository `cd clustering_example`
-4. Run locally, somewhat in parallel `ob run CLUSTERING.YAML --cores 6`. Choose `Clustering.yml` plan based on whether running it with conda, easybuild, apptainer, etc. [More details about the available backends](https://github.com/omnibenchmark/clustering_example/blob/main/envs/README.md).
+4. Run locally, somewhat in parallel `ob run CLUSTERING.YAML --dirty --cores 6` (`--dirty` because the plans name the modules by local path). Choose `Clustering.yml` plan based on whether running it with conda, easybuild, apptainer, etc. [More details about the available backends](https://github.com/omnibenchmark/clustering_example/blob/main/envs/README.md).
 
 The plans are written for omnibenchmark api 0.8.0.
 
@@ -14,7 +14,7 @@ The plans are written for omnibenchmark api 0.8.0.
 `slice.obfilter.yaml` keeps two small datasets (`fcps/atom`, `fcps/chainlink`) and
 every method and metric:
 
-    ob run Clustering_conda.yml --filter slice.obfilter.yaml --cores 6
+    ob run Clustering_conda.yml --dirty --filter slice.obfilter.yaml --cores 6
 
 ## Reports
 
