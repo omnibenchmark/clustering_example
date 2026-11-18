@@ -42,7 +42,7 @@ stages:
           url: /home/b/lab/clustbench08/clustbench-data
           commit: 88278de
         parameters:
-          - generator: "fcps"
+          - generator: "{module.id}"
             dataset: ["atom", "chainlink", "engytime", "hepta", "lsun", "target", "tetra", "twodiamonds", "wingnut"]
       - id: graves
         name: "clustbench graves datasets"
@@ -51,7 +51,7 @@ stages:
           url: /home/b/lab/clustbench08/clustbench-data
           commit: 88278de
         parameters:
-          - generator: "graves"
+          - generator: "{module.id}"
             dataset: ["dense", "fuzzyx", "line", "parabolic", "ring", "ring_noisy", "ring_outliers", "zigzag", "zigzag_noisy", "zigzag_outliers"]
       - id: other
         name: "clustbench other datasets"
@@ -60,7 +60,7 @@ stages:
           url: /home/b/lab/clustbench08/clustbench-data
           commit: 88278de
         parameters:
-          - generator: "other"
+          - generator: "{module.id}"
             dataset: ["chameleon_t4_8k", "chameleon_t5_8k", "hdbscan", "iris", "iris5", "square"]
       - id: sipu
         name: "clustbench sipu datasets"
@@ -69,7 +69,7 @@ stages:
           url: /home/b/lab/clustbench08/clustbench-data
           commit: 88278de
         parameters:
-          - generator: "sipu"
+          - generator: "{module.id}"
             dataset: ["aggregation", "compound", "flame", "jain", "pathbased", "r15", "spiral", "unbalance"]
       - id: uci
         name: "clustbench uci datasets"
@@ -78,7 +78,7 @@ stages:
           url: /home/b/lab/clustbench08/clustbench-data
           commit: 88278de
         parameters:
-          - generator: "uci"
+          - generator: "{module.id}"
             dataset: ["ecoli", "ionosphere", "sonar", "statlog", "wdbc", "wine", "yeast"]
       - id: wut
         name: "clustbench wut datasets"
@@ -87,7 +87,7 @@ stages:
           url: /home/b/lab/clustbench08/clustbench-data
           commit: 88278de
         parameters:
-          - generator: "wut"
+          - generator: "{module.id}"
             dataset: ["circles", "cross", "graph", "isolation", "labirynth", "mk1", "mk2", "mk3", "mk4", "olympic", "smile", "stripes", "trajectories", "trapped_lovers", "twosplashes", "windows", "x1", "x2", "x3", "z1", "z2", "z3"]
     outputs:
       - id: data_matrix
