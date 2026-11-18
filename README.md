@@ -52,17 +52,17 @@ A yaml such as [0a88c91](https://github.com/omnibenchmark/clustering_example/blo
 - Data. Example datasets (not a comprehensive list, it's >60 of them):
   - https://github.com/imallona/clustbench_data 
         parameters:
-          - dataset_generator: "fcps" # 9
+          - generator: "fcps" # 9
             dataset_name: ["atom", "chainlink", "engytime", "hepta", "lsun", "target", "tetra", "twodiamonds", "wingnut"]
-          - dataset_generator: "graves" # 10 datasets
+          - generator: "graves" # 10 datasets
             dataset_name: ["dense", "fuzzyx", "line", "parabolic", "ring", "ring_noisy", "ring_outliers", "zigzag", "zigzag_noisy", "zigzag_outliers"]
-          - dataset_generator: "other" # 6 datasets
+          - generator: "other" # 6 datasets
             dataset_name: ["chameleon_t4_8k", "chameleon_t5_8k", "hdbscan", "iris", "iris5", "square"]
-          - dataset_generator: "sipu" # 8 datasets
+          - generator: "sipu" # 8 datasets
             dataset_name: ["aggregation", "compound", "flame", "jain", "pathbased", "r15", "spiral", "unbalance"]
-          - dataset_generator: "uci" # 7 datasets
+          - generator: "uci" # 7 datasets
             dataset_name: ["ecoli", "ionosphere", "sonar", "statlog", "wdbc", "wine", "yeast"]
-          - dataset_generator: "wut" # 22 datasets
+          - generator: "wut" # 22 datasets
             dataset_name: ["circles", "cross", "graph", "isolation", "labirynth", "mk1", "mk2", "mk3", "mk4", "olympic", "smile", "stripes", "trajectories", "trapped_lovers", "twosplashes", "windows", "x1", "x2", "x3", "z1", "z2", "z3"]
 - Method families/providers (they include several methods each)
   - https://github.com/imallona/clustbench_fastcluster

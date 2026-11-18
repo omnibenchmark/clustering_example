@@ -2,7 +2,7 @@
 #   ob run Clustering_conda.yml --filter slice.obfilter.yaml
 # The hashes are the data nodes' parameter hashes, as in out/data.fcps.<hash>/
 picks:
-  data: {fcps: [19e07dfb, 3c92d668]}   # atom, chainlink; the other generators are pruned
+  data: {fcps: [089085c3, 3671c1ff]}   # atom, chainlink; the other generators are pruned
   clustering: {'*': all}
   metrics: {'*': all}
   report: {'*': all}

@@ -28,54 +28,54 @@ stages:
         software_environment: "clustbench"
         repository:
           url: /home/b/lab/clustbench08/clustbench-data
-          commit: 27f4877
+          commit: 88278de
         parameters:
-          - dataset_generator: "fcps"
+          - generator: "fcps"
             dataset: ["atom", "chainlink", "engytime", "hepta", "lsun", "target", "tetra", "twodiamonds", "wingnut"]
       - id: graves
         name: "clustbench graves datasets"
         software_environment: "clustbench"
         repository:
           url: /home/b/lab/clustbench08/clustbench-data
-          commit: 27f4877
+          commit: 88278de
         parameters:
-          - dataset_generator: "graves"
+          - generator: "graves"
             dataset: ["dense", "fuzzyx", "line", "parabolic", "ring", "ring_noisy", "ring_outliers", "zigzag", "zigzag_noisy", "zigzag_outliers"]
       - id: other
         name: "clustbench other datasets"
         software_environment: "clustbench"
         repository:
           url: /home/b/lab/clustbench08/clustbench-data
-          commit: 27f4877
+          commit: 88278de
         parameters:
-          - dataset_generator: "other"
+          - generator: "other"
             dataset: ["chameleon_t4_8k", "chameleon_t5_8k", "hdbscan", "iris", "iris5", "square"]
       - id: sipu
         name: "clustbench sipu datasets"
         software_environment: "clustbench"
         repository:
           url: /home/b/lab/clustbench08/clustbench-data
-          commit: 27f4877
+          commit: 88278de
         parameters:
-          - dataset_generator: "sipu"
+          - generator: "sipu"
             dataset: ["aggregation", "compound", "flame", "jain", "pathbased", "r15", "spiral", "unbalance"]
       - id: uci
         name: "clustbench uci datasets"
         software_environment: "clustbench"
         repository:
           url: /home/b/lab/clustbench08/clustbench-data
-          commit: 27f4877
+          commit: 88278de
         parameters:
-          - dataset_generator: "uci"
+          - generator: "uci"
             dataset: ["ecoli", "ionosphere", "sonar", "statlog", "wdbc", "wine", "yeast"]
       - id: wut
         name: "clustbench wut datasets"
         software_environment: "clustbench"
         repository:
           url: /home/b/lab/clustbench08/clustbench-data
-          commit: 27f4877
+          commit: 88278de
         parameters:
-          - dataset_generator: "wut"
+          - generator: "wut"
             dataset: ["circles", "cross", "graph", "isolation", "labirynth", "mk1", "mk2", "mk3", "mk4", "olympic", "smile", "stripes", "trajectories", "trapped_lovers", "twosplashes", "windows", "x1", "x2", "x3", "z1", "z2", "z3"]
     outputs:
       - id: data_matrix
@@ -153,7 +153,7 @@ stages:
         software_environment: "clustbench"
         repository:
           url: /home/b/lab/clustbench08/clustbench-metrics
-          commit: 653d705
+          commit: 0a5ff63
         parameters:
           # one node computes them all; a YAML list here would be a grid.
           # Also: adjusted_mi_score, fm_score, mi_score, normalized_mi_score,

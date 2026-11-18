@@ -105,7 +105,7 @@ perf <- lapply(runs, function(d) {
     # per-stage parameter values of each node (the table also has a `lineage` column)
     by_stage <- lapply(p$params, fromJSON)
     p |>
-        transmute(data = sapply(by_stage, function(l) paste0(l$data$dataset_generator, "/", l$data$dataset)),
+        transmute(data = sapply(by_stage, function(l) paste0(l$data$generator, "/", l$data$dataset)),
                   method = paste0(module, " ", sapply(by_stage, function(l) params_label(l$clustering))),
                   module, s, cpu_time, max_rss) |>
         cbind(run_label(d))
