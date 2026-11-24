@@ -24,9 +24,14 @@ every method and metric:
 - `report` (conda plan) renders `reports/report.Rmd` over those tables into
   `out/report/report.html`.
 - `reports/across_backends.Rmd` compares several runs (backends, seeds, repeats).
-- `tools/verify_zenodo.py OUT` checks the scores of a run against the runs
+- `scripts/verify_zenodo.py OUT` checks the scores of a run against the runs
   archived with the paper (https://doi.org/10.5281/zenodo.18598405). The
   archive used seeds 20, 54 and 85: `make run_conda SEED=20`.
+  Run with `-k --timeout 2h`, as the archive was, and compare with the conda run
+  (the default; the docker images match it score for score). Exit 1 when a
+  score differs or is missing without a recorded failure (an empty scores file
+  in the archive, a `failure.json` in OUT): jobs near the 2 h limit finish in
+  one run and not the other, so those are listed, not fatal.
   It is not part of a run: `make run_conda run_docker run_envmodules across_backends`.
 
 # Disclaimer

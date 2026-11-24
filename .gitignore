@@ -16,5 +16,5 @@ out_*/
 .plan_seed_*.yml
 reports/*.html
 
-# archive fetched by tools/verify_zenodo.py
-tools/.zenodo/
+# archive fetched by scripts/verify_zenodo.py
+scripts/.zenodo/
