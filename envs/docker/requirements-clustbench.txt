@@ -1,0 +1,7 @@
+# Same pins as ../clustbench.yml (the conda environment)
+https://github.com/gagolews/clustering-benchmarks/releases/download/v1.1.5/clustering_benchmarks-1.1.5.tar.gz
+fastcluster==1.2.6
+numpy==1.26.4
+scipy==1.14.1
+genieclust==1.1.6
+pandas==2.2.3
