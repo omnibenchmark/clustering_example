@@ -103,7 +103,6 @@ A yaml such as [0a88c91](https://github.com/omnibenchmark/clustering_example/blo
           # - "normalized_pivoted_accuracy"
           # - "pair_sets_index"
           # - "rand_score"
-  - https://github.com/imallona/clustering_report
 - Daniel modules (independent from clustbench)
   - https://github.com/omnibenchmark-example/iris.git
   - https://github.com/omnibenchmark-example/penguins.git
