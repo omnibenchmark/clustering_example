@@ -25,7 +25,7 @@
 [submodule "modules/metrics/partition_metrics"]
 	path = modules/metrics/partition_metrics
 	url = https://github.com/omnibenchmark/clustbench_metrics.git
-	branch = api-0.8
+	branch = master
 [submodule "modules/report/quarto"]
 	path = modules/report/quarto
 	url = https://github.com/omnibenchmark/omni-quarto-report.git

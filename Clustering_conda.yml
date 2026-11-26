@@ -153,7 +153,7 @@ stages:
         software_environment: "clustbench"
         repository:
           url: ./modules/metrics/partition_metrics
-          commit: 0a5ff63
+          commit: eed525c
         parameters:
           # one node computes them all; a YAML list here would be a grid.
           # Also: adjusted_mi_score, fm_score, mi_score, normalized_mi_score,
