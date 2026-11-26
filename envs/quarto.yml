@@ -1,0 +1,14 @@
+name: quarto
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - conda-forge::python=3.12.6
+  - conda-forge::quarto>=1.4
+  - conda-forge::r-base=4.3.2
+  - conda-forge::r-jsonlite=2.0.0
+  - conda-forge::r-knitr
+  - conda-forge::r-rmarkdown=2.29
+  - conda-forge::r-ggplot2=3.5.2
+  - conda-forge::r-dplyr=1.1.4
+  - conda-forge::r-tidyr=1.3.1

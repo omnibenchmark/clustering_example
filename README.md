@@ -3,9 +3,36 @@ A clustering example for omnibenchmark
 # How to run
 
 1. Install omnibenchmark using [our tutorial](https://docs.omnibenchmark.org/latest/howto/#install-omnibenchmark)
-2. Clone the benchmark plan / this repository with `git clone git@github.com:omnibenchmark/clustering_example.git`
+2. Clone the benchmark plan / this repository with `git clone --recurse-submodules git@github.com:omnibenchmark/clustering_example.git`. The modules are git submodules under `modules/`, each pinned to a commit (`git submodule status`); in an existing clone, `git submodule update --init`
 3. Move to the cloned repository `cd clustering_example`
-4. Run locally, somewhat in parallel `ob run CLUSTERING.YAML --cores 6`. Choose `Clustering.yml` plan based on whether running it with conda, easybuild, apptainer, etc. [More details about the available backends](https://github.com/omnibenchmark/clustering_example/blob/main/envs/README.md).
+4. Run locally, somewhat in parallel `ob run CLUSTERING.YAML --dirty --cores 6` (`--dirty` because the plans name the modules by local path). Choose `Clustering.yml` plan based on whether running it with conda, easybuild, apptainer, etc. [More details about the available backends](https://github.com/omnibenchmark/clustering_example/blob/main/envs/README.md).
+
+The plans are written for omnibenchmark api 0.8.0.
+
+## A quick check on two datasets
+
+`slice.obfilter.yaml` keeps two small datasets (`fcps/atom`, `fcps/chainlink`) and
+every method and metric:
+
+    ob run Clustering_conda.yml --dirty --filter slice.obfilter.yaml --cores 6
+
+## Reports
+
+- `metrics` (every plan) gathers the clusterings of a dataset and writes one
+  `summary.tsv` for it: every metric of the plan's `metrics` list, with the
+  dataset, method and parameters of each score.
+- `report` (conda plan) renders `reports/report.Rmd` over those tables into
+  `out/report/report.html`.
+- `reports/across_backends.Rmd` compares several runs (backends, seeds, repeats).
+- `scripts/verify_zenodo.py OUT` checks the scores of a run against the runs
+  archived with the paper (https://doi.org/10.5281/zenodo.18598405). The
+  archive used seeds 20, 54 and 85: `make run_conda SEED=20`.
+  Run with `-k --timeout 2h`, as the archive was, and compare with the conda run
+  (the default; the docker images match it score for score). Exit 1 when a
+  score differs or is missing without a recorded failure (an empty scores file
+  in the archive, a `failure.json` in OUT): jobs near the 2 h limit finish in
+  one run and not the other, so those are listed, not fatal.
+  It is not part of a run: `make run_conda run_docker run_envmodules across_backends`.
 
 # Disclaimer
 
@@ -30,17 +57,17 @@ A yaml such as [0a88c91](https://github.com/omnibenchmark/clustering_example/blo
 - Data. Example datasets (not a comprehensive list, it's >60 of them):
   - https://github.com/imallona/clustbench_data 
         parameters:
-          - dataset_generator: "fcps" # 9
+          - generator: "{module.id}" # 9
             dataset_name: ["atom", "chainlink", "engytime", "hepta", "lsun", "target", "tetra", "twodiamonds", "wingnut"]
-          - dataset_generator: "graves" # 10 datasets
+          - generator: "{module.id}" # 10 datasets
             dataset_name: ["dense", "fuzzyx", "line", "parabolic", "ring", "ring_noisy", "ring_outliers", "zigzag", "zigzag_noisy", "zigzag_outliers"]
-          - dataset_generator: "other" # 6 datasets
+          - generator: "{module.id}" # 6 datasets
             dataset_name: ["chameleon_t4_8k", "chameleon_t5_8k", "hdbscan", "iris", "iris5", "square"]
-          - dataset_generator: "sipu" # 8 datasets
+          - generator: "{module.id}" # 8 datasets
             dataset_name: ["aggregation", "compound", "flame", "jain", "pathbased", "r15", "spiral", "unbalance"]
-          - dataset_generator: "uci" # 7 datasets
+          - generator: "{module.id}" # 7 datasets
             dataset_name: ["ecoli", "ionosphere", "sonar", "statlog", "wdbc", "wine", "yeast"]
-          - dataset_generator: "wut" # 22 datasets
+          - generator: "{module.id}" # 22 datasets
             dataset_name: ["circles", "cross", "graph", "isolation", "labirynth", "mk1", "mk2", "mk3", "mk4", "olympic", "smile", "stripes", "trajectories", "trapped_lovers", "twosplashes", "windows", "x1", "x2", "x3", "z1", "z2", "z3"]
 - Method families/providers (they include several methods each)
   - https://github.com/imallona/clustbench_fastcluster
@@ -88,7 +115,7 @@ A yaml such as [0a88c91](https://github.com/omnibenchmark/clustering_example/blo
   
 # Software backends
 
-In `envs`: conda, apptainer, easybuild (lmod modules)
+In `envs`: conda, Docker (built locally), easybuild (lmod modules)
 
 # Warnings
 

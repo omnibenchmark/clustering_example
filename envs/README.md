@@ -1,7 +1,7 @@
 We distribute `Clustering.yml` runs with different backends.
 
 - `Clustering_conda.yml`. Conda semi-reproducible (no pinning, pip)
-- `Clustering_oras.yml`. Singularity non- to semi-reproducible, prebuilt remote images.
+- `Clustering_docker.yml`. Docker images built locally from `docker/*.Dockerfile`, pinned like the conda environments.
 - `Clustering_envmodules.yml`. Easybuilt with default optimization. Can be built extending EESSI.
 
 
@@ -16,26 +16,27 @@ We distribute `Clustering.yml` runs with different backends.
 
 No need to `ob software conda pin / prepare`; let `ob run benchmark -b Clustering_conda.yml --local` do it.
 
-# Apptainer semi-reproducible and local
+# Docker, built locally
 
 ## Files
 
-- `clustbench_singularity.def`
-- `fcps_singularity.def`
+- `docker/clustbench.Dockerfile`, `docker/requirements-clustbench.txt`: the
+  `clustbench.yml` pins on `python:3.12.6-slim-bookworm`.
+- `docker/fcps.Dockerfile`: `r-base:4.3.3` with CRAN read from a dated snapshot
+  (2025-03-01), which has the versions `fcps.yml` pins.
+- `Makefile`
 
 ## How to build
 
-- `build_singularity.sh`
-
-## How to push to a registry
-
 ```
-apptainer push --docker-username janedoe --docker-password glpat-uzh fcps.sif oras://registry.renkulab.io/izaskun.mallona/clustering_example/name:tag
+make -C envs             # docker build, then an apptainer image per Docker image
+make -C envs SANDBOX=1   # hosts without /dev/fuse
 ```
 
-# Aptainer semi-reproducible and remote
-
-No need to prepare/build anything; let `ob run Clustering_oras.yml --cores 2` do it using pre-built images from https://gitlab.renkulab.io/izaskun.mallona/clustering_example/container_registry.
+Nothing is pushed. Snakemake before 10.0 runs containers through apptainer
+only, so `Clustering_docker.yml` names `envs/<name>.sif`, converted from the
+local Docker daemon. Without `/dev/fuse` apptainer cannot mount a `.sif`;
+`SANDBOX=1` builds a directory under the same name instead.
 
 # envmodules - reproducible builds with easybuild
 
