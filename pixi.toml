@@ -1,0 +1,15 @@
+[workspace]
+name = "clustering_example"
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[dependencies]
+python = "3.12.*"
+conda = "*"  # Snakemake builds the plan's conda envs with it
+
+[pypi-dependencies]
+omnibenchmark = "==0.8.0"
+
+[tasks]
+# Two datasets through every method and metric; the full plan is ~6500 jobs.
+ci = "ob run Clustering_conda.yml --dirty --filter slice.obfilter.yaml --cores 4"
