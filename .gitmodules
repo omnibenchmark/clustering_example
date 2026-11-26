@@ -1,31 +1,31 @@
 [submodule "modules/data/clustbench"]
 	path = modules/data/clustbench
 	url = https://github.com/omnibenchmark/clustbench_data.git
-	branch = api-0.8
+	branch = main
 [submodule "modules/methods/agglomerative"]
 	path = modules/methods/agglomerative
 	url = https://github.com/omnibenchmark/clustbench_agglomerative.git
-	branch = api-0.8
+	branch = main
 [submodule "modules/methods/fastcluster"]
 	path = modules/methods/fastcluster
 	url = https://github.com/omnibenchmark/clustbench_fastcluster.git
-	branch = api-0.8
+	branch = master
 [submodule "modules/methods/fcps"]
 	path = modules/methods/fcps
 	url = https://github.com/omnibenchmark/clustbench_fcps.git
-	branch = api-0.8
+	branch = main
 [submodule "modules/methods/genieclust"]
 	path = modules/methods/genieclust
 	url = https://github.com/omnibenchmark/clustbench_genieclust.git
-	branch = api-0.8
+	branch = main
 [submodule "modules/methods/sklearn"]
 	path = modules/methods/sklearn
 	url = https://github.com/omnibenchmark/clustbench_sklearn.git
-	branch = api-0.8
+	branch = main
 [submodule "modules/metrics/partition_metrics"]
 	path = modules/metrics/partition_metrics
 	url = https://github.com/omnibenchmark/clustbench_metrics.git
-	branch = api-0.8
+	branch = master
 [submodule "modules/report/quarto"]
 	path = modules/report/quarto
 	url = https://github.com/omnibenchmark/omni-quarto-report.git

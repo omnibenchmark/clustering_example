@@ -25,7 +25,7 @@ stages:
         software_environment: "clustbench"
         repository:
           url: ./modules/data/clustbench
-          commit: 88278de
+          commit: b1a7de1
         parameters:
           - generator: "{module.id}"
             dataset: ["atom", "chainlink", "engytime", "hepta", "lsun", "target", "tetra", "twodiamonds", "wingnut"]
@@ -34,7 +34,7 @@ stages:
         software_environment: "clustbench"
         repository:
           url: ./modules/data/clustbench
-          commit: 88278de
+          commit: b1a7de1
         parameters:
           - generator: "{module.id}"
             dataset: ["dense", "fuzzyx", "line", "parabolic", "ring", "ring_noisy", "ring_outliers", "zigzag", "zigzag_noisy", "zigzag_outliers"]
@@ -43,7 +43,7 @@ stages:
         software_environment: "clustbench"
         repository:
           url: ./modules/data/clustbench
-          commit: 88278de
+          commit: b1a7de1
         parameters:
           - generator: "{module.id}"
             dataset: ["chameleon_t4_8k", "chameleon_t5_8k", "hdbscan", "iris", "iris5", "square"]
@@ -52,7 +52,7 @@ stages:
         software_environment: "clustbench"
         repository:
           url: ./modules/data/clustbench
-          commit: 88278de
+          commit: b1a7de1
         parameters:
           - generator: "{module.id}"
             dataset: ["aggregation", "compound", "flame", "jain", "pathbased", "r15", "spiral", "unbalance"]
@@ -61,7 +61,7 @@ stages:
         software_environment: "clustbench"
         repository:
           url: ./modules/data/clustbench
-          commit: 88278de
+          commit: b1a7de1
         parameters:
           - generator: "{module.id}"
             dataset: ["ecoli", "ionosphere", "sonar", "statlog", "wdbc", "wine", "yeast"]
@@ -70,7 +70,7 @@ stages:
         software_environment: "clustbench"
         repository:
           url: ./modules/data/clustbench
-          commit: 88278de
+          commit: b1a7de1
         parameters:
           - generator: "{module.id}"
             dataset: ["circles", "cross", "graph", "isolation", "labirynth", "mk1", "mk2", "mk3", "mk4", "olympic", "smile", "stripes", "trajectories", "trapped_lovers", "twosplashes", "windows", "x1", "x2", "x3", "z1", "z2", "z3"]
@@ -89,7 +89,7 @@ stages:
         software_environment: "clustbench"
         repository:
           url: ./modules/methods/fastcluster
-          commit: 414d92f
+          commit: 4e31b9a
         parameters:
           - linkage: ["complete", "ward", "average", "weighted", "median", "centroid"]
       - id: sklearn
@@ -97,7 +97,7 @@ stages:
         software_environment: "clustbench"
         repository:
           url: ./modules/methods/sklearn
-          commit: 43c7e22
+          commit: 6a11013
         parameters:
           - method: ["birch", "kmeans", "gm"]
           # "spectral" ## too slow
@@ -106,7 +106,7 @@ stages:
         software_environment: "clustbench"
         repository:
           url: ./modules/methods/agglomerative
-          commit: fd0dbae
+          commit: 65e96e5
         parameters:
           - linkage: ["average", "complete", "ward"]
       - id: genieclust
@@ -114,7 +114,7 @@ stages:
         software_environment: "clustbench"
         repository:
           url: ./modules/methods/genieclust
-          commit: 24539e3
+          commit: 2e7627b
         parameters:
           - method: "genie"
             gini_threshold: 0.5
@@ -124,7 +124,7 @@ stages:
         software_environment: "fcps"
         repository:
           url: ./modules/methods/fcps
-          commit: a81079e
+          commit: d5729ef
         parameters:
           - method: ["FCPS_Minimax", "FCPS_MinEnergy", "FCPS_HDBSCAN_2", "FCPS_HDBSCAN_4", "FCPS_HDBSCAN_8", "FCPS_Diana", "FCPS_Fanny", "FCPS_Hardcl", "FCPS_Softcl", "FCPS_Clara", "FCPS_PAM"]
             seed: 2
@@ -150,7 +150,7 @@ stages:
         software_environment: "clustbench"
         repository:
           url: ./modules/metrics/partition_metrics
-          commit: 0a5ff63
+          commit: eed525c
         parameters:
           # one node computes them all; a YAML list here would be a grid.
           # Also: adjusted_mi_score, fm_score, mi_score, normalized_mi_score,
